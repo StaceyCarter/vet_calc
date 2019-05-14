@@ -24,6 +24,17 @@ class User(db.Model):
         return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}"
 
 
+class Vets(db.Model):
+    """Stores information about each vet"""
+
+    vet_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer,
+                        db.ForeignKey('users.user_id'),
+                        nullable=False)
+    grad_year = db.Column(db.DateTime, nullable=True)
+    specialty = db.Column(db.String(150), nullable=True)
+
+
 
 #############################
 # Helper functions
