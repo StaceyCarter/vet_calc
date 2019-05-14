@@ -23,6 +23,7 @@ class User(db.Model):
 
         return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}"
 
+    #.vet to access relationship to vet class
 
 class Vets(db.Model):
     """Stores information about each vet"""
@@ -33,6 +34,15 @@ class Vets(db.Model):
                         nullable=False)
     grad_year = db.Column(db.DateTime, nullable=True)
     specialty = db.Column(db.String(150), nullable=True)
+
+    user = db.relationship("User",
+                           backref=db.backref("vet"))
+
+    def __repr__(self):
+        """Represent a vet object"""
+
+        return "Vet vet_id: {self.vet_id}"
+
 
 
 
