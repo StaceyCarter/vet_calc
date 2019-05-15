@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Register {% endblock %}
+{% block content %}
+
+<h1>Register as a user</h1>
+
+<!-- email, age, zipcode, password -->
+<form action="/register" method="POST">
+    First name: <input type="text" name="fname" required>
+    Last name: <input type="text" name="lname" required>
+    Username: <input type="text" name="username" required>
+    Email: <input type="email" name="email" required> <br>
+    Password: <input type="password" name="password" required>
+
+    What year did you graduate? <input type="month" name="gradYear">
+
+<!--    Add ability to add multiple extra specialities !!!-->
+    Do you have any specialties? <input type="text" name="specialty">
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}
