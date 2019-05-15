@@ -28,6 +28,8 @@ def add_user():
     fname = request.form.get('fname')
     lname = request.form.get('lname')
     username = request.form.get('username')
+
+
     grad_year = request.form.get('gradYear')
     speciality = request.form.get('specialty')
     user_type = "vet"

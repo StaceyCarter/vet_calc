@@ -21,12 +21,14 @@ class User(db.Model):
     def __repr__(self):
         """Represents a user object"""
 
-        return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}"
+        return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}>"
 
     #.vet to access relationship to vet class
 
-class Vets(db.Model):
+class Vet(db.Model):
     """Stores information about each vet"""
+
+    __tablename__ = "vets"
 
     vet_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer,
@@ -41,7 +43,57 @@ class Vets(db.Model):
     def __repr__(self):
         """Represent a vet object"""
 
-        return "Vet vet_id: {self.vet_id}"
+        return f"<Vet vet_id: {self.vet_id}>"
+
+class Drug(db.Model):
+    """Stores information about each drug"""
+
+    __tablename__ = "drugs"
+
+    drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    generic_name = db.Column(db.String(100), nullable=False)
+    interactions = db.Column(db.String(), nullable=True)
+    contraindications = db.Column(db.String(), nullable=True)
+
+    def __repr__(self):
+        """Represents a drug object"""
+
+        return f"<Drug Name: {self.generic_name}>"
+
+
+class Species_group(db.Model):
+
+    __tablename__ = "species_groups"
+
+    species_group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    species_group = db.Column(db.String(50), nullable=False)
+
+    # .species_individuals references the individual species objects of a group.
+
+    def __repr__(self):
+        """Represents a Species_group object"""
+
+        return f"<Species_group species_group:{self.species_group}>"
+
+class Species_individual(db.Model):
+
+    __tablename__ = "species_individuals"
+
+    species_individual_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    species_name = db.Column(db.String(50), nullable=False)
+    species_group_id = db.Column(db.Integer,
+                       db.ForeignKey('species_groups.species_group_id'),
+                       nullable=False)
+
+    species_group = db.relationship("Species_group",
+                           backref=db.backref("species_individuals"))
+
+    def __repr__(self):
+        """Represent a species individual object"""
+
+        return f"<Species_individual Name: {self.species_name}, Group ID: {self.species_group_id}>"
+
+
 
 
 
