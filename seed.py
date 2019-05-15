@@ -79,6 +79,17 @@ def load_individual_species():
 
         db.session.commit()
 
+# def load_personal_doses():
+#     """Seed database with personal dose values
+#
+#     File format:
+#     drug name | drug_id | dose_lower(mg/kg) | dose_upper(mg/kg) | recommended_dose (mg/kg) | toxic_dose |
+#      (cont): species_group_id | individual_species_id | disease_id | creator_id | duration_days | frequency(q hrs) | route
+#
+# 
+#     """
+
+
 
 def set_val_species_group_id():
     """Set value for the next species_group_id after seeding database"""
