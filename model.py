@@ -120,19 +120,19 @@ class SpeciesGroup(db.Model):
         """Represents a Species_group object"""
 
         return f"<SpeciesGroup species_group:{self.species_group}>"
-#
-# class SpeciesIndividual(db.Model):
-#
-#     __tablename__ = "species_individuals"
-#
-#     species_individual_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     species_name = db.Column(db.String(50), nullable=False)
-#     species_group_id = db.Column(db.Integer,
-#                        db.ForeignKey('species_groups.species_group_id'),
-#                        nullable=False)
-#
-#     species_group = db.relationship("Species_group",
-#                            backref=db.backref("species_individuals"))
+
+class SpeciesIndividual(db.Model):
+
+    __tablename__ = "species_individuals"
+
+    species_individual_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    species_name = db.Column(db.String(50), nullable=False)
+    species_group_id = db.Column(db.Integer,
+                       db.ForeignKey('species_groups.species_group_id'),
+                       nullable=False)
+
+    # species_group = db.relationship("species_groups",
+    #                        backref=db.backref("species_individuals"))
 
     def __repr__(self):
         """Represent a species individual object"""

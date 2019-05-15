@@ -2,7 +2,7 @@
 
 
 from sqlalchemy import func
-from model import Drug, SpeciesGroup
+from model import Drug, SpeciesGroup, SpeciesIndividual
 import datetime
 from model import connect_to_db, db
 from server import app
@@ -62,11 +62,23 @@ def load_individual_species():
 
     File format:
     species | group_id
-
-
     """
 
     print ("individual species")
+
+    SpeciesIndividual.query.delete()
+
+    with open("seed_data/species_seed.psv") as species:
+        for row in species:
+            species_name, group_id = row.strip().split("|")
+
+            species = SpeciesIndividual(species_name=species_name,
+                                        species_group_id=group_id)
+
+            db.session.add(species)
+
+        db.session.commit()
+
 
 def set_val_species_group_id():
     """Set value for the next species_group_id after seeding database"""
@@ -90,4 +102,5 @@ if __name__ == "__main__":
     # Run functions in the file to seed all the different databases.
     load_drugs()
     load_species_groups()
+    load_individual_species()
     set_val_species_group_id()
