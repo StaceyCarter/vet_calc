@@ -28,3 +28,9 @@ class FlaskTests(TestCase):
         self.assertIn(b'Register as a user', result.data)
 
 
+class FunctionTests(TestCase):
+    pass
+
+
+
+

@@ -56,7 +56,21 @@ def register_user():
 
     return render_template("add_user.html")
 
+@app.route('/dosing-info')
+def get_dose_info():
+    """Returns a form for the user to input the doses they want"""
 
+    return render_template("input_calculate.html")
+
+@app.route('/calculate-dose')
+def calculate_dose():
+    """Gets information inputed by user and calls the dose calculator function"""
+
+    weight = float(request.args.get("weight"))
+    dose = float(request.args.get("dose"))
+
+
+    return f"amount in mg = {weight * dose}"
 
 if __name__ == "__main__":
     app.debug = True

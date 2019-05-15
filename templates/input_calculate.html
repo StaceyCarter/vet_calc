@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} Calculate a dose {% endblock %}
+{% block content %}
+
+<h1>Calculate a dose</h1>
+
+<!-- email, age, zipcode, password -->
+<form action="/calculate-dose">
+
+    Patient's weight in kg? <input type="number" name="weight"> <br>
+
+    What dose do you want to use? (in mg/kg) <input type="number" name="dose"> <br>
+
+    Are you using liquid or tablets/chews/capsules?<br>
+
+    <input type="radio" name="form" value="liquid"> Liquid <br>
+    <input type="radio" name="form" value="tablet"> Tablet <br>
+
+    If you're using a liquid, what concentration is it? <input type="number" name="concentration"> mg/ml <br>
+
+    How often would you like to give it? q <input type="number" name="frequency">hrs <br>
+
+    How long do you want to give it for? <input type="number" name="duration"> days <br>
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}

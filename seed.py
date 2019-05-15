@@ -86,7 +86,7 @@ def load_individual_species():
 #     drug name | drug_id | dose_lower(mg/kg) | dose_upper(mg/kg) | recommended_dose (mg/kg) | toxic_dose |
 #      (cont): species_group_id | individual_species_id | disease_id | creator_id | duration_days | frequency(q hrs) | route
 #
-# 
+#
 #     """
 
 
