@@ -81,7 +81,7 @@ def get_amount_in_ml(dose, concentration):
 
     # """
 
-    # 
+    #
 
 
 def total_amount_needed(amount, duration, frequency):
@@ -124,7 +124,7 @@ def get_instructions(weight, dose, duration, frequency, concentration):
 
     Examples:
     >>> get_instructions(10, 2, 7, 12, 0.5)
-    {'amount_per_dose' : 40.0, 'total_amount' : 560.0, 'frequency_hrs' : 12, 'frequency_day' : '2 times daily', 'duration': 7}
+    {'amount_per_dose': 40.0, 'total_amount': 560.0, 'frequency_hrs': 12, 'frequency_day': '2 times daily', 'duration': 7}
 
     """
 
@@ -132,7 +132,7 @@ def get_instructions(weight, dose, duration, frequency, concentration):
     amount_per_dose = get_amount_in_ml(amount_in_mg, concentration)
     total_amount = total_amount_needed(amount_per_dose, duration, frequency)
 
-    frequency_per_day = 24/12
+    frequency_per_day = 24/frequency
 
     if frequency_per_day == 0.5:
         frequency_day = "Every other day"
