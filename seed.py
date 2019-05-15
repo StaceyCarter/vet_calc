@@ -9,7 +9,12 @@ from server import app
 
 
 def load_drugs():
-    """Seed data from drug_seed.psv into the drugs table of the database"""
+    """Seed data from drug_seed.psv into the drugs table of the database
+
+    File format:
+    Drug name | interactions | contraindications
+
+    """
 
     print("Drugs")
 
@@ -28,6 +33,13 @@ def load_drugs():
         db.session.commit()
 
 def load_species_groups():
+    """Seed data from species_group_seed, each species group has an id associated with it.
+
+    File format:
+
+    group_id | group name
+
+    """
 
     print("Species groups")
 
@@ -43,6 +55,18 @@ def load_species_groups():
             db.session.add(group)
 
         db.session.commit()
+
+
+def load_individual_species():
+    """Seed data from species_seed, each species is associated with a species group.
+
+    File format:
+    species | group_id
+
+
+    """
+
+    print ("individual species")
 
 def set_val_species_group_id():
     """Set value for the next species_group_id after seeding database"""
