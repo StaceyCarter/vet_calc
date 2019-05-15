@@ -55,43 +55,77 @@ class Drug(db.Model):
     interactions = db.Column(db.String(), nullable=True)
     contraindications = db.Column(db.String(), nullable=True)
 
+    #!!!! For future linking to therapeutic groups
+    # therapeutic_groups = db.relationship("TherapeuticGroup",
+    #                                      secondary="groups_drugs",
+    #                                      backref="drugs")
+
     def __repr__(self):
         """Represents a drug object"""
 
         return f"<Drug Name: {self.generic_name}>"
 
+# class TherapeuticGroup:
+#     """Stores the different possible therapeutic groups. eg anti-infective, anaesthetic, analgesic etc."""
+#
+#     __tablename__ = "therapeutic_groups"
+#
+#     group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     therapeutic_group = db.Column(db.String(100), unique=True, nullable=False)
+#
+#     def __repr__(self):
+#         """Represents a therapeutic group object"""
+#
+#         return f"<TherapeuticGroup: {self.therapeutic_group}>"
+#
+#
+# class GroupDrug:
+#     """The association table between therapeutic_groups and drugs."""
+#
+#     __tablename__ = "groups_drugs"
+#
+#     group_drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     therapeutic_group_id = db.Column(db.Integer,
+#                                      db.ForeignKey('therapeutic_groups.group_id'),
+#                                      nullable=False)
+#     drug_id = db.Column(db.Integer,
+#                         db.ForeignKey('drugs.drug_id'),
+#                         nullable=False)
 
-class Species_group(db.Model):
+    # .drugs - to access the drugs in each therapeutic group
 
-    __tablename__ = "species_groups"
-
-    species_group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    species_group = db.Column(db.String(50), nullable=False)
-
-    # .species_individuals references the individual species objects of a group.
-
-    def __repr__(self):
-        """Represents a Species_group object"""
-
-        return f"<Species_group species_group:{self.species_group}>"
-
-class Species_individual(db.Model):
-
-    __tablename__ = "species_individuals"
-
-    species_individual_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    species_name = db.Column(db.String(50), nullable=False)
-    species_group_id = db.Column(db.Integer,
-                       db.ForeignKey('species_groups.species_group_id'),
-                       nullable=False)
-
-    species_group = db.relationship("Species_group",
-                           backref=db.backref("species_individuals"))
-
-    def __repr__(self):
-        """Represent a species individual object"""
-
-        return f"<Species_individual Name: {self.species_name}, Group ID: {self.species_group_id}>"
+#
+# class SpeciesGroup(db.Model):
+#
+#     __tablename__ = "species_groups"
+#
+#     species_group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     species_group = db.Column(db.String(50), nullable=False)
+#
+#     # .species_individuals references the individual species objects of a group.
+#
+#     def __repr__(self):
+#         """Represents a Species_group object"""
+#
+#         return f"<Species_group species_group:{self.species_group}>"
+#
+# class SpeciesIndividual(db.Model):
+#
+#     __tablename__ = "species_individuals"
+#
+#     species_individual_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     species_name = db.Column(db.String(50), nullable=False)
+#     species_group_id = db.Column(db.Integer,
+#                        db.ForeignKey('species_groups.species_group_id'),
+#                        nullable=False)
+#
+#     species_group = db.relationship("Species_group",
+#                            backref=db.backref("species_individuals"))
+#
+#     def __repr__(self):
+#         """Represent a species individual object"""
+#
+#         return f"<Species_individual Name: {self.species_name}, Group ID: {self.species_group_id}>"
 
 
 
