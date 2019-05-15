@@ -1,6 +1,8 @@
 from unittest import TestCase
 from server import app
 
+from calculator import get_instructions
+
 class FlaskTests(TestCase):
 
     def setUp(self):
@@ -29,7 +31,25 @@ class FlaskTests(TestCase):
 
 
 class FunctionTests(TestCase):
-    pass
+    """Tests for individual functions"""
+
+    def test_get_instructions(self):
+        """Test the get_instructions function"""
+
+        self.assertDictEqual(get_instructions(10.2, 13.75, 7, 12, 20.5),{
+            'amount_per_dose': 6.84,
+            'total_amount': 95.78,
+            'frequency_hrs': 12,
+            'frequency_day': '2 times daily',
+            'duration': 7
+        })
+
+
+
+
+
+
+
 
 
 

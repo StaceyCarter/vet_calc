@@ -7,20 +7,20 @@
 <!-- email, age, zipcode, password -->
 <form action="/calculate-dose">
 
-    Patient's weight in kg? <input type="number" name="weight" step="0.01"> <br>
+    Patient's weight in kg? <input type="number" name="weight" step="0.01" required> <br>
 
-    What dose do you want to use? (in mg/kg) <input type="number" name="dose" step="0.01"> <br>
+    What dose do you want to use? (in mg/kg) <input type="number" name="dose" step="0.01" required> <br>
 
     Are you using liquid or tablets/chews/capsules?<br>
 
     <input type="radio" name="form" value="liquid"> Liquid <br>
     <input type="radio" name="form" value="tablet"> Tablet <br>
 
-    If you're using a liquid, what concentration is it? <input type="number" name="concentration" step="0.01"> mg/ml <br>
+    If you're using a liquid, what concentration is it? <input type="number" name="concentration" step="0.01" required> mg/ml <br>
 
-    How often would you like to give it? q <input type="number" name="frequency">hrs <br>
+    How often would you like to give it? q <input type="number" name="frequency" required>hrs <br>
 
-    How long do you want to give it for? <input type="number" name="duration"> days <br>
+    How long do you want to give it for? <input type="number" name="duration" required> days <br>
 
     <input type="submit">
 
