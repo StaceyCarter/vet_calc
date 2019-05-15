@@ -65,6 +65,18 @@ class Drug(db.Model):
 
         return f"<Drug Name: {self.generic_name}>"
 
+class PersonalDose(db.Model):
+    """Stores information about doses created by individuals - ie doses not sourced from textbooks"""
+
+    __tablename__ = "personal_doses"
+
+    dose_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    drug_id = db.Column(db.Integer,
+                        db.ForeignKey('drugs.drug_id'),
+                        nullable=False)
+    dose_lower = db.Column(db.Float, nullable=True)
+
+
 # class TherapeuticGroup:
 #     """Stores the different possible therapeutic groups. eg anti-infective, anaesthetic, analgesic etc."""
 #
@@ -95,19 +107,19 @@ class Drug(db.Model):
     # .drugs - to access the drugs in each therapeutic group
 
 #
-# class SpeciesGroup(db.Model):
-#
-#     __tablename__ = "species_groups"
-#
-#     species_group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     species_group = db.Column(db.String(50), nullable=False)
-#
-#     # .species_individuals references the individual species objects of a group.
-#
-#     def __repr__(self):
-#         """Represents a Species_group object"""
-#
-#         return f"<Species_group species_group:{self.species_group}>"
+class SpeciesGroup(db.Model):
+
+    __tablename__ = "species_groups"
+
+    species_group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    species_group = db.Column(db.String(50), nullable=False)
+
+    # .species_individuals references the individual species objects of a group.
+
+    def __repr__(self):
+        """Represents a Species_group object"""
+
+        return f"<SpeciesGroup species_group:{self.species_group}>"
 #
 # class SpeciesIndividual(db.Model):
 #
@@ -121,11 +133,11 @@ class Drug(db.Model):
 #
 #     species_group = db.relationship("Species_group",
 #                            backref=db.backref("species_individuals"))
-#
-#     def __repr__(self):
-#         """Represent a species individual object"""
-#
-#         return f"<Species_individual Name: {self.species_name}, Group ID: {self.species_group_id}>"
+
+    def __repr__(self):
+        """Represent a species individual object"""
+
+        return f"<Species_individual Name: {self.species_name}, Group ID: {self.species_group_id}>"
 
 
 
