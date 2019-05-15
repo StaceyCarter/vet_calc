@@ -5,6 +5,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User
 
+from calculator import get_instructions
+
 # Creates an instance of a Flask object
 app = Flask(__name__)
 
@@ -68,9 +70,14 @@ def calculate_dose():
 
     weight = float(request.args.get("weight"))
     dose = float(request.args.get("dose"))
+    duration = float(request.args.get("duration"))
+    frequency = float(request.args.get("frequency"))
+    concentration = float(request.args.get("concentration"))
 
+    instruction_info = get_instructions(weight, dose, duration, frequency, concentration)
 
-    return f"amount in mg = {weight * dose}"
+    return render_template("label_instructions.html",
+                           instruction_info=instruction_info)
 
 if __name__ == "__main__":
     app.debug = True
