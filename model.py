@@ -131,8 +131,8 @@ class SpeciesIndividual(db.Model):
                        db.ForeignKey('species_groups.species_group_id'),
                        nullable=False)
 
-    # species_group = db.relationship("species_groups",
-    #                        backref=db.backref("species_individuals"))
+    species_group = db.relationship('SpeciesGroup',
+                           backref=db.backref('species_individuals'))
 
     def __repr__(self):
         """Represent a species individual object"""
