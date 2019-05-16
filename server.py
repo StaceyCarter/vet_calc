@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, session, flash, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User
+from model import connect_to_db, db, User, SpeciesIndividual
 
 from calculator import get_instructions
 
@@ -62,7 +62,10 @@ def register_user():
 def get_dose_info():
     """Returns a form for the user to input the doses they want"""
 
-    return render_template("input_calculate.html")
+    species_list = SpeciesIndividual.query.all()
+
+    return render_template("input_calculate.html",
+                           species_list=species_list)
 
 @app.route('/calculate-dose')
 def calculate_dose():
@@ -75,6 +78,8 @@ def calculate_dose():
     concentration = float(request.args.get("concentration"))
 
     instruction_info = get_instructions(weight, dose, duration, frequency, concentration)
+
+
 
     return render_template("label_instructions.html",
                            instruction_info=instruction_info)

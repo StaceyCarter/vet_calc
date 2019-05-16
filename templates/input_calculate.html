@@ -7,6 +7,14 @@
 <!-- email, age, zipcode, password -->
 <form action="/calculate-dose">
 
+    What species is the patient?
+
+    <select name="species">
+        {% for species in species_list%}
+        <option value="{{ species.species_name }}">{{ species.species_name }}</option>
+        {% endfor %}
+    </select>
+
     Patient's weight in kg? <input type="number" name="weight" step="0.01" required> <br>
 
     What dose do you want to use? (in mg/kg) <input type="number" name="dose" step="0.01" required> <br>
@@ -16,7 +24,9 @@
     <input type="radio" name="form" value="liq"> Liquid <br>
     <input type="radio" name="form" value="tab"> Tablet <br>
 
-    If you're using a liquid, what concentration is it? <input type="number" name="concentration" step="0.01" required> mg/ml <br>
+    If you're using a liquid, what concentration is it? <input type="number" name="concentration" step="0.01"> mg/ml <br>
+
+    If you're using tablets, what strength are they? <input type="number" name="concentration" step="0.01"> mg/ml <br>
 
     How often would you like to give it? q <input type="number" name="frequency" required>hrs <br>
 

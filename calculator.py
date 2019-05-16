@@ -61,7 +61,7 @@ def get_amount_in_ml(dose, concentration):
     return dose/concentration
 
 ### !!!! NEEDS COMPLETING
-# def calc_num_tablets_per_dose(dose, strength, divisions):
+# def calc_num_tablets_per_dose(dose, strength, divisions=1):
 #     """Calculates the number of tablets to give based on the dose given and the strength of the tablets.
 #
 #     Tablets can be divided in quarters.
@@ -151,9 +151,6 @@ def get_instructions(weight, dose, duration, frequency, concentration):
     }
 
     return instruction_info
-
-
-
 
 
 
