@@ -52,8 +52,6 @@ class Drug(db.Model):
 
     drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     generic_name = db.Column(db.String(100), nullable=False)
-    interactions = db.Column(db.String(), nullable=True)
-    contraindications = db.Column(db.String(), nullable=True)
 
     #!!!! For future linking to therapeutic groups
     # therapeutic_groups = db.relationship("TherapeuticGroup",
@@ -64,18 +62,6 @@ class Drug(db.Model):
         """Represents a drug object"""
 
         return f"<Drug Name: {self.generic_name}>"
-
-class PersonalDose(db.Model):
-    """Stores information about doses created by individuals - ie doses not sourced from textbooks"""
-
-    __tablename__ = "personal_doses"
-
-    dose_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    drug_id = db.Column(db.Integer,
-                        db.ForeignKey('drugs.drug_id'),
-                        nullable=False)
-    dose_lower = db.Column(db.Float, nullable=True)
-
 
 # class TherapeuticGroup:
 #     """Stores the different possible therapeutic groups. eg anti-infective, anaesthetic, analgesic etc."""
@@ -167,6 +153,40 @@ class Condition(db.Model):
         """Represents a disease object"""
 
         return f"<Disease: {self.condition}>"
+
+class PersonalDose(db.Model):
+    """Sets up table to store doses created by individuals - ie doses not sourced from textbooks"""
+
+    
+    __tablename__ = "personal_doses"
+
+    dose_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    drug_id = db.Column(db.Integer,
+                        db.ForeignKey("drugs.drug_id"),
+                        nullable=False)
+    dose_lower = db.Column(db.Float, nullable=True)
+    dose_upper = db.Column(db.Float, nullable=True)
+    recommended_dose = db.Column(db.Float, nullable=True)
+
+    species_group_id = db.Column(db.Integer,
+                                db.ForeignKey("species_groups.species_group_id"))
+    individual_species_id = db.Column(db.Integer,
+                                      db.ForeignKey("species_individuals.species_individual_id"))
+
+    condition_id = db.Column(db.Integer,
+                             db.ForeignKey("conditions.condition_id"))
+
+    creator_id = db.Column(db.Integer,
+                           db.ForeignKey("users.user_id"))
+
+    duration_days = db.Column(db.Integer, nullable=True)
+
+    frequency_hrs = db.Column(db.Integer, nullable=True)
+
+    def __repr__(self):
+        """Represents a personal dose object."""
+
+        return f"<PersonalDose drug_id: {self.drug_id}, creator: {self.user_id}, species: {self.species_group_id} >"
 
 
 #############################

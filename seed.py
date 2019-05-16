@@ -49,11 +49,9 @@ def load_drugs():
 
     with open("seed_data/drug_seed.psv") as drugs:
         for row in drugs:
-            name, interactions, contraindications = row.strip().split("|")
+            name = row.strip()
 
-            drug = Drug(generic_name=name,
-                        interactions=interactions,
-                        contraindications=contraindications)
+            drug = Drug(generic_name=name)
 
             db.session.add(drug)
 
