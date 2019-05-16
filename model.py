@@ -155,18 +155,18 @@ class Route(db.Model):
         return f"<Route route: {self.route}, route_acronym: {self.route_acronym}>"
 
 
-class Disease(db.Model):
+class Condition(db.Model):
     """Sets up the diseases table"""
 
-    __tablename__ = "diseases"
+    __tablename__ = "conditions"
 
-    disease_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    disease = db.Column(db.String(100), nullable=False)
+    condition_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    condition = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         """Represents a disease object"""
 
-        return f"<Disease: {self.disease}>"
+        return f"<Disease: {self.condition}>"
 
 
 #############################

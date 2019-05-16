@@ -2,7 +2,7 @@
 
 
 from sqlalchemy import func
-from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Disease, User
+from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User
 import datetime
 from model import connect_to_db, db
 from server import app
@@ -142,24 +142,24 @@ def load_routes():
 
         db.session.commit()
 
-def load_diseases():
+def load_conditions():
     """Seed data from routes_seed.psv into the seed table
 
     File format:
     disease
     """
 
-    print ("diseases")
+    print ("conditions")
 
-    Disease.query.delete()
+    Condition.query.delete()
 
     with open("seed_data/disease_seed.psv") as diseases:
         for row in diseases:
-            disease = row.strip()
+            condition = row.strip()
 
-            disease = Disease(disease=disease)
+            condition = Condition(condition=condition)
 
-            db.session.add(disease)
+            db.session.add(condition)
 
         db.session.commit()
 
@@ -191,6 +191,6 @@ if __name__ == "__main__":
 
     load_routes()
 
-    load_diseases()
+    load_conditions()
 
     set_val_species_group_id()
