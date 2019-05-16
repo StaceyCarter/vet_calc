@@ -24,6 +24,7 @@ class User(db.Model):
         return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}>"
 
     #.vet to access relationship to vet class
+    #.doses - to access the doses created by this user.
 
 class Vet(db.Model):
     """Stores information about each vet"""
@@ -52,6 +53,8 @@ class Drug(db.Model):
 
     drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     generic_name = db.Column(db.String(100), nullable=False)
+
+    # .doses - to see the list of dose objects for this drug.
 
     #!!!! For future linking to therapeutic groups
     # therapeutic_groups = db.relationship("TherapeuticGroup",
@@ -100,7 +103,8 @@ class SpeciesGroup(db.Model):
     species_group_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     species_group = db.Column(db.String(50), nullable=False)
 
-    # .species_individuals references the individual species objects of a group.
+    # .species_individuals - references the individual species objects of a group.
+    # .doses - to see the doses associated with this species group
 
     def __repr__(self):
         """Represents a Species_group object"""
@@ -182,6 +186,23 @@ class PersonalDose(db.Model):
     duration_days = db.Column(db.Integer, nullable=True)
 
     frequency_hrs = db.Column(db.String(10), nullable=True)
+
+    #Relationships:
+
+    drug = db.relationship('Drug',
+                           backref=db.backref('doses'))
+
+    species_group = db.relationship('SpeciesGroup',
+                                    backref=db.backref('doses'))
+
+    individal_species = db.relationship('SpeciesIndividual',
+                                        backref=db.backref('doses'))
+
+    condition = db.relationship('Condition',
+                                    backref=db.backref('doses'))
+
+    creator = db.relationship('User',
+                                    backref=db.backref('doses'))
 
     def __repr__(self):
         """Represents a personal dose object."""
