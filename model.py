@@ -66,6 +66,38 @@ class Drug(db.Model):
 
         return f"<Drug Name: {self.generic_name}>"
 
+class Form(db.Model):
+    """Stores information about the possible drug forms"""
+
+    __tablename__ = "forms"
+
+    form_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    form_name = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        """Represents a form object"""
+
+        return f"<Form form_name: {self.form_name}>"
+
+class Formulation(db.Model):
+    """Stores information about drug strengths & their form"""
+
+    __tablename__ = "formulations"
+
+    strength_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    drug_id = db.Column(db.Integer,
+                        db.ForeignKey('drugs.drug_id'))
+    drug_form_id = db.Column(db.Integer,
+                             db.ForeignKey('forms.form_id'))
+
+    strength = db.Column(db.Float)
+    units = db.Column(db.String(5))
+
+    def __repr__(self):
+        """Represents a drug strength object"""
+
+        return f"<Strength drug: {self.drug_id}, form: {self.form_id} strength: {self.strength}{self.units} >"
+
 # class TherapeuticGroup:
 #     """Stores the different possible therapeutic groups. eg anti-infective, anaesthetic, analgesic etc."""
 #
