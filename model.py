@@ -157,7 +157,7 @@ class Condition(db.Model):
 class PersonalDose(db.Model):
     """Sets up table to store doses created by individuals - ie doses not sourced from textbooks"""
 
-    
+
     __tablename__ = "personal_doses"
 
     dose_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -181,12 +181,12 @@ class PersonalDose(db.Model):
 
     duration_days = db.Column(db.Integer, nullable=True)
 
-    frequency_hrs = db.Column(db.Integer, nullable=True)
+    frequency_hrs = db.Column(db.String(10), nullable=True)
 
     def __repr__(self):
         """Represents a personal dose object."""
 
-        return f"<PersonalDose drug_id: {self.drug_id}, creator: {self.user_id}, species: {self.species_group_id} >"
+        return f"<PersonalDose drug_id: {self.drug_id}, creator: {self.creator_id}, species: {self.species_group_id} >"
 
 
 #############################

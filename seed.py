@@ -2,7 +2,7 @@
 
 
 from sqlalchemy import func
-from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User
+from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User, PersonalDose
 import datetime
 from model import connect_to_db, db
 from server import app
@@ -104,16 +104,7 @@ def load_individual_species():
 
         db.session.commit()
 
-# def load_personal_doses():
-#     """Seed database with personal dose values
-#
-#     File format:
-#     drug name | drug_id | dose_lower(mg/kg) | dose_upper(mg/kg) | recommended_dose (mg/kg) | toxic_dose |
-#      (cont): species_group_id | individual_species_id | disease_id | creator_id | duration_days | frequency(q hrs) | route
-#
-#
-#     """
-#
+
 def load_routes():
     """Seed data from routes_seed.psv into the seed table
 
@@ -161,6 +152,50 @@ def load_conditions():
 
         db.session.commit()
 
+def load_personal_doses():
+    """Seed data from routes_seed.psv into the seed table
+
+    File format:
+
+    drugname | drug_id | dose_lower | dose_upper | recommended_dose | species_group_id | species_individual_id|
+    .... condition_id | creator_id | duration_days | frequency_hrs
+    """
+
+    print ("Personal doses")
+
+    PersonalDose.query.delete()
+
+    with open("seed_data/personal_doses_seed.csv") as doses:
+        for row in doses:
+
+            dirty_info = row.strip().split(',')
+
+            info = []
+
+            for val in dirty_info:
+                if val == 'None' or val == 'none':
+                    info.append(None)
+                else:
+                    info.append(val)
+
+
+            dose = PersonalDose(
+                drug_id = info[1],
+                dose_lower = info[2],
+                dose_upper = info[3],
+                recommended_dose = info[4],
+                species_group_id = info[5],
+                individual_species_id = info[6],
+                condition_id = info[7],
+                creator_id = info[8],
+                duration_days = info[9],
+                frequency_hrs = info[10]
+            )
+
+            db.session.add(dose)
+
+        db.session.commit()
+
 
 def set_val_species_group_id():
     """Set value for the next species_group_id after seeding database"""
@@ -186,9 +221,8 @@ if __name__ == "__main__":
     load_species_groups()
     load_individual_species()
     load_users()
-
     load_routes()
-
     load_conditions()
+    load_personal_doses()
 
     set_val_species_group_id()
