@@ -60,35 +60,42 @@ def get_amount_in_ml(dose, concentration):
 
     return dose/concentration
 
-### !!!! NEEDS COMPLETING
-# def calc_num_tablets_per_dose(dose, strength, divisions=1):
-#     """Calculates the number of tablets to give based on the dose given and the strength of the tablets.
-#
-#     Tablets can be divided in quarters.
-#
-#     :params:
-#     dose (Float) - The dose in mg of what the patient should be receiving
-#     strength (Float) - The strength in mg of the chosen tablets.
-#     divisions (Int) - the number of sections you can divide your tablet into
-#
-#     :returns:
-#     Number of tablets per dose (Float) - fixed to one of the points of the divisions
-#
-#     >>> calc_num_tablets_per_dose(120, 100, 2)
-#     1
-#
-#
 
-    # """
+def get_num_tablets_per_dose(dose, strength, divisions=1):
+    """Calculates the number of tablets to give based on the dose given and the strength of the tablets.
 
-    #
+    Tablets can be divided in quarters.
+
+    :params:
+    dose (Float) - The dose in mg of what the patient should be receiving
+    strength (Float) - The strength in mg of the chosen tablets.
+    divisions (Int) - the number of sections you can divide your tablet into
+
+    :returns:
+    Number of tablets per dose (Float) - fixed to one of the points of the divisions
+
+    >>> get_num_tablets_per_dose(120, 100, 2)
+    1.0
+
+    >>> get_num_tablets_per_dose(240, 100, 2)
+    2.5
+
+    #Divide into quarters
+    >>> get_num_tablets_per_dose(120, 100, 4)
+    1.25
+
+    """
+
+    num_tabs = dose/strength
+
+    return round(num_tabs * divisions)/divisions
 
 
 def total_amount_needed(amount, duration, frequency):
     """Calculates the total amount of the drug that is needed to send home with the client.
 
-    :params:
-    amount(Float) - The amount of drug to be given each dose in mls
+    Params:
+    amount(Float) - Could be in mls or the number of tablets per dose.
     duration(Integer) - The number of days to give the medication for
     frequency(Integer) - The interval between each dosing in hrs.
 
@@ -105,9 +112,10 @@ def total_amount_needed(amount, duration, frequency):
     60.0
     """
 
+    # Number of times per day * days of treatment * amount per each dose
     return 24 / frequency * duration * amount
 
-def get_instructions(weight, dose, duration, frequency, concentration):
+def get_instructions(weight, dose, concentration, duration, frequency, form, divide=1):
     """Take in arguments obtained from the input form and output a dictionary with points of interest.
 
     :params:
@@ -123,13 +131,22 @@ def get_instructions(weight, dose, duration, frequency, concentration):
     between each dose and the frequency of the dose per day.
 
     Examples:
-    >>> get_instructions(10, 2, 7, 12, 0.5)
-    {'amount_per_dose': 40.0, 'total_amount': 560.0, 'frequency_hrs': 12, 'frequency_day': '2 times daily', 'duration': 7}
+    >>> get_instructions(10, 2, 0.5, 7, 12, 'liq')
+    {'amount_per_dose': 40.0, 'total_amount': 560.0, 'frequency_hrs': 12, 'frequency_day': '2 times daily', 'duration': 7, 'form': 'liq'}
 
+    >>> get_instructions(50, 2.5, 100, 14, 8, 'tab', 4)
+    {'amount_per_dose': 1.25, 'total_amount': 52.5, 'frequency_hrs': 8, 'frequency_day': '3 times daily', 'duration': 14, 'form': 'tab'}
     """
 
     amount_in_mg = get_amount_in_mg(weight, dose)
-    amount_per_dose = get_amount_in_ml(amount_in_mg, concentration)
+
+    amount_per_dose = 0
+
+    if form == 'liq':
+        amount_per_dose = get_amount_in_ml(amount_in_mg, concentration)
+    elif form == 'tab':
+        amount_per_dose = get_num_tablets_per_dose(amount_in_mg, concentration, divide)
+
     total_amount = total_amount_needed(amount_per_dose, duration, frequency)
 
     frequency_per_day = 24/frequency
@@ -147,7 +164,8 @@ def get_instructions(weight, dose, duration, frequency, concentration):
         'total_amount' : round(total_amount,2),
         'frequency_hrs' : int(frequency),
         'frequency_day' : frequency_day,
-        'duration' : int(duration)
+        'duration' : int(duration),
+        'form' : form
     }
 
     return instruction_info

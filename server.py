@@ -75,14 +75,19 @@ def calculate_dose():
     dose = float(request.args.get("dose"))
     duration = float(request.args.get("duration"))
     frequency = float(request.args.get("frequency"))
+    #Concentration refers to concentration of a liquid formula or the strength of a tablet
     concentration = float(request.args.get("concentration"))
+    form = request.args.get("form")
+    divide = int(request.args.get("divide"))
 
-    instruction_info = get_instructions(weight, dose, duration, frequency, concentration)
-
-
+    instruction_info = get_instructions(weight, dose, concentration, duration, frequency, form, divide)
 
     return render_template("label_instructions.html",
                            instruction_info=instruction_info)
+
+@app.route('/save-dose')
+def save_dose():
+    return redirect('/')
 
 if __name__ == "__main__":
     app.debug = True
