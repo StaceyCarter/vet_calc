@@ -2,7 +2,7 @@
 
 
 from sqlalchemy import func
-from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User, PersonalDose, Form
+from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User, PersonalDose, Form, Formulation
 import datetime
 from model import connect_to_db, db
 from server import app
@@ -78,8 +78,31 @@ def load_drug_forms():
 
         db.session.commit()
 
-def load_drug_strengths():
-    """Seed data from strengths_seed.psv"""
+def load_drug_formulations():
+    """Seed data from strengths_seed.psv
+
+    File format:
+    drug_id | form_id | strength | units
+    """
+
+    print("Formulations")
+
+    Formulation.query.delete()
+
+    with open("seed_data/formulations_seed.psv") as formulations:
+        for row in formulations:
+            drug_id, form_id, strength, units = row.strip().split("|")
+
+            formulation = Formulation(
+                drug_id=drug_id,
+                drug_form_id=form_id,
+                strength=strength,
+                units=units
+            )
+
+            db.session.add(formulation)
+
+        db.session.commit()
 
 def load_species_groups():
     """Seed data from species_group_seed, each species group has an id associated with it.
@@ -243,6 +266,7 @@ if __name__ == "__main__":
     # Run functions in the file to seed all the different databases.
     load_drugs()
     load_drug_forms()
+    load_drug_formulations()
     load_species_groups()
     load_individual_species()
     load_users()

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} VetCalc {% endblock %}
+{% block content %}
+
+<h1>pick your dosage preferences</h1>
+
+What drug?
+<select name="drug">
+    {% for drug in info['drugs'] %}
+        <option value="{{ drug.generic_name }}">{{ drug.generic_name }}</option>
+    {%  endfor %}
+</select>
+
+<br>
+
+What species are you treating?
+<select name="species">
+    {% for species in info['species_groups'] %}
+        <option value="{{ species.species_name }}">{{ species.species_name }}</option>
+    {%  endfor %}
+</select>
+
+<br>
+
+Is there a specific condition you're treating?
+<select name="condition">
+    {% for condition in info['conditions'] %}
+        <option value="{{ condition.condition }}">{{ condition.condition }}</option>
+    {%  endfor %}
+</select>
+
+<br>
+
+<a href="/dosing-info">go to calculator</a>
+
+{% endblock %}

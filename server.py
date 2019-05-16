@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, session, flash, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, SpeciesIndividual
+from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition
 
 from calculator import get_instructions
 
@@ -57,6 +57,19 @@ def register_user():
     """Returns register form to become a user"""
 
     return render_template("add_user.html")
+
+@app.route('/pick-dose')
+def pick_dose():
+    """Displays info from data base to help user decide on a dose"""
+
+    info = {
+        'drugs' : Drug.query.all(),
+        'species_groups' : SpeciesIndividual.query.all(),
+        'conditions' : Condition.query.all(),
+    }
+
+    return render_template("pick_dose.html",
+                           info=info)
 
 @app.route('/dosing-info')
 def get_dose_info():
