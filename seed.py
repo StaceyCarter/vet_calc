@@ -2,10 +2,37 @@
 
 
 from sqlalchemy import func
-from model import Drug, SpeciesGroup, SpeciesIndividual
+from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Disease, User
 import datetime
 from model import connect_to_db, db
 from server import app
+
+def load_users():
+    """Seed user data from seed_users.psv
+
+    File format:
+    username|fname|lname|email|password|user_type
+    """
+
+    print("users")
+
+    User.query.delete()
+
+    with open("seed_data/seed_users.psv") as users:
+        for row in users:
+            username, fname, lname, email, password, user_type = row.strip().split("|")
+
+            user = User(username=username,
+                        fname=fname,
+                        lname=lname,
+                        email=email,
+                        password=password,
+                        user_type=user_type)
+
+            db.session.add(user)
+
+        db.session.commit()
+
 
 
 def load_drugs():
@@ -88,7 +115,53 @@ def load_individual_species():
 #
 #
 #     """
+#
+def load_routes():
+    """Seed data from routes_seed.psv into the seed table
 
+    File format:
+    route|route_acronym
+    """
+
+    print ("routes")
+
+    Route.query.delete()
+
+    with open("seed_data/routes_seed.psv") as routes:
+        for row in routes:
+            route, route_acronym = row.strip().split("|")
+
+            # Checks if seed is empty, if so, inserts a Null cell into the db
+            acronym = None if route_acronym == 'None' else route_acronym
+
+            route = Route(route=route,
+                          route_acronym=acronym)
+
+
+            db.session.add(route)
+
+        db.session.commit()
+
+def load_diseases():
+    """Seed data from routes_seed.psv into the seed table
+
+    File format:
+    disease
+    """
+
+    print ("diseases")
+
+    Disease.query.delete()
+
+    with open("seed_data/disease_seed.psv") as diseases:
+        for row in diseases:
+            disease = row.strip()
+
+            disease = Disease(disease=disease)
+
+            db.session.add(disease)
+
+        db.session.commit()
 
 
 def set_val_species_group_id():
@@ -114,4 +187,10 @@ if __name__ == "__main__":
     load_drugs()
     load_species_groups()
     load_individual_species()
+    load_users()
+
+    load_routes()
+
+    load_diseases()
+
     set_val_species_group_id()

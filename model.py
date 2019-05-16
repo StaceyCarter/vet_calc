@@ -106,8 +106,8 @@ class PersonalDose(db.Model):
 
     # .drugs - to access the drugs in each therapeutic group
 
-#
 class SpeciesGroup(db.Model):
+    """Sets up the table for the species groups"""
 
     __tablename__ = "species_groups"
 
@@ -122,6 +122,7 @@ class SpeciesGroup(db.Model):
         return f"<SpeciesGroup species_group:{self.species_group}>"
 
 class SpeciesIndividual(db.Model):
+    """Sets up the class for the individual species"""
 
     __tablename__ = "species_individuals"
 
@@ -139,9 +140,33 @@ class SpeciesIndividual(db.Model):
 
         return f"<Species_individual Name: {self.species_name}, Group ID: {self.species_group_id}>"
 
+class Route(db.Model):
+    """Sets up the table for the routes"""
+
+    __tablename__ = "routes"
+
+    route_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    route = db.Column(db.String(30), nullable=False)
+    route_acronym = db.Column(db.String(30), nullable=True)
+
+    def __repr__(self):
+        """Represents a route object"""
+
+        return f"<Route route: {self.route}, route_acronym: {self.route_acronym}>"
 
 
+class Disease(db.Model):
+    """Sets up the diseases table"""
 
+    __tablename__ = "diseases"
+
+    disease_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    disease = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        """Represents a disease object"""
+
+        return f"<Disease: {self.disease}>"
 
 
 #############################
