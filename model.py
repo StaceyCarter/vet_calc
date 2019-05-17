@@ -239,7 +239,7 @@ class PersonalDose(db.Model):
     def __repr__(self):
         """Represents a personal dose object."""
 
-        return f"<PersonalDose drug_id: {self.drug_id}, creator: {self.creator_id}, species: {self.species_group_id} >"
+        return f"<PersonalDose drug_id: {self.drug.generic_name}, creator: {self.creator.fname}, species: {self.individual_species.species_name}, group: {self.species_group.species_group} >"
 
 
 #############################

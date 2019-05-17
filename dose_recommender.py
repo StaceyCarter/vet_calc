@@ -1,4 +1,4 @@
-from model import connect_to_db, db, Drug, SpeciesIndividual, Condition
+from model import connect_to_db, db, Drug, SpeciesIndividual, Condition, PersonalDose
 from server import app
 
 
@@ -18,12 +18,12 @@ def get_species_from_dose(dose):
     group = dose.species_group
 
     if indiv.species_individual_id == 1:
-        return (1, group.species_group)
+        return (indiv.species_name, group.species_group)
     else:
         return (indiv.species_name, group.species_group)
 
 
-def filter_dose_by_species(drug, species):
+def filter_dose_using_species(drug, species):
     """Find all the doses that relate to a given species.
 
     Filters out any doses that don't relate to the species of interest. Doses may relate to the individual species
@@ -38,38 +38,71 @@ def filter_dose_by_species(drug, species):
     :param species: The species object of interest
     :type object:
 
-    :returns: A list of doses objects.
+    :returns: A list of doses objects or an error message as a string.
 
 
     """
-
     doses = drug.doses
 
-    print(doses)
+    species_filter = filter_dose_by_individual_species(doses, species)
+    group_filter = filter_dose_by_species_group(doses, species)
 
-    dose_correct_species = []
+    if species_filter:
+        return species_filter
+    elif group_filter:
+        return group_filter
+    else:
+        return "Sorry, we can't find any doses in the database for that species."
+
+
+def filter_dose_by_individual_species(doses, species):
+    """Filter out relevent doses by the species name
+
+    If it does find doses with the specific species name, it returns a list of these.
+    If it doesn't find any doses with the specific species name, it returns None.
+
+    :param doses: A list of dose objects
+    :type list:
+
+    :param species:
+    :type string:
+
+    :returns: either None or a list of dose objects
+    """
+
+    relevant_doses = []
 
     for dose in doses:
-        species_indiv, group = get_species_from_dose(dose)
+        # indiv, group = get_species_from_dose(doses)
+        if dose.individual_species.species_name == species.species_name:
+            relevant_doses.append(dose)
 
-        #Checks if there was no specific species associated with the dose and looks for equivalence at the group level.
-        if species_indiv == 1:
-            if group == species.species_group.species_group:
-                dose_correct_species.append(dose)
-        elif group == species.species_group.species_group:
-            dose_correct_species.append(dose)
+    return relevant_doses
 
 
 
+def filter_dose_by_species_group(doses, species):
+    """Filter out doses by the species group name
 
+    If it does find doses with the group name, it returns a list of these.
+    If it doesn't find any doses with the specific species name, it returns an error message for the user.
 
+    :param doses: A list of dose objects
+    :type list:
 
+    :param species:
+    :type string:
 
+    :returns: either None or a list of dose objects
+    """
+    relevant_doses = []
 
+    for dose in doses:
+        # indiv, group = get_species_from_dose(doses)
+        if dose.species_group.species_group == species.species_group.species_group:
+            relevant_doses.append(dose)
 
-    return dose_correct_species
-
-
+    return relevant_doses
 
 #
 # doses = drug_obj.doses

@@ -1,10 +1,10 @@
-no individual species|1
-dogs|2
-cats|2
-rats|3
-ferrets|3
-rabbits|3
-hamsters|3
-mice|3
-lizards|4
-snakes|4
+no_species|1
+dog|2
+cat|2
+rat|3
+ferret|3
+rabbit|3
+hamster|3
+mouse|3
+lizard|4
+snake|4
