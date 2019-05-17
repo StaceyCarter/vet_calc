@@ -7,6 +7,8 @@ from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition
 
 from calculator import get_instructions
 
+from dose_recommender import filter_dose_using_species
+
 # Creates an instance of a Flask object
 app = Flask(__name__)
 
@@ -77,16 +79,20 @@ def get_dose_info():
 
     species_list = SpeciesIndividual.query.all()
 
+
+    ##### request.args gets a string, not the actual object. Need to fix this bug.
+
     drug = request.args.get("drug")
     species = request.args.get("species")
     condition = request.args.get("condition")
 
     print(drug)
     print(species)
-    print(condition)
+
+    doses = filter_dose_using_species(drug, species)
 
     return render_template("input_calculate.html",
-                           species_list=species_list)
+                           doses=doses)
 
 @app.route('/calculate-dose')
 def calculate_dose():

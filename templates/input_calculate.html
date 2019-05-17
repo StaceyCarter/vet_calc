@@ -7,13 +7,14 @@
 <!-- email, age, zipcode, password -->
 <form action="/calculate-dose">
 
-    What species is the patient?
+    From the info you gave, any of these would be good doses:
+    {{ doses }}
 
-    <select name="species">
-        {% for species in species_list%}
-        <option value="{{ species.species_name }}">{{ species.species_name }}</option>
-        {% endfor %}
-    </select>
+<!--    <select name="dose">-->
+<!--        {% for dose in doses %}-->
+<!--        <option value="{{ dose.lower }}">{{ dose.recommended_dose }}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
 
     Patient's weight in kg? <input type="number" name="weight" step="0.01" required> <br>
 
