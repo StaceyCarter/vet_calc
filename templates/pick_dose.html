@@ -4,10 +4,12 @@
 
 <h1>pick your dosage preferences</h1>
 
+
+<form action="/dosing-info">
 What drug?
 <select name="drug">
     {% for drug in info['drugs'] %}
-        <option value="{{ drug.generic_name }}">{{ drug.generic_name }}</option>
+        <option value="{{ drug }}">{{ drug.generic_name }}</option>
     {%  endfor %}
 </select>
 
@@ -16,7 +18,7 @@ What drug?
 What species are you treating?
 <select name="species">
     {% for species in info['species_groups'] %}
-        <option value="{{ species.species_name }}">{{ species.species_name }}</option>
+        <option value="{{ species }}">{{ species.species_name }}</option>
     {%  endfor %}
 </select>
 
@@ -25,12 +27,16 @@ What species are you treating?
 Is there a specific condition you're treating?
 <select name="condition">
     {% for condition in info['conditions'] %}
-        <option value="{{ condition.condition }}">{{ condition.condition }}</option>
+        <option value="{{ condition }}">{{ condition.condition }}</option>
     {%  endfor %}
 </select>
 
 <br>
 
-<a href="/dosing-info">go to calculator</a>
+    <input type="submit">
+
+    </form>
+
+
 
 {% endblock %}

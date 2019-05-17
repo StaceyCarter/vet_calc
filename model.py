@@ -227,7 +227,7 @@ class PersonalDose(db.Model):
     species_group = db.relationship('SpeciesGroup',
                                     backref=db.backref('doses'))
 
-    individal_species = db.relationship('SpeciesIndividual',
+    individual_species = db.relationship('SpeciesIndividual',
                                         backref=db.backref('doses'))
 
     condition = db.relationship('Condition',

@@ -77,6 +77,14 @@ def get_dose_info():
 
     species_list = SpeciesIndividual.query.all()
 
+    drug = request.args.get("drug")
+    species = request.args.get("species")
+    condition = request.args.get("condition")
+
+    print(drug)
+    print(species)
+    print(condition)
+
     return render_template("input_calculate.html",
                            species_list=species_list)
 
