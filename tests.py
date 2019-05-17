@@ -88,25 +88,33 @@ class FunctionTests(TestCase):
 
     def test_filter_dose_using_species(self):
 
-        connect_to_db()
+        connect_to_db(app)
 
-        # amox_dog = PersonalDose.query.get(1)
-        # amox_ferret = PersonalDose.query.get(4)
-        # amox_mouse = PersonalDose.query.get(5)
-        #
-        # dog = SpeciesIndividual.query.get(2)
-        # ferret = SpeciesIndividual.query.get(5)
-        # mouse = SpeciesIndividual.query.get(8)
-        #
-        # dog_amox_doses =
-        # ferret_amox_doses =
-        # mouse_amox_doses =
+        amox_dog = PersonalDose.query.get(1)
+        amox_ferret = PersonalDose.query.get(4)
+        amox_mouse = PersonalDose.query.get(5)
 
+        dog = SpeciesIndividual.query.get(2)
+        ferret = SpeciesIndividual.query.get(5)
+        mouse = SpeciesIndividual.query.get(8)
+
+        amox = Drug.query.get(5)
+        enro = Drug.query.get(1)
+
+        self.assertIn(' no_species, group: dogs/cats ', str(filter_dose_using_species(amox, dog)))
+        self.assertIn('species: ferret, group: small mammals', str(filter_dose_using_species(amox, ferret)))
+        self.assertIn("Sorry, we can't find any doses", str(filter_dose_using_species(enro, ferret)))
+
+#### NEEDS WRITING
     def test_filter_dose_by_individual_species(self):
 
         connect_to_db()
 
         drug = Drug.query.get(5)
+
+    #### NEEDS WRITING
+    def test_filter_dose_by_species_group(self):
+        pass
 
 
 
