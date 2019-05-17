@@ -8,13 +8,15 @@
 <form action="/calculate-dose">
 
     From the info you gave, any of these would be good doses:
+
     {{ doses }}
 
-<!--    <select name="dose">-->
-<!--        {% for dose in doses %}-->
-<!--        <option value="{{ dose.lower }}">{{ dose.recommended_dose }}</option>-->
-<!--        {% endfor %}-->
-<!--    </select>-->
+    <select name="dose">
+        {% for dose in doses %}
+
+        <option value="{{ dose.recommended_dose }}">{{ dose.recommended_dose }}</option>
+        {% endfor %}
+    </select> <br>
 
     Patient's weight in kg? <input type="number" name="weight" step="0.01" required> <br>
 

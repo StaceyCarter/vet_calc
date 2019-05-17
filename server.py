@@ -82,12 +82,13 @@ def get_dose_info():
 
     ##### request.args gets a string, not the actual object. Need to fix this bug.
 
-    drug = request.args.get("drug")
-    species = request.args.get("species")
-    condition = request.args.get("condition")
+    drug_id = request.args.get("drug")
+    species_id = request.args.get("species")
+    condition_id = request.args.get("condition")
 
-    print(drug)
-    print(species)
+    drug = Drug.query.get(drug_id)
+    species = SpeciesIndividual.query.get(species_id)
+    condition = Condition.query.get(condition_id)
 
     doses = filter_dose_using_species(drug, species)
 
