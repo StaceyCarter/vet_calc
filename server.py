@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, redirect, session, flash, request
+from flask import Flask, render_template, redirect, session, flash, request, send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition

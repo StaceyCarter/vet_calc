@@ -2,10 +2,28 @@
 {% block title %} VetCalc {% endblock %}
 {% block content %}
 
+
+
 <h1>Hello there</h1>
 
 <a href="/register">Add a user</a>
 
+<br>
+
 <a href="/pick-dose">Calculate a dose</a>
+
+<br>
+<br>
+
+Search drugs:
+<input type="text" placeholder="search..." id="search">
+<div id="results"></div>
+
+
+{% endblock %}
+
+{% block javascript %}
+
+<script src={{ url_for('static', filename='js/trie_search.js') }}></script>
 
 {% endblock %}

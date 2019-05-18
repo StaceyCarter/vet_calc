@@ -1,6 +1,10 @@
 const search = document.querySelector('#search')
 const results = document.querySelector('#results')
 
+console.log("JS WORKING")
+console.log(search)
+console.log(results)
+
 class Node {
   constructor(value = ''){
     this.value = value;
@@ -69,7 +73,7 @@ class Trie {
   }
 }
 
-}
+
 
 const trie = new Trie();
 
@@ -85,3 +89,31 @@ search.addEventListener('keyup', () => {
         results.innerHTML += `<li>${node.value}</li>`
     }
 })
+
+
+words = ["ball", "bat", "doll", "dork", "dorm", "do", "send", "sense", 'polish',
+  'smoke',
+  'number',
+  'quack',
+  'parcel',
+  'ahead',
+  'government',
+  'upbeat',
+  'stage',
+  'answer',
+  'enormous',
+  'strap', 'sausage', 'enrofloxacin',
+'meloxicam',
+'prednisolone',
+'doxycycline',
+'amoxicillin/clavulanate (amoxycillin/clavulanic acid)',
+'carprofen',
+'tramadol',
+'omeprazole',
+'furosemide (frusemide)' ]
+
+
+
+for (let word of words){
+    trie.add(word)
+}
