@@ -105,7 +105,7 @@ fetch('/get-drug-names')
         }
         for (let drug of Object.keys(data)){
             l = document.createElement('li')
-            l.innerHTML = `${drug}`;
+            l.innerHTML = `<a href="drug/${data[drug]}"> ${drug} </a>`;
             l.classList.add('hide', 'show', 'drug-name');
             l.setAttribute('id', drug.toLowerCase())
             results.appendChild(l)
