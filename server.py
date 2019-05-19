@@ -13,6 +13,10 @@ from queries import get_list_of_drugs
 
 import json
 
+from flask_login import LoginManager
+
+from werkzeug.security import generate_password_hash
+
 # Creates an instance of a Flask object
 app = Flask(__name__)
 
@@ -21,6 +25,15 @@ app.config['SECRET_KEY'] = 'key'
 
 # Throws an error if an undefined variable is used in Jinja
 app.jinja_env.undefined = StrictUndefined
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    # Associates the user id stored in the cookie with the right user object.
+    return User.query.get(int(user_id))
+
 
 @app.route('/')
 def index():
@@ -135,6 +148,53 @@ def calculate_dose():
 
     return render_template("label_instructions.html",
                            instruction_info=instruction_info)
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+# @app.route('/login', methods=['POST'])
+# def login_post():
+#
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['POST'])
+def signup_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    fname = request.form.get('fname')
+    lname = request.form.get('lname')
+    username = request.form.get('username')
+
+    user = User.query.filter_by(email=email).first()
+
+    if user:
+        flash('You already have an account')
+        return redirect('/login')
+
+    new_user = User(email=email,
+                    fname=fname,
+                    lname=lname,
+                    username=username,
+                    password=generate_password_hash(password, method="pbkdf2:sha256", salt_length=8),
+                    user_type='vet')
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    flash("Welcome! Thanks for signing up!")
+
+    return redirect('/login')
+
+
+
+@app.route('/logout')
+def logout():
+    return redirect('/')
 
 @app.route('/save-dose')
 def save_dose():
