@@ -38,7 +38,13 @@ def get_drug_names():
     return drugs
 
 ###!!!! Route for viewing individual drug pages
-# @app.route('/<drugname>')
+@app.route('/drug/<drug_id>')
+def get_drug_page(drug_id):
+
+    drug = Drug.query.get(drug_id)
+
+    return render_template("drug_page.html",
+                           drug=drug)
 
 @app.route('/adduser', methods=["POST"])
 def add_user():
