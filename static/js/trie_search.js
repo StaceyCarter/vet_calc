@@ -68,8 +68,6 @@ class Trie {
   }
 }
 
-
-
 const trie = new Trie();
 
 search.addEventListener('keyup', () => {
@@ -96,19 +94,18 @@ search.addEventListener('keyup', () => {
 fetch('/get-drug-names')
     .then((res) => {
         return res.json();
+        console.log(typeof res)
     })
-    .then((str) => {
-        return JSON.parse(str)
-    })
-    .then((data) => {    
-        for(let drug of data){
+    .then((data) => {
+        // adds all the drug names to the trie
+        for(let drug of Object.keys(data)){
             drug = drug.toLowerCase()
             trie.add(drug)
             console.log("ADDED THIS DRUG: ", drug)
         }
-        for (let drug of data){
+        for (let drug of Object.keys(data)){
             l = document.createElement('li')
-            l.innerHTML = drug;
+            l.innerHTML = `${drug}`;
             l.classList.add('hide', 'show', 'drug-name');
             l.setAttribute('id', drug.toLowerCase())
             results.appendChild(l)

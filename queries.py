@@ -6,9 +6,14 @@ def get_list_of_drugs():
 
     drugs = Drug.query.order_by('generic_name').all()
 
-    list_drugs = [drug.generic_name for drug in drugs]
+    drug_dict = {}
 
-    return list_drugs
+    for drug in drugs:
+        drug_dict[drug.generic_name] = drug.drug_id
+
+    # list_drugs = [drug.generic_name for drug in drugs]
+
+    return drug_dict
 
 
 if __name__ == "__main__" :

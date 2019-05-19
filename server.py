@@ -31,11 +31,11 @@ def index():
 def get_drug_names():
     """Returns all the current drugs"""
 
-    drug_list = get_list_of_drugs()
+    drug_dict = get_list_of_drugs()
 
-    drugs = json.dumps(drug_list)
+    drugs = json.dumps(drug_dict)
 
-    return json.dumps(drugs)
+    return drugs
 
 ###!!!! Route for viewing individual drug pages
 # @app.route('/<drugname>')
