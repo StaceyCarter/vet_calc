@@ -73,16 +73,22 @@ class Trie {
 const trie = new Trie();
 
 search.addEventListener('keyup', () => {
-    results.innerHTML = '';
 
     // Returns an array of words.
     const nodes = trie.findWords(search.value);
 
     if (!nodes.length) return;
 
+    all = document.querySelectorAll('.drug-name')
+
+    for (let elem of all){
+        elem.classList.remove('show')
+    }
+
     for (let node of nodes) {
         // results.innerHTML += `<li>${node.value}</li>`
-        console.log(node.value)
+        let e = document.getElementById(`${node.value}`)
+        e.classList.add('show')
     }
 })
 
@@ -94,10 +100,18 @@ fetch('/get-drug-names')
     .then((str) => {
         return JSON.parse(str)
     })
-    .then((data) => { 
-        console.log(data) 
-        console.log(typeof data)    
+    .then((data) => {    
         for(let drug of data){
+            drug = drug.toLowerCase()
             trie.add(drug)
+            console.log("ADDED THIS DRUG: ", drug)
+        }
+        for (let drug of data){
+            l = document.createElement('li')
+            l.innerHTML = drug;
+            l.classList.add('hide', 'show', 'drug-name');
+            l.setAttribute('id', drug.toLowerCase())
+            results.appendChild(l)
         }
     })
+    
