@@ -1,10 +1,6 @@
 const search = document.querySelector('#search')
 const results = document.querySelector('#results')
 
-console.log("JS WORKING")
-console.log(search)
-console.log(results)
-
 class Node {
   constructor(value = ''){
     this.value = value;
@@ -60,7 +56,6 @@ class Trie {
 
     function getWords(node) {
         let words = [];
-        console.log("NODE: ",node)
         if (node.isEnd()){
             words.push(node);
         }
@@ -86,34 +81,23 @@ search.addEventListener('keyup', () => {
     if (!nodes.length) return;
 
     for (let node of nodes) {
-        results.innerHTML += `<li>${node.value}</li>`
+        // results.innerHTML += `<li>${node.value}</li>`
+        console.log(node.value)
     }
 })
 
 
-words = ["ball", "bat", "doll", "dork", "dorm", "do", "send", "sense", 'polish',
-  'smoke',
-  'number',
-  'quack',
-  'parcel',
-  'ahead',
-  'government',
-  'upbeat',
-  'stage',
-  'answer',
-  'enormous',
-  'strap', 'sausage', 'enrofloxacin',
-'meloxicam',
-'prednisolone',
-'doxycycline',
-'amoxicillin/clavulanate (amoxycillin/clavulanic acid)',
-'carprofen',
-'tramadol',
-'omeprazole',
-'furosemide (frusemide)' ]
-
-
-
-for (let word of words){
-    trie.add(word)
-}
+fetch('/get-drug-names')
+    .then((res) => {
+        return res.json();
+    })
+    .then((str) => {
+        return JSON.parse(str)
+    })
+    .then((data) => { 
+        console.log(data) 
+        console.log(typeof data)    
+        for(let drug of data){
+            trie.add(drug)
+        }
+    })

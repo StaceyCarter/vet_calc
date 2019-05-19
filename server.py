@@ -9,6 +9,10 @@ from calculator import get_instructions
 
 from dose_recommender import filter_dose_using_species
 
+from queries import get_list_of_drugs
+
+import json
+
 # Creates an instance of a Flask object
 app = Flask(__name__)
 
@@ -22,6 +26,19 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Renders the homepage"""
     return render_template("homepage.html")
+
+@app.route('/get-drug-names')
+def get_drug_names():
+    """Returns all the current drugs"""
+
+    drug_list = get_list_of_drugs()
+
+    drugs = json.dumps(drug_list)
+
+    return json.dumps(drugs)
+
+###!!!! Route for viewing individual drug pages
+# @app.route('/<drugname>')
 
 @app.route('/adduser', methods=["POST"])
 def add_user():
