@@ -9,7 +9,7 @@ from calculator import get_instructions
 
 from dose_recommender import filter_dose_using_species
 
-from queries import get_list_of_drugs
+from queries import get_list_of_drugs, get_user_doses, get_user_personal_doses
 
 import json
 
@@ -50,14 +50,20 @@ def get_drug_names():
 
     return drugs
 
-###!!!! Route for viewing individual drug pages
+
 @app.route('/drug/<drug_id>')
 def get_drug_page(drug_id):
+    """View an individual drug page"""
+
+    user = current_user.id
+
+    saved_doses = get_user_doses(user, drug_id)
 
     drug = Drug.query.get(drug_id)
 
     return render_template("drug_page.html",
-                           drug=drug)
+                           drug=drug,
+                           saved_doses=saved_doses)
 
 @app.route('/adduser', methods=["POST"])
 def add_user():
@@ -114,9 +120,6 @@ def get_dose_info():
     """Returns a form for the user to input the doses they want"""
 
     species_list = SpeciesIndividual.query.all()
-
-
-    ##### request.args gets a string, not the actual object. Need to fix this bug.
 
     drug_id = request.args.get("drug")
     species_id = request.args.get("species")
@@ -177,9 +180,12 @@ def profile():
     fname = current_user.fname
     lname = current_user.lname
 
+    users_doses = get_user_personal_doses(current_user.id)
+
     return render_template('profile.html',
                            fname=fname,
-                           lname=lname)
+                           lname=lname,
+                           users_doses = users_doses)
 
 @app.route('/signup')
 def signup():
@@ -214,7 +220,6 @@ def signup_post():
     return redirect('/login')
 
 
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -246,6 +251,8 @@ def save_dose_post(drug_id):
     species = request.form.get('species')
     species_group = request.form.get('group')
     condition = request.form.get('condition')
+    duration = request.form.get('duration')
+    frequency = request.form.get('frequency')
 
     new_dose = PersonalDose(
         drug_id=drug_id,
@@ -255,11 +262,16 @@ def save_dose_post(drug_id):
         species_group_id = species_group,
         individual_species_id = species,
         condition_id = condition,
-        creator_id = current_user.id
+        creator_id = current_user.id,
+        duration_days = duration,
+        frequency_hrs = frequency
     )
 
     db.session.add(new_dose)
     db.session.commit()
+
+    flash("Your dose has been added")
+    return redirect(f'/drug/{drug_id}')
 
 
 if __name__ == "__main__":

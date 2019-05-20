@@ -2,6 +2,17 @@
 {% block title %} {{ drug.generic_name }} {% endblock %}
 {% block content %}
 
+ {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
 <h1> hello this is a drug page for {{ drug.generic_name }} </h1>
 
 <p>Links: add a preferred dose, prescribe, add to your favourites </p>
@@ -15,6 +26,27 @@
 
 <p> Each of these need an edit/del button.</p>
 
+<ul>
+{% for dose in saved_doses %}
+
+    <li> Species: {{ dose['species'] }} </li>
+    <ul>
+        {% if 'condition' in dose %}
+        <li> Condition: {{ dose['condition'] }}</li>
+        {% endif %}
+
+        {% if 'recommended' in dose %}
+            <li> Recommended: {{ dose['recommended'] }}mg/kg </li>
+        {% endif %}
+            <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
+        {% if 'lower' in dose and 'upper' in dose %}
+
+        {% endif %}
+
+    </ul>
+
+{% endfor %}
+
+</ul>
 
 {% endblock %}
-
