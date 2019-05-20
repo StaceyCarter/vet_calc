@@ -221,9 +221,13 @@ def logout():
     logout_user()
     return redirect('/')
 
-@app.route('/save-dose')
+@app.route('/add-preferred-dose/<drug_id>')
 def save_dose():
-    return redirect('/')
+    return render_template("add_dose.html")
+
+# @app.route('/add-preferred-dose', methods=["POST"])
+# def save_dose_post():
+#     pass
 
 if __name__ == "__main__":
     app.debug = True

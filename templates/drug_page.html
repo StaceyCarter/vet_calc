@@ -4,6 +4,17 @@
 
 <h1> hello this is a drug page for {{ drug.generic_name }} </h1>
 
+<p>Links: add a preferred dose, prescribe, add to your favourites </p>
+
+<!--NEED TO PASS THE CURRENT DRUG IN AS AN ARGUMENT TO THIS ROUTE-->
+<a href="add-preferred-dose/{{ drug.drug_id }}">Add a preferred dose for {{drug.generic_name}}</a>
+
+<h2>Textbook doses: </h2>
+
+<h2>Your preferred doses for {{ drug.generic_name }}: </h2>
+
+<p> Each of these need an edit/del button.</p>
+
 
 {% endblock %}
 
