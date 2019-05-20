@@ -1,16 +1,24 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin, LoginManager
+
 
 db = SQLAlchemy()
 
 #############################
+#Logins:
+# @login_manager.user_loader
+# def get_user(ident):
+#   return User.query.get(int(ident))
+
+#############################
 # Model definitions
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """Stores information about each user"""
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     username = db.Column(db.String(60), nullable=False)
     fname = db.Column(db.String(100), nullable=False)
     lname = db.Column(db.String(100), nullable=False)
@@ -33,7 +41,7 @@ class Vet(db.Model):
 
     vet_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.user_id'),
+                        db.ForeignKey('users.id'),
                         nullable=False)
     grad_year = db.Column(db.DateTime, nullable=True)
     specialty = db.Column(db.String(150), nullable=True)
@@ -213,7 +221,7 @@ class PersonalDose(db.Model):
                              db.ForeignKey("conditions.condition_id"))
 
     creator_id = db.Column(db.Integer,
-                           db.ForeignKey("users.user_id"))
+                           db.ForeignKey("users.id"))
 
     duration_days = db.Column(db.Integer, nullable=True)
 

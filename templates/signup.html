@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 {% block title %} Signup {% endblock %}
+
+ {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
 {% block content %}
+
 
 <h1>Sign up!</h1>
 

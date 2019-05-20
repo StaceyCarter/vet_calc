@@ -1,7 +1,31 @@
 {% extends 'base.html' %}
 {% block title %} Login {% endblock %}
+
+ {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
 {% block content %}
 
 <h1>Login!</h1>
+
+
+<form action="/login" method="POST">
+
+    Email: <input type="email" name="email" required> <br>
+    Password: <input type="password" name="password" required><br>
+    Remember me? <input type="checkbox" name="remember">
+
+    <input type="submit">
+
+</form>
+
 
 {% endblock %}

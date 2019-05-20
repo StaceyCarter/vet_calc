@@ -13,9 +13,9 @@ from queries import get_list_of_drugs
 
 import json
 
-from flask_login import LoginManager
+from flask_login import LoginManager, login_user, current_user, login_required
 
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Creates an instance of a Flask object
 app = Flask(__name__)
@@ -154,9 +154,32 @@ def calculate_dose():
 def login():
     return render_template('login.html')
 
-# @app.route('/login', methods=['POST'])
-# def login_post():
-#
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    remember = True if request.form.get('remember') else False
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user and not check_password_hash(user.password, password):
+        flash('No user or incorrect password, please check your login details.')
+        return redirect('/login')
+
+    login_user(user)
+
+    return redirect('/profile')
+
+@app.route('/profile')
+@login_required
+def profile():
+    fname = current_user.fname
+    lname = current_user.lname
+
+    return render_template('profile.html',
+                           fname=fname,
+                           lname=lname)
 
 @app.route('/signup')
 def signup():
