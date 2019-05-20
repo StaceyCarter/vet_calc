@@ -13,7 +13,7 @@ from queries import get_list_of_drugs
 
 import json
 
-from flask_login import LoginManager, login_user, current_user, login_required
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -163,11 +163,11 @@ def login_post():
 
     user = User.query.filter_by(email=email).first()
 
-    if not user and not check_password_hash(user.password, password):
+    if not user or not check_password_hash(user.password, password):
         flash('No user or incorrect password, please check your login details.')
         return redirect('/login')
 
-    login_user(user)
+    login_user(user, remember=remember)
 
     return redirect('/profile')
 
@@ -216,7 +216,9 @@ def signup_post():
 
 
 @app.route('/logout')
+@login_required
 def logout():
+    logout_user()
     return redirect('/')
 
 @app.route('/save-dose')

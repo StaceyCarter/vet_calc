@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% block title %} Signup {% endblock %}
 
+
+{% block content %}
+
  {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -10,9 +13,6 @@
     </ul>
   {% endif %}
 {% endwith %}
-
-
-{% block content %}
 
 
 <h1>Sign up!</h1>
