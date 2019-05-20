@@ -44,10 +44,12 @@ class Vet(db.Model):
                         db.ForeignKey('users.id'),
                         nullable=False)
     grad_year = db.Column(db.DateTime, nullable=True)
-    specialty = db.Column(db.String(150), nullable=True)
+    specialty = db.Column(db.String(200), nullable=True)
 
     user = db.relationship("User",
                            backref=db.backref("vet"))
+
+    # .preferred_doses : References to a list of preferred dose objects.
 
     def __repr__(self):
         """Represent a vet object"""
@@ -63,6 +65,7 @@ class Drug(db.Model):
     generic_name = db.Column(db.String(100), nullable=False)
 
     # .doses - to see the list of dose objects for this drug.
+    #.preferred_doses - refers to the preferred doses for this drug.
 
     #!!!! For future linking to therapeutic groups
     # therapeutic_groups = db.relationship("TherapeuticGroup",
@@ -105,6 +108,33 @@ class Formulation(db.Model):
         """Represents a drug strength object"""
 
         return f"<Strength drug: {self.drug_id}, form: {self.form_id} strength: {self.strength}{self.units} >"
+
+class PreferredDose(db.Model):
+    """Stores the preferred doses for each vet"""
+
+    __tablename__ = "preferred_doses"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    drug_id = db.Column(db.Integer,
+                        db.ForeignKey('drugs.drug_id'))
+    vet_id = db.Column(db.Integer,
+                       db.ForeignKey('vets.vet_id'))
+    dose_id = db.Column(db.Integer,
+                        db.ForeignKey('personal_doses.dose_id'))
+
+    vet = db.relationship('Vet',
+                          backref=db.backref("preferred_doses"))
+    dose = db.relationship('PersonalDose',
+                           backref=db.backref("preferred_dose"))
+    drug = db.relationship('Drug',
+                           backref=db.backref("preferred_doses"))
+
+    def __repr__(self):
+        """Represents a preferred dose object"""
+
+        return f"<PreferredDose vet>"
+
+
 
 # class TherapeuticGroup:
 #     """Stores the different possible therapeutic groups. eg anti-infective, anaesthetic, analgesic etc."""
@@ -243,6 +273,9 @@ class PersonalDose(db.Model):
 
     creator = db.relationship('User',
                                     backref=db.backref('doses'))
+
+    #Backrefs:
+    # .preferred_dose : refers to the preferred dose instance.
 
     def __repr__(self):
         """Represents a personal dose object."""

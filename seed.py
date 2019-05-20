@@ -2,7 +2,7 @@
 
 
 from sqlalchemy import func
-from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User, PersonalDose, Form, Formulation
+from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User, PersonalDose, Form, Formulation, Vet
 import datetime
 from model import connect_to_db, db
 from server import app
@@ -33,6 +33,30 @@ def load_users():
 
         db.session.commit()
 
+def load_vets():
+    """Seed data fromr vet_seed.psv into the vets table
+
+    File format:
+    user_id | grad_year | specialty
+    """
+
+    print("Vets")
+
+    Vet.query.delete()
+
+    with open("seed_data/vet_seed.psv") as vets:
+        for row in vets:
+            user_id, grad_year, specialty = row.strip().split("|")
+
+            vet = Vet(
+                user_id = user_id,
+                grad_year = datetime.datetime.strptime(grad_year, "%d-%b-%Y"),
+                specialty = specialty
+            )
+
+            db.session.add(vet)
+
+        db.session.commit()
 
 
 def load_drugs():
@@ -273,5 +297,6 @@ if __name__ == "__main__":
     load_routes()
     load_conditions()
     load_personal_doses()
+    load_vets()
 
     set_val_species_group_id()
