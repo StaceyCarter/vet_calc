@@ -3,6 +3,44 @@
 
 {% block content %}
 
+<form action="/drug/add-preferred-dose/{{ drug.drug_id }}", method="POST">
 
+    Lower end: <input type="number" name="lower" step="0.01">mg/kg <br>
+    Upper end: <input type="number" name="upper" step="0.01">mg/kg <br>
+    Preferred? <input type="number" name="recommended" step="0.01">mg/kg <br>
+
+    What species is this for?
+    <select name="species">
+    {% for species in info['species_groups'] %}
+        <option value="{{ species.species_individual_id }}">{{ species.species_name }}</option>
+    {%  endfor %}
+    </select>
+
+    Or make it for a group of species:
+    <select name="group">
+    {% for group in info['groups'] %}
+        <option value="{{ group.species_group_id }}">{{ group.species_group }}</option>
+    {%  endfor %}
+    </select>
+
+    <br>
+
+    Is it for any particular condition?
+    <select name="condition">
+    {% for condition in info['conditions'] %}
+        <option value="{{ condition.condition_id }}">{{ condition.condition }}</option>
+    {%  endfor %}
+    </select>
+
+    <br>
+
+    Duration: <input type="number" name="duration"> days <br>
+    Frequency: q<input type="number" name="frequency">hrs <br>
+
+
+    <input type="submit" value="Save dose">
+
+
+</form>
 
 {% endblock %}

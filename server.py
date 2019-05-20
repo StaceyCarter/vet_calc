@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, session, flash, request, send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition
+from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, PreferredDose, PersonalDose
 
 from calculator import get_instructions
 
@@ -221,13 +221,46 @@ def logout():
     logout_user()
     return redirect('/')
 
-@app.route('/add-preferred-dose/<drug_id>')
-def save_dose():
-    return render_template("add_dose.html")
+@app.route('/drug/add-preferred-dose/<drug_id>')
+def save_dose(drug_id):
 
-# @app.route('/add-preferred-dose', methods=["POST"])
-# def save_dose_post():
-#     pass
+    drug = Drug.query.get(drug_id)
+
+    info = {
+        'species_groups': SpeciesIndividual.query.all(),
+        'conditions': Condition.query.all(),
+        'groups': SpeciesGroup.query.all()
+    }
+
+    return render_template("add_dose.html",
+                           drug=drug,
+                           info=info)
+
+@app.route('/drug/add-preferred-dose/<drug_id>', methods=["POST"])
+@login_required
+def save_dose_post(drug_id):
+
+    lower=request.form.get('lower')
+    upper = request.form.get('upper')
+    recommended = request.form.get('recommended')
+    species = request.form.get('species')
+    species_group = request.form.get('group')
+    condition = request.form.get('condition')
+
+    new_dose = PersonalDose(
+        drug_id=drug_id,
+        dose_lower = lower,
+        dose_upper = upper,
+        recommended_dose = recommended,
+        species_group_id = species_group,
+        individual_species_id = species,
+        condition_id = condition,
+        creator_id = current_user.id
+    )
+
+    db.session.add(new_dose)
+    db.session.commit()
+
 
 if __name__ == "__main__":
     app.debug = True

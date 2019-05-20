@@ -117,12 +117,12 @@ class PreferredDose(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     drug_id = db.Column(db.Integer,
                         db.ForeignKey('drugs.drug_id'))
-    vet_id = db.Column(db.Integer,
-                       db.ForeignKey('vets.vet_id'))
+    user_id = db.Column(db.Integer,
+                       db.ForeignKey('users.id'))
     dose_id = db.Column(db.Integer,
                         db.ForeignKey('personal_doses.dose_id'))
 
-    vet = db.relationship('Vet',
+    user = db.relationship('User',
                           backref=db.backref("preferred_doses"))
     dose = db.relationship('PersonalDose',
                            backref=db.backref("preferred_dose"))
