@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %} Signup {% endblock %}
+
+
+{% block content %}
+
+ {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+
+<h1>Sign up!</h1>
+
+<form action="/add-pic" method="POST" enctype="multipart/form-data">
+
+    Upload a pic! <input type="file" name="profile_pic">
+
+    <button type="submit">Upload</button>
+
+</form>
+
+
+{% endblock %}

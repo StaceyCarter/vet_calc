@@ -13,11 +13,16 @@ from queries import get_list_of_drugs, get_user_doses, get_user_personal_doses
 
 from send_text import send_message
 
+from helpers import upload_file_to_s3
+
 import json
 
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 from werkzeug.security import generate_password_hash, check_password_hash
+
+from werkzeug.utils import secure_filename
+
 
 # Creates an instance of a Flask object
 app = Flask(__name__)
@@ -306,6 +311,26 @@ def text_client(instructions):
     send_message(instructions)
 
     return redirect("/")
+
+@app.route('/add-pic')
+def add_pic():
+    return render_template("add_pic.html")
+
+@app.route('/add-pic', methods=["POST"])
+def upload_pic():
+
+    if "profile_pic" not in request.files:
+        return "Can't find file"
+
+    file = request.files['profile_pic']
+
+    if file.filename == "":
+        return "please select a file"
+    else:
+        file.filename = secure_filename(file.filename)
+        output = upload_file_to_s3(file)
+        return str(output)
+
 
 
 if __name__ == "__main__":
