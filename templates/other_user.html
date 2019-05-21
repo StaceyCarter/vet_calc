@@ -1,22 +1,10 @@
 {% extends 'base.html' %}
-{% block title %} Signup {% endblock %}
-
- {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <p>{{ message }}</p>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
-
+{% block title %} {{ user.fname }} {{ user.lname }} {% endblock %}
 {% block content %}
 
-Hello {{ fname }} {{ lname }}!
+<h1> {{ user.fname }} {{ user.lname }} </h1>
 
-<h2>Favourite drugs</h2>
+<h3>Saved doses: </h3>
 
 <h2>Preferred doses</h2>
 
@@ -39,7 +27,7 @@ Hello {{ fname }} {{ lname }}!
         {% endif %}
 
         {% if 'lower' in dose and 'upper' in dose %}
-             <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
+            <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
         {% endif %}
 
         <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>
@@ -50,4 +38,6 @@ Hello {{ fname }} {{ lname }}!
 {% endfor %}
 
 </ul>
+
+
 {% endblock %}

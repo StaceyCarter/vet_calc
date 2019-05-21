@@ -156,7 +156,6 @@ def calculate_dose():
 
     instruction_info = get_instructions(weight, dose, concentration, duration, frequency, form, divide)
 
-    ###!!!!!! Needs doing
     instructions = generate_instructions(instruction_info)
 
     return render_template("label_instructions.html",
@@ -207,6 +206,27 @@ def profile():
                            lname=lname,
                            users_doses = users_doses)
 
+@app.route('/other-users')
+def other_users():
+
+    users = User.query.all()
+
+    return render_template("other_users.html",
+                           users=users,
+                           current=current_user.id)
+
+@app.route('/profile/<user_id>')
+def view_other_profile(user_id):
+
+    user = User.query.get(user_id)
+
+    users_doses = get_user_personal_doses(user.id)
+    print(users_doses)
+
+    return render_template("other_user.html",
+                           user=user,
+                           users_doses=users_doses)
+
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -245,6 +265,7 @@ def signup_post():
 def logout():
     logout_user()
     return redirect('/')
+
 
 @app.route('/drug/add-preferred-dose/<drug_id>')
 def save_dose(drug_id):
