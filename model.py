@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager
+from datetime import datetime
 
 
 db = SQLAlchemy()
@@ -12,6 +13,11 @@ db = SQLAlchemy()
 
 #############################
 # Model definitions
+
+#Followers association table
+followers = db.Table('followers',
+                     db.Column('follower_id', db.Integer, db.ForeignKey('users.id')),
+                    db.Column('followed_id', db.Integer, db.ForeignKey('users.id')))
 
 class User(db.Model, UserMixin):
     """Stores information about each user"""
@@ -26,13 +32,34 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(100), nullable=False)
     user_type = db.Column(db.String(5), nullable=False)
 
+    # Relationships
+    #.vet to access relationship to vet class
+    #.doses - to access the doses created by this user.
+
+    followed = db.relationship('User', secondary=followers,
+                               primaryjoin=(followers.c.follower_id == id),
+                               secondaryjoin=(followers.c.followed_id == id),
+                               backref=db.backref('follower', lazy='joined'),
+                               lazy='dynamic')
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
+
     def __repr__(self):
         """Represents a user object"""
 
         return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}>"
 
-    #.vet to access relationship to vet class
-    #.doses - to access the doses created by this user.
+
 
 class Vet(db.Model):
     """Stores information about each vet"""
@@ -49,12 +76,18 @@ class Vet(db.Model):
     user = db.relationship("User",
                            backref=db.backref("vet"))
 
+
     # .preferred_doses : References to a list of preferred dose objects.
+
 
     def __repr__(self):
         """Represent a vet object"""
 
         return f"<Vet vet_id: {self.vet_id}>"
+
+
+
+
 
 class Drug(db.Model):
     """Stores information about each drug"""
