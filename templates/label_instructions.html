@@ -5,9 +5,7 @@
 <h1>Label instructions</h1>
 
 <p>
-    Give {{instruction_info['amount_per_dose']}} {{ 'tablets' if instruction_info['form'] == 'tab' else 'ml'}},
-    {{instruction_info['frequency_day']}}.
-    (every {{ instruction_info['frequency_hrs'] }} hrs) for {{ instruction_info['duration'] }} days.
+    {{ instructions }}
 </p>
 
 <p>Total amount needed: {{ instruction_info['total_amount'] }} {{ 'tablets' if instruction_info['form'] == 'tab' else 'ml'}}</p>
@@ -16,5 +14,6 @@
 
 
 <a href="/save-dose">Save this dose</a>
+<a href="/text-client/{{ instructions }}">Text client</a>
 
 {% endblock %}

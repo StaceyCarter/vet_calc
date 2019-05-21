@@ -5,11 +5,13 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, PreferredDose, PersonalDose
 
-from calculator import get_instructions
+from calculator import get_instructions, generate_instructions
 
 from dose_recommender import filter_dose_using_species
 
 from queries import get_list_of_drugs, get_user_doses, get_user_personal_doses
+
+from send_text import send_message
 
 import json
 
@@ -136,7 +138,7 @@ def get_dose_info():
 
 @app.route('/calculate-dose')
 def calculate_dose():
-    """Gets information inputed by user and calls the dose calculator function"""
+    """Gets information input by user and calls the dose calculator function"""
 
     weight = float(request.args.get("weight"))
     dose = float(request.args.get("dose"))
@@ -149,8 +151,12 @@ def calculate_dose():
 
     instruction_info = get_instructions(weight, dose, concentration, duration, frequency, form, divide)
 
+    ###!!!!!! Needs doing
+    instructions = generate_instructions(instruction_info)
+
     return render_template("label_instructions.html",
-                           instruction_info=instruction_info)
+                           instruction_info=instruction_info,
+                           instructions=instructions)
 
 @app.route('/prescribe/<dose_id>')
 def prescribe(dose_id):
@@ -293,6 +299,13 @@ def delete_dose(dose_id):
 
     flash("dose has been deleted")
     return redirect(f'/drug/{drug_id}')
+
+@app.route('/text-client/<instructions>')
+def text_client(instructions):
+
+    send_message(instructions)
+
+    return redirect("/")
 
 
 if __name__ == "__main__":

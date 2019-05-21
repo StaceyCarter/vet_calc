@@ -170,6 +170,18 @@ def get_instructions(weight, dose, concentration, duration, frequency, form, div
 
     return instruction_info
 
+def generate_instructions(instruction_info):
+    """Generates an instruction string from a dictionary of instruction info given.
+
+    :params instruction_info: Dictionary
+
+    :returns: String of instructions
+    """
+    return f"""Give {instruction_info['amount_per_dose']}
+    {'tablets' if instruction_info['form'] == 'tab' else 'ml'},
+    {instruction_info['frequency_day']}.
+    (every {instruction_info['frequency_hrs']} hrs)
+    for {instruction_info['duration']} days."""
 
 
 if __name__ == "__main__":
