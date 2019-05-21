@@ -152,6 +152,15 @@ def calculate_dose():
     return render_template("label_instructions.html",
                            instruction_info=instruction_info)
 
+@app.route('/prescribe/<dose_id>')
+def prescribe(dose_id):
+    """Presents the dose calculator, with fields regarding the dose prefilled."""
+
+    dose = PersonalDose.query.get(dose_id)
+
+    return render_template('prescribe.html',
+                           dose=dose)
+
 
 @app.route('/login')
 def login():
@@ -271,6 +280,18 @@ def save_dose_post(drug_id):
     db.session.commit()
 
     flash("Your dose has been added")
+    return redirect(f'/drug/{drug_id}')
+
+@app.route('/delete/<dose_id>')
+def delete_dose(dose_id):
+
+    dose = PersonalDose.query.get(dose_id)
+    drug_id = dose.drug_id
+
+    PersonalDose.query.filter_by(dose_id=dose_id).delete()
+    db.session.commit()
+
+    flash("dose has been deleted")
     return redirect(f'/drug/{drug_id}')
 
 

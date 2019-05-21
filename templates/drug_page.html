@@ -43,6 +43,10 @@
 
         {% endif %}
 
+        <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>
+
+        <a href="/delete/{{ dose['dose_id'] }}">Delete saved dose</a>
+
     </ul>
 
 {% endfor %}

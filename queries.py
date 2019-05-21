@@ -57,6 +57,8 @@ def get_user_doses(id, drug_id):
         if dose.recommended_dose:
             dose_info['recommended'] = dose.recommended_dose
 
+        dose_info['dose_id'] = dose.dose_id
+
         info.append(dose_info)
 
     return info

@@ -35,14 +35,14 @@ Hello {{ fname }} {{ lname }}!
         {% endif %}
 
         {% if 'recommended' in dose %}
-            <li> Recommended: {{ dose['recommended'] }}mg/kg </li>
+            <li>Recommended: {{ dose['recommended'] }}mg/kg </li>
         {% endif %}
             <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
         {% if 'lower' in dose and 'upper' in dose %}
 
         {% endif %}
 
-        <a href="/">Prescribe this dose</a>
+        <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>
 
     </ul>
     {% endfor %}
