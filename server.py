@@ -392,6 +392,24 @@ def follow(user_id):
 
     return redirect(f"/profile/{user_id}")
 
+@app.route('/unfollow/<user_id>', methods=["POST"])
+@login_required
+def unfollow(user_id):
+
+    user = User.query.filter_by(id=user_id).first()
+
+    if user == None:
+        flash('User not found')
+        return redirect("/")
+
+    current_user.unfollow(user)
+    db.session.commit()
+
+    flash(f"You unfollowed {user.fname}")
+
+    return redirect(f"/profile/{user_id}")
+
+
 
 
 if __name__ == "__main__":
