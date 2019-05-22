@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %} Followers {% endblock %}
+{% block content %}
+
+<h1>Followers of {{ user.fname }} {{ user.lname }} </h1>
+
+<ul>
+    {% for follower in followers %}
+        <li> {{ follower.fname }} {{ follower.lname }}  </li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

@@ -409,7 +409,27 @@ def unfollow(user_id):
 
     return redirect(f"/profile/{user_id}")
 
+@app.route('/profile/following/<user_id>')
+def see_followers(user_id):
 
+    user = User.query.get(user_id)
+
+    following = user.followed.all()
+
+    return render_template("following.html",
+                           following = following,
+                           user = user)
+
+@app.route('/profile/followers/<user_id>')
+def see_following(user_id):
+
+    user = User.query.get(user_id)
+
+    followers = user.followers.all()
+
+    return render_template("followers.html",
+                           followers = followers,
+                           user = user)
 
 
 if __name__ == "__main__":
