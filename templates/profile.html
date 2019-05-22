@@ -47,7 +47,41 @@ Hello {{ fname }} {{ lname }}!
 
     </ul>
     {% endfor %}
+
 {% endfor %}
 
 </ul>
+
+<h2>Forked doses</h2>
+
+<ul>
+{% for drug in forked_doses %}
+
+    <li><h3>{{ drug }}</h3></li>
+
+    {% for dose in forked_doses[drug] %}
+
+    <li> Species: {{ dose['species'] }} </li>
+    <ul>
+        {% if 'condition' in dose %}
+        <li> Condition: {{ dose['condition'] }}</li>
+        {% endif %}
+
+        {% if 'recommended' in dose %}
+            <li>Recommended: {{ dose['recommended'] }}mg/kg </li>
+        {% endif %}
+
+        {% if 'lower' in dose and 'upper' in dose %}
+             <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
+        {% endif %}
+
+        <li>Forked from {{ dose['creator'] }}</li>
+
+    </ul>
+    {% endfor %}
+
+{% endfor %}
+
+</ul>
+
 {% endblock %}

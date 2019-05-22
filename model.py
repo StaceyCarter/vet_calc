@@ -77,7 +77,7 @@ class Vet(db.Model):
                            backref=db.backref("vet"))
 
 
-    # .preferred_doses : References to a list of preferred dose objects.
+    # .forked_doses : References to a list of preferred dose objects.
 
 
     def __repr__(self):
@@ -98,7 +98,7 @@ class Drug(db.Model):
     generic_name = db.Column(db.String(100), nullable=False)
 
     # .doses - to see the list of dose objects for this drug.
-    #.preferred_doses - refers to the preferred doses for this drug.
+    #.forked_doses - refers to the preferred doses for this drug.
 
     #!!!! For future linking to therapeutic groups
     # therapeutic_groups = db.relationship("TherapeuticGroup",
@@ -142,10 +142,10 @@ class Formulation(db.Model):
 
         return f"<Strength drug: {self.drug_id}, form: {self.form_id} strength: {self.strength}{self.units} >"
 
-class PreferredDose(db.Model):
+class ForkedDose(db.Model):
     """Stores the preferred doses for each vet"""
 
-    __tablename__ = "preferred_doses"
+    __tablename__ = "forked_doses"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     drug_id = db.Column(db.Integer,
@@ -156,16 +156,16 @@ class PreferredDose(db.Model):
                         db.ForeignKey('personal_doses.dose_id'))
 
     user = db.relationship('User',
-                          backref=db.backref("preferred_doses"))
+                          backref=db.backref("forked_doses"))
     dose = db.relationship('PersonalDose',
-                           backref=db.backref("preferred_dose"))
+                           backref=db.backref("forked_dose"))
     drug = db.relationship('Drug',
-                           backref=db.backref("preferred_doses"))
+                           backref=db.backref("forked_doses"))
 
     def __repr__(self):
         """Represents a preferred dose object"""
 
-        return f"<PreferredDose vet>"
+        return f"<ForkedDose forked by {self.user.fname}>"
 
 
 

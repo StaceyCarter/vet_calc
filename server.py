@@ -3,13 +3,13 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, session, flash, request, send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, PreferredDose, PersonalDose
+from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, ForkedDose, PersonalDose
 
 from calculator import get_instructions, generate_instructions
 
 from dose_recommender import filter_dose_using_species
 
-from queries import get_list_of_drugs, get_user_doses, get_user_personal_doses
+from queries import get_list_of_drugs, get_user_doses_for_drug, get_user_personal_doses, get_user_forked_doses
 
 from send_text import send_message
 
@@ -64,7 +64,7 @@ def get_drug_page(drug_id):
 
     user = current_user.id
 
-    saved_doses = get_user_doses(user, drug_id)
+    saved_doses = get_user_doses_for_drug(user, drug_id)
 
     drug = Drug.query.get(drug_id)
 
@@ -200,11 +200,14 @@ def profile():
     lname = current_user.lname
 
     users_doses = get_user_personal_doses(current_user.id)
+    forked_doses = get_user_forked_doses(current_user.id)
+
 
     return render_template('profile.html',
                            fname=fname,
                            lname=lname,
-                           users_doses = users_doses)
+                           users_doses = users_doses,
+                           forked_doses = forked_doses)
 
 @app.route('/other-users')
 def other_users():
@@ -314,6 +317,8 @@ def save_dose_post(drug_id):
     flash("Your dose has been added")
     return redirect(f'/drug/{drug_id}')
 
+
+#### SHOUDL BE A POST METHOD!!!!!
 @app.route('/delete/<dose_id>')
 def delete_dose(dose_id):
 
@@ -351,6 +356,41 @@ def upload_pic():
         file.filename = secure_filename(file.filename)
         output = upload_file_to_s3(file)
         return str(output)
+
+
+#### SHOULD BE A POST METHOD!!!
+@app.route('/fork/<dose_id>')
+def fork_dose(dose_id):
+
+    dose = PersonalDose.query.get(dose_id)
+
+    fork = ForkedDose(drug_id=dose.drug_id,
+                      user_id=current_user.id,
+                      dose_id=dose_id)
+
+    db.session.add(fork)
+    db.session.commit()
+
+    return redirect('/profile')
+
+@app.route('/follow/<user_id>', methods=["POST"])
+@login_required
+def follow(user_id):
+    user = User.query.filter_by(id=user_id).first()
+
+    if user == None:
+        flash('User not found')
+        return redirect("/")
+    if user == current_user:
+        flash("You can't follow yourself")
+        return redirect('/profile')
+
+    current_user.follow(user)
+    db.session.commit()
+
+    flash(f"You're now following {user.fname}")
+
+    return redirect(f"/profile/{user_id}")
 
 
 
