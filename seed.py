@@ -6,6 +6,7 @@ from model import Drug, SpeciesGroup, SpeciesIndividual, Route, Condition, User,
 import datetime
 from model import connect_to_db, db
 from server import app
+from werkzeug.security import generate_password_hash
 
 def load_users():
     """Seed user data from seed_users.psv
@@ -20,14 +21,14 @@ def load_users():
 
     with open("seed_data/seed_users.psv") as users:
         for row in users:
-            username, fname, lname, email, password, user_type = row.strip().split("|")
+            username, fname, lname, email, password, user_role = row.strip().split("|")
 
             user = User(username=username,
                         fname=fname,
                         lname=lname,
                         email=email,
-                        password=password,
-                        user_type=user_type)
+                        password=generate_password_hash(password),
+                        user_role=user_role)
 
             db.session.add(user)
 

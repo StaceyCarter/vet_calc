@@ -15,6 +15,8 @@ from send_text import send_message
 
 from helpers import upload_file_to_s3
 
+from functools import wraps
+
 import json
 
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
@@ -40,6 +42,23 @@ login_manager.init_app(app)
 def load_user(user_id):
     # Associates the user id stored in the cookie with the right user object.
     return User.query.get(int(user_id))
+
+def login_required(role="user"):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_view(*args, **kwargs):
+
+            if not current_user.is_authenticated:
+                return app.login_manager.unauthorized()
+            urole = current_user.get_urole()
+            if ((urole != role) and (role != "user")):
+                return app.login_manager.unauthorized()
+            return fn(*args, **kwargs)
+        return decorated_view
+    return wrapper
+
+
+
 
 
 @app.route('/')
@@ -194,7 +213,7 @@ def login_post():
     return redirect('/profile')
 
 @app.route('/profile')
-@login_required
+@login_required()
 def profile():
     fname = current_user.fname
     lname = current_user.lname
@@ -241,6 +260,7 @@ def signup_post():
     fname = request.form.get('fname')
     lname = request.form.get('lname')
     username = request.form.get('username')
+    user_role = request.form.get('user_role')
 
     user = User.query.filter_by(email=email).first()
 
@@ -253,7 +273,7 @@ def signup_post():
                     lname=lname,
                     username=username,
                     password=generate_password_hash(password, method="pbkdf2:sha256", salt_length=8),
-                    user_type='vet')
+                    user_role=user_role)
 
     db.session.add(new_user)
     db.session.commit()
@@ -264,13 +284,14 @@ def signup_post():
 
 
 @app.route('/logout')
-@login_required
+@login_required()
 def logout():
     logout_user()
     return redirect('/')
 
 
 @app.route('/drug/add-preferred-dose/<drug_id>')
+@login_required('vet')
 def save_dose(drug_id):
 
     drug = Drug.query.get(drug_id)
@@ -286,7 +307,7 @@ def save_dose(drug_id):
                            info=info)
 
 @app.route('/drug/add-preferred-dose/<drug_id>', methods=["POST"])
-@login_required
+@login_required()
 def save_dose_post(drug_id):
 
     lower=request.form.get('lower')
@@ -374,7 +395,7 @@ def fork_dose(dose_id):
     return redirect('/profile')
 
 @app.route('/follow/<user_id>', methods=["POST"])
-@login_required
+@login_required()
 def follow(user_id):
     user = User.query.filter_by(id=user_id).first()
 
@@ -393,7 +414,7 @@ def follow(user_id):
     return redirect(f"/profile/{user_id}")
 
 @app.route('/unfollow/<user_id>', methods=["POST"])
-@login_required
+@login_required()
 def unfollow(user_id):
 
     user = User.query.filter_by(id=user_id).first()

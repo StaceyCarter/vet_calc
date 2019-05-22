@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Add pic {% endblock %}
+{% block title %} Signup {% endblock %}
 
 
 {% block content %}
@@ -15,7 +15,7 @@
 {% endwith %}
 
 
-<h1>Add a pic to your profile!</h1>
+<h1>Sign up!</h1>
 
 <form action="/signup" method="POST">
     First name: <input type="text" name="fname" required>
@@ -23,6 +23,10 @@
     Username: <input type="text" name="username" required>
     Email: <input type="email" name="email" required> <br>
     Password: <input type="password" name="password" required>
+    <br>
+    Are you a vet or nurse? <br>
+    <input type="radio" name="user_role" value="vet"> Vet <br>
+    <input type="radio" name="user_role" value="nurse"> Nurse <br>
 
     <input type="submit">
 

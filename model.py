@@ -30,17 +30,21 @@ class User(db.Model, UserMixin):
     lname = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    user_type = db.Column(db.String(5), nullable=False)
+    user_role = db.Column(db.String(10), nullable=False)
 
     # Relationships
     #.vet to access relationship to vet class
     #.doses - to access the doses created by this user.
+    #.forked_doses : References to a list of preferred dose objects.
 
     followed = db.relationship('User', secondary=followers,
                                primaryjoin=(followers.c.follower_id == id),
                                secondaryjoin=(followers.c.followed_id == id),
                                backref=db.backref('followers', lazy='dynamic'),
                                lazy='dynamic')
+
+    def get_urole(self):
+        return self.user_role
 
     def follow(self, user):
         if not self.is_following(user):
@@ -57,16 +61,16 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         """Represents a user object"""
 
-        return f"<User Name: {self.fname} {self.lname} Type: {self.user_type}>"
+        return f"<User Name: {self.fname} {self.lname} Type: {self.user_role}>"
 
 
 
-class Vet(db.Model):
+class Vet(db.Model, UserMixin):
     """Stores information about each vet"""
 
     __tablename__ = "vets"
 
-    vet_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id'),
                         nullable=False)
@@ -74,19 +78,14 @@ class Vet(db.Model):
     specialty = db.Column(db.String(200), nullable=True)
 
     user = db.relationship("User",
-                           backref=db.backref("vet"))
-
-
-    # .forked_doses : References to a list of preferred dose objects.
+                           backref=db.backref("vet"),
+                           uselist=False)
 
 
     def __repr__(self):
         """Represent a vet object"""
 
-        return f"<Vet vet_id: {self.vet_id}>"
-
-
-
+        return f"<Vet vet_id: {self.id}>"
 
 
 class Drug(db.Model):
