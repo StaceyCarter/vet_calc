@@ -21,6 +21,8 @@ import json
 
 import boto3
 
+import os
+
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -223,12 +225,24 @@ def profile():
     users_doses = get_user_personal_doses(current_user.id)
     forked_doses = get_user_forked_doses(current_user.id)
 
+    s3 = boto3.client('s3')
+
+    # boto3.generate_presigned_url(ClientMethod, Params=None, ExpiresIn=3600, HttpMethod=None)
+
+    url = s3.generate_presigned_url('get_object',
+                                Params={
+                                    'Bucket': os.environ.get('S3_BUCKET'),
+                                    'Key': 'file_name',
+                                },
+                                ExpiresIn=3600)
+
 
     return render_template('profile.html',
                            fname=fname,
                            lname=lname,
                            users_doses = users_doses,
-                           forked_doses = forked_doses)
+                           forked_doses = forked_doses,
+                           url = url)
 
 @app.route('/other-users')
 def other_users():
@@ -372,7 +386,7 @@ def upload_pic():
 
     file = request.files['profile_pic']
 
-    s3.Bucket('vetcalc-photos').put_object(Key=file.filename, Body=file)
+    s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=file.filename, Body=file)
     # if "profile_pic" not in request.files:
     #     return "Can't find file"
     #
