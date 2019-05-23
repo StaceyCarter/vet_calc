@@ -44,6 +44,15 @@ class User(db.Model, UserMixin):
                                backref=db.backref('followers', lazy='dynamic'),
                                lazy='dynamic')
 
+    # messages_1 = db.relationship("Conversation",
+    #                              backref=db.backref('messager_1'),
+    #                              lazy='dynamic',
+    #                              foreign_keys='[Conversation.messager_1]')
+    # messages_2 = db.relationship('Conversation',
+    #                              backref=db.backref('messager_2'),
+    #                              lazy='dynamic',
+    #                              foreign_keys='[Conversation.messager_2]')
+
     def get_urole(self):
         return self.user_role
 
@@ -83,10 +92,39 @@ class Vet(db.Model, UserMixin):
                            uselist=False)
 
 
+
     def __repr__(self):
         """Represent a vet object"""
 
         return f"<Vet vet_id: {self.id}>"
+
+class Conversation(db.Model):
+    """Stored the conversations that exist between 2 users"""
+
+    __tablename__ = "conversations"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    messager_1 = db.Column(db.Integer,
+                              db.ForeignKey('users.id'),
+                              nullable=False)
+    messager_2 = db.Column(db.Integer,
+                              db.ForeignKey('users.id'),
+                              nullable=False)
+
+    # Relationships:
+    user_1 = db.relationship('User',
+                                 backref=db.backref('messager_1'),
+                                 foreign_keys=[messager_1])
+    user_2 = db.relationship('User',
+                                 backref=db.backref('messager_2'),
+                                 foreign_keys=[messager_2])
+
+
+
+    def __repr__(self):
+        """Represents a conversation object"""
+
+        return f"<Conversation messager_1: {self.messager_1} messager_2: {self.messager_2}"
 
 
 class Drug(db.Model):
