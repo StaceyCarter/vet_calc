@@ -19,6 +19,8 @@ from functools import wraps
 
 import json
 
+import boto3
+
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -366,17 +368,23 @@ def add_pic():
 @app.route('/add-pic', methods=["POST"])
 def upload_pic():
 
-    if "profile_pic" not in request.files:
-        return "Can't find file"
+    s3 = boto3.resource('s3')
 
     file = request.files['profile_pic']
 
-    if file.filename == "":
-        return "please select a file"
-    else:
-        file.filename = secure_filename(file.filename)
-        output = upload_file_to_s3(file)
-        return str(output)
+    s3.Bucket('vetcalc-photos').put_object(Key=file.filename, Body=file)
+    # if "profile_pic" not in request.files:
+    #     return "Can't find file"
+    #
+    # file = request.files['profile_pic']
+    #
+    # if file.filename == "":
+    #     return "please select a file"
+    # else:
+    #     file.filename = secure_filename(file.filename)
+    #     output = upload_file_to_s3(file)
+    #     return str(output)
+    return redirect('/profile')
 
 
 #### SHOULD BE A POST METHOD!!!
