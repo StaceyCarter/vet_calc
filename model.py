@@ -31,6 +31,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
     user_role = db.Column(db.String(10), nullable=False)
+    pic = db.Column(db.String(500), nullable=True)
 
     # Relationships
     #.vet to access relationship to vet class

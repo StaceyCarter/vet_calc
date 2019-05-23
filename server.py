@@ -227,12 +227,17 @@ def profile():
 
     s3 = boto3.client('s3')
 
-    # boto3.generate_presigned_url(ClientMethod, Params=None, ExpiresIn=3600, HttpMethod=None)
+    if current_user.pic:
+        image = current_user.pic
+    else:
+        image = 'file_name' #### REPLACE THIS WITH A DEFAULT PICTURE
+
+
 
     url = s3.generate_presigned_url('get_object',
                                 Params={
                                     'Bucket': os.environ.get('S3_BUCKET'),
-                                    'Key': 'file_name',
+                                    'Key': image,
                                 },
                                 ExpiresIn=3600)
 
@@ -385,6 +390,19 @@ def upload_pic():
     s3 = boto3.resource('s3')
 
     file = request.files['profile_pic']
+
+    # Rename file for unique storage
+    user = User.query.get(current_user.id)
+    #Checks if user has already uploaded and increments the count of their pic by one so it doesn't clash with pictures already stored in the bucket.
+    if user.pic:
+        link = user.pic.split('_')
+        num = int(link[-1])
+        file.filename = f'{current_user.email}_profilepic_{num + 1}'
+    else:
+        file.filename = f'{current_user.email}_profilepic_1'
+
+    user.pic = file.filename
+    db.session.commit()
 
     s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=file.filename, Body=file)
     # if "profile_pic" not in request.files:
