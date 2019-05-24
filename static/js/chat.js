@@ -17,7 +17,7 @@ let form = $('form').on('submit', (e) => {
   let user_name = $('input.username').val()
   let user_input = $('input.message').val()
   socket.emit('message', {
-    room : 'test',
+    room : chatID,
     user_name : user_name,
     message : user_input
   })
