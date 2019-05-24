@@ -1,14 +1,15 @@
 let socket = io.connect('http://' + document.domain + ':' + location.port);
 
+const url = window.location.href.split('/')
+const chatID = url.pop()
 
 socket.on('connect', () => {
     console.log('WEB SOCKET CONNECTED')
-    socket.emit('join', { room: 'test'})
+    socket.emit('join', { room: chatID })
     })
 
 socket.on('disconnect', () => {
 console.log('DISCONNECTED')})
-
 
 
 let form = $('form').on('submit', (e) => {

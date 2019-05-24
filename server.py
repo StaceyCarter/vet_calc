@@ -512,12 +512,18 @@ def check_or_create_conversation(user_id):
 
         db.session.add(new_convo)
         db.session.commit()
-        return redirect(f'/')
+
+        # As soon as the conversation has been added to the database, query the database for the conversation.
+        conversation = Conversation.query.filter((Conversation.messager_1 == bigger) & (Conversation.messager_2 == lower)).first()
+
+    print('\n\n\n\n\n\n CONVO ID: ', conversation.id)
+
+    return redirect(f'/chat/messages/{conversation.id}')
 
     ## This function needs to pass to another, unique chat window tied to this specific conversation.
 
-@app.route('/chat')
-def chat():
+@app.route('/chat/messages/<conversation_id>')
+def chat(conversation_id):
 
     fname = current_user.fname
     lname = current_user.lname
