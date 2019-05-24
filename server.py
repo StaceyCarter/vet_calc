@@ -557,8 +557,9 @@ def on_join(data):
 
 @socketio.on('message')
 def send_message(data):
-    username = current_user.username
     room = data['room']
+    # Sets the usesrname to be the person who is logged in.
+    data['username'] = current_user.username
     emit('my_response', data, room=room)
 
 @socketio.on('leave')

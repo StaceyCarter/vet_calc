@@ -14,11 +14,9 @@ console.log('DISCONNECTED')})
 
 let form = $('form').on('submit', (e) => {
   e.preventDefault()
-  let user_name = $('input.username').val()
   let user_input = $('input.message').val()
   socket.emit('message', {
     room : chatID,
-    user_name : user_name,
     message : user_input
   })
   $('input.message').val('').focus()
@@ -27,8 +25,8 @@ let form = $('form').on('submit', (e) => {
 
   socket.on('my_response', (msg) => {
     console.log(msg)
-    if ( typeof msg.user_name !== 'undefined'){
+    if ( typeof msg.username !== 'undefined'){
       $('h3').remove()
-      $('div.message_holder').append( '<div><b style="color: #000">' + msg.user_name + '</b> ' + msg.message + '</div>')
+      $('div.message_holder').append( '<div><b style="color: #000">' + msg.username + '</b> ' + msg.message + '</div>')
     }
   })
