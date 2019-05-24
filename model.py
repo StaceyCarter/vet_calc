@@ -39,6 +39,7 @@ class User(db.Model, UserMixin):
     #.vet to access relationship to vet class
     #.doses - to access the doses created by this user.
     #.forked_doses : References to a list of preferred dose objects.
+    #.messages : References a list of messages this user has sent.
 
     followed = db.relationship('User', secondary=followers,
                                primaryjoin=(followers.c.follower_id == id),
@@ -121,6 +122,8 @@ class Conversation(db.Model):
                                  backref=db.backref('messager_2'),
                                  foreign_keys=[messager_2])
 
+    #.messages : references the messages associated with this conversation
+
     def __repr__(self):
         """Represents a conversation object"""
 
@@ -139,6 +142,24 @@ class Message(db.Model):
     message_body = db.Column(db.String(500))
     sender = db.Column(db.Integer, db.ForeignKey('users.id'))
     timestamp = db.Column(db.DateTime, index=True, server_default=func.now())
+    seen = db.Column(db.Boolean)
+
+    ## Relationships:
+
+    db.relationship('User',
+                    backref=db.backref("forked_doses"))
+
+    sender_user = db.relationship('User',
+                                  backref=db.backref("messages"))
+
+    conversation = db.relationship('Conversation',
+                                   backref=db.backref("messages"))
+
+
+    def __repr__(self):
+        """ Represent a message object """
+
+        return f"<Message sender: {self.sender_user.username}>"
 
 
 class Drug(db.Model):

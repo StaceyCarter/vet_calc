@@ -528,8 +528,13 @@ def chat(conversation_id):
     fname = current_user.fname
     lname = current_user.lname
 
+    # Collects all previous messages with this conversation id and orders them by timestamp
+    previous_messages = Message.query.order_by('timestamp').filter(Message.conversation_id == conversation_id).all()
+
+
     return render_template('chat.html',
-                           name = f'{fname} {lname}')
+                           name = f'{fname} {lname}',
+                           previous_messages= previous_messages)
 
 # def messageReceived(methods=['GET', 'POST']):
 #     print('message received!')
