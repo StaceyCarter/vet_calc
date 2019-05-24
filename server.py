@@ -29,7 +29,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from werkzeug.utils import secure_filename
 
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, Namespace, join_room, leave_room, send, emit
 
 
 # Creates an instance of a Flask object
@@ -506,21 +506,15 @@ def check_or_create_conversation(user_id):
     lower = min(current_user.id, int(user_id))
     conversation = Conversation.query.filter((Conversation.messager_1 == bigger) & (Conversation.messager_2 == lower)).first()
 
-    print("\n\n\n\n CONVERSATION: ", conversation)
-
-    if conversation:
-        print("\n\n\n\n\n CONVO ALREADY HAPPENING!!!!!")
-        return redirect(f'/profile/{user_id}')
-
-    else:
+    if not conversation:
         new_convo = Conversation(messager_1=bigger,
                      messager_2=lower)
 
         db.session.add(new_convo)
         db.session.commit()
-        print(" \n\n\n\n\n COMMITTED ")
         return redirect(f'/')
 
+    ## This function needs to pass to another, unique chat window tied to this specific conversation.
 
 @app.route('/chat')
 def chat():
@@ -528,17 +522,44 @@ def chat():
     fname = current_user.fname
     lname = current_user.lname
 
-
     return render_template('chat.html',
                            name = f'{fname} {lname}')
 
-def messageReceived(methods=['GET', 'POST']):
-    print('message received!')
+# def messageReceived(methods=['GET', 'POST']):
+#     print('message received!')
+#
+# @socketio.on('my_event')
+# def handle_custom_event(json, methods=['GET', 'POST']):
+#     print('received event: ', str(json))
+#     emit('my_response', json, callback=messageReceived)
+#
+# @socketio.on('connect')
+# def test_connection():
+#     emit('my_response', {'message  ' : 'Connected'})
+#
+# @socketio.on('disconnect')
+# def test_disconnection():
+#     print('DISCONNECTED')
 
-@socketio.on('my_event')
-def handle_custom_event(json, methods=['GET', 'POST']):
-    print('received event: ', str(json))
-    socketio.emit('my_response', json, callback=messageReceived)
+@socketio.on('join')
+def on_join(data):
+    username = current_user.username
+    room = data['room']
+    print('\n\n\n\n\n\n\n ROOOOOMMMM: ', room)
+    join_room(room)
+    emit('my_response', {'data' : username + ' has entered the room.'}, room=room)
+
+@socketio.on('leave')
+def on_leave(data):
+    username = current_user.username
+    room = data['room']
+    leave_room(room)
+    send(username + ' has left the room.', room=room)
+
+
+
+
+
 
 
 
@@ -553,4 +574,5 @@ if __name__ == "__main__":
     # Use Debug Toolbar extension
     DebugToolbarExtension(app)
 
-    app.run()
+    # app.run()
+    socketio.run(app)
