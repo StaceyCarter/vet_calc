@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, session, flash, request, send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, ForkedDose, PersonalDose
+from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, ForkedDose, PersonalDose, Conversation
 
 from calculator import get_instructions, generate_instructions
 
@@ -29,9 +29,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from werkzeug.utils import secure_filename
 
+from flask_socketio import SocketIO
+
 
 # Creates an instance of a Flask object
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 # For Flask session - CHANGE THIS LATER!!!
 app.config['SECRET_KEY'] = 'key'
@@ -491,6 +494,52 @@ def see_following(user_id):
     return render_template("followers.html",
                            followers = followers,
                            user = user)
+
+@app.route('/profile/chat/<user_id>')
+def check_or_create_conversation(user_id):
+    """Checks if there is a chat history between the current user and the other user_id. If there is, it loads the history,
+    if there isn't it creates a row in the table. Users are assigned to messager1 or 2 depending on whose user is is larger.
+
+    """
+
+    bigger = max(current_user.id, int(user_id))
+    lower = min(current_user.id, int(user_id))
+    conversation = Conversation.query.filter((Conversation.messager_1 == bigger) & (Conversation.messager_2 == lower)).first()
+
+    print("\n\n\n\n CONVERSATION: ", conversation)
+
+    if conversation:
+        print("\n\n\n\n\n CONVO ALREADY HAPPENING!!!!!")
+        return redirect(f'/profile/{user_id}')
+
+    else:
+        new_convo = Conversation(messager_1=bigger,
+                     messager_2=lower)
+
+        db.session.add(new_convo)
+        db.session.commit()
+        print(" \n\n\n\n\n COMMITTED ")
+        return redirect(f'/')
+
+
+@app.route('/chat')
+def chat():
+
+    fname = current_user.fname
+    lname = current_user.lname
+
+
+    return render_template('chat.html',
+                           name = f'{fname} {lname}')
+
+def messageReceived(methods=['GET', 'POST']):
+    print('message received!')
+
+@socketio.on('my_event')
+def handle_custom_event(json, methods=['GET', 'POST']):
+    print('received event: ', str(json))
+    socketio.emit('my_response', json, callback=messageReceived)
+
 
 
 if __name__ == "__main__":
