@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %} My conversations {% endblock %}
+{% block content %}
+
+<h1> My conversations </h1>
+
+<ul>
+
+{% for convo in conversations %}
+
+    <li><a href="/profile/chat/{{ convo.user_2.id if current == convo.user_1.id else convo.user_1.id }}"> You and {{ convo.user_2.username if current == convo.user_1.id else convo.user_1.username }} </a></li>
+
+{% endfor %}
+
+</ul>
+
+{% endblock %}

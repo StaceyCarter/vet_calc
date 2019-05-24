@@ -29,7 +29,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from werkzeug.utils import secure_filename
 
-from flask_socketio import SocketIO, Namespace, join_room, leave_room, send, emit
+from flask_socketio import SocketIO, Namespace, join_room, leave_room, send, emit, rooms
 
 
 # Creates an instance of a Flask object
@@ -516,8 +516,6 @@ def check_or_create_conversation(user_id):
         # As soon as the conversation has been added to the database, query the database for the conversation.
         conversation = Conversation.query.filter((Conversation.messager_1 == bigger) & (Conversation.messager_2 == lower)).first()
 
-    print('\n\n\n\n\n\n CONVO ID: ', conversation.id)
-
     return redirect(f'/chat/messages/{conversation.id}')
 
     ## This function needs to pass to another, unique chat window tied to this specific conversation.
@@ -542,27 +540,22 @@ def chat(conversation_id):
                            name = f'{fname} {lname}',
                            previous_messages= previous_messages)
 
-# def messageReceived(methods=['GET', 'POST']):
-#     print('message received!')
-#
-# @socketio.on('my_event')
-# def handle_custom_event(json, methods=['GET', 'POST']):
-#     print('received event: ', str(json))
-#     emit('my_response', json, callback=messageReceived)
-#
-# @socketio.on('connect')
-# def test_connection():
-#     emit('my_response', {'message  ' : 'Connected'})
-#
-# @socketio.on('disconnect')
-# def test_disconnection():
-#     print('DISCONNECTED')
+@app.route('/conversations')
+def list_conversations():
+
+    conversations = Conversation.query.filter((Conversation.messager_1 == current_user.id) | (Conversation.messager_2 == current_user.id)).all()
+
+
+    return render_template('conversations.html',
+                           conversations=conversations,
+                           current=current_user.id)
+
 
 @socketio.on('join')
 def on_join(data):
     username = current_user.username
     room = data['room']
-    print('\n\n\n\n\n\n\n ROOOOOMMMM: ', room)
+
     join_room(room)
     emit('my_response', {'data' : username + ' has entered the room.'}, room=room)
 
@@ -581,6 +574,8 @@ def send_message(data):
     db.session.commit()
 
     room = data['room']
+
+    print("\n\n\n\n\n\n ROOOMS: ", rooms())
 
     # Sets the username to be the person who is logged in.
     data['username'] = current_user.username
