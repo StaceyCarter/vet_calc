@@ -549,6 +549,12 @@ def on_join(data):
     join_room(room)
     emit('my_response', {'data' : username + ' has entered the room.'}, room=room)
 
+@socketio.on('message')
+def send_message(data):
+    username = current_user.username
+    room = data['room']
+    emit('my_response', data, room=room)
+
 @socketio.on('leave')
 def on_leave(data):
     username = current_user.username
