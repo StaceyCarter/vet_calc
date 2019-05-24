@@ -1,6 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager
 from datetime import datetime
+from sqlalchemy import DateTime
+from sqlalchemy.sql import func
 
 
 db = SQLAlchemy()
@@ -119,12 +121,24 @@ class Conversation(db.Model):
                                  backref=db.backref('messager_2'),
                                  foreign_keys=[messager_2])
 
-
-
     def __repr__(self):
         """Represents a conversation object"""
 
         return f"<Conversation messager_1: {self.messager_1} messager_2: {self.messager_2}"
+
+
+class Message(db.Model):
+    """Stores all the messages that were transmitted between 2 users"""
+
+    __tablename__ = "messages"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    conversation_id = db.Column(db.Integer,
+                                db.ForeignKey('conversations.id'),
+                                nullable=False)
+    message_body = db.Column(db.String(500))
+    sender = db.Column(db.Integer, db.ForeignKey('users.id'))
+    timestamp = db.Column(db.DateTime, index=True, server_default=func.now())
 
 
 class Drug(db.Model):
