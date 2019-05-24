@@ -531,6 +531,12 @@ def chat(conversation_id):
     # Collects all previous messages with this conversation id and orders them by timestamp
     previous_messages = Message.query.order_by('timestamp').filter(Message.conversation_id == conversation_id).all()
 
+    unseen_messages = Message.query.filter((Message.conversation_id == conversation_id) & (Message.seen == False)).all()
+
+    for message in unseen_messages:
+        message.seen = True
+
+    db.session.commit()
 
     return render_template('chat.html',
                            name = f'{fname} {lname}',

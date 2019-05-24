@@ -142,7 +142,7 @@ class Message(db.Model):
     message_body = db.Column(db.String(500))
     sender = db.Column(db.Integer, db.ForeignKey('users.id'))
     timestamp = db.Column(db.DateTime, index=True, server_default=func.now())
-    seen = db.Column(db.Boolean)
+    seen = db.Column(db.Boolean, default=False)
 
     ## Relationships:
 
