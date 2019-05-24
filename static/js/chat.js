@@ -27,6 +27,6 @@ let form = $('form').on('submit', (e) => {
     console.log(msg)
     if ( typeof msg.username !== 'undefined'){
       $('h3').remove()
-      $('div.message_holder').append( '<div><b style="color: #000">' + msg.username + '</b> ' + msg.message + '</div>')
+      $('div.message_holder').append( '<p><b style="color: #000">' + msg.username + '</b>: ' + msg.message + '</p>')
     }
   })
