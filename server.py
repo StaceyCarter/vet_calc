@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, session, flash, request, send_from_directory
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, ForkedDose, PersonalDose, Conversation
+from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, ForkedDose, PersonalDose, Conversation, Message
 
 from calculator import get_instructions, generate_instructions
 
@@ -557,8 +557,21 @@ def on_join(data):
 
 @socketio.on('message')
 def send_message(data):
+    """Receives a message entered by a client in a chat room. Saves the message to the data base and then re-emits the
+    message to the rest of the chat room with the username set to whoever is logged in.
+
+    """
+    new_message = Message(
+        conversation_id = data['room'],
+        message_body = data['message'],
+        sender = current_user.id,
+    )
+    db.session.add(new_message)
+    db.session.commit()
+
     room = data['room']
-    # Sets the usesrname to be the person who is logged in.
+
+    # Sets the username to be the person who is logged in.
     data['username'] = current_user.username
     emit('my_response', data, room=room)
 
