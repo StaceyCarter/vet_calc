@@ -2,7 +2,7 @@
 {% block title %} Chat {% endblock %}
 {% block content %}
 
-    <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
+
     <div class="message_holder">
 {% for message in previous_messages %}
    <p><b>{{ message.sender_user.username }}</b>: {{ message.message_body }}</p>

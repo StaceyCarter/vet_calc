@@ -98,36 +98,6 @@ def get_drug_page(drug_id):
                            drug=drug,
                            saved_doses=saved_doses)
 
-@app.route('/adduser', methods=["POST"])
-def add_user():
-    """Renders a form to add a user to the database"""
-
-    email = request.form.get('email')
-    password = request.form.get('password')
-    fname = request.form.get('fname')
-    lname = request.form.get('lname')
-    username = request.form.get('username')
-
-
-    grad_year = request.form.get('gradYear')
-    speciality = request.form.get('specialty')
-    user_type = "vet"
-
-
-    user = User(email = email,
-                password = password,
-                fname = fname,
-                lname = lname,
-                username = username,
-                user_type = user_type
-                )
-
-    db.session.add(user)
-    db.session.commit()
-
-    flash("Welcome to the database!")
-
-    return redirect('/')
 
 @app.route('/register')
 def register_user():
@@ -178,9 +148,11 @@ def calculate_dose():
     #Concentration refers to concentration of a liquid formula or the strength of a tablet
     concentration = float(request.args.get("concentration"))
     form = request.args.get("form")
-    divide = int(request.args.get("divide"))
+    divide = int(request.args.get("divide") or 1)
 
     instruction_info = get_instructions(weight, dose, concentration, duration, frequency, form, divide)
+
+    print('\n\n\n\nINSTRUCTION_INFO: ', instruction_info)
 
     instructions = generate_instructions(instruction_info)
 
@@ -193,6 +165,7 @@ def prescribe(dose_id):
     """Presents the dose calculator, with fields regarding the dose prefilled."""
 
     dose = PersonalDose.query.get(dose_id)
+    print(dose)
 
     return render_template('prescribe.html',
                            dose=dose)
