@@ -1,11 +1,11 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, redirect, session, flash, request, send_from_directory
+from flask import Flask, render_template, redirect, session, flash, request, send_from_directory, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, SpeciesIndividual, Drug, Condition, SpeciesGroup, ForkedDose, PersonalDose, Conversation, Message
 
-from calculator import get_instructions, generate_instructions
+from calculator import get_instructions, generate_instructions, get_amount_ml_per_dose
 
 from dose_recommender import filter_dose_using_species
 
@@ -152,8 +152,6 @@ def calculate_dose():
 
     instruction_info = get_instructions(weight, dose, concentration, duration, frequency, form, divide)
 
-    print('\n\n\n\nINSTRUCTION_INFO: ', instruction_info)
-
     instructions = generate_instructions(instruction_info)
 
     return render_template("label_instructions.html",
@@ -169,6 +167,22 @@ def prescribe(dose_id):
 
     return render_template('prescribe.html',
                            dose=dose)
+
+@app.route('/get-amount-ml.json/<concentration>/<dose>/<weight>')
+def get_amount_ml(concentration, dose, weight):
+
+    doseF = float(dose)
+    weightF = float(weight)
+    concentrationF = float(concentration)
+
+    amount = get_amount_ml_per_dose(doseF, concentrationF, weightF)
+
+    data = {
+        'amount' : amount
+    }
+
+    return jsonify(data)
+
 
 
 @app.route('/login')
@@ -206,7 +220,7 @@ def profile():
     if current_user.pic:
         image = current_user.pic
     else:
-        image = 'file_name' #### REPLACE THIS WITH A DEFAULT PICTURE
+        image = 'jojo_default.JPG' #### REPLACE THIS WITH A DEFAULT PICTURE
 
 
 
@@ -242,9 +256,26 @@ def view_other_profile(user_id):
     users_doses = get_user_personal_doses(user.id)
     print(users_doses)
 
+    s3 = boto3.client('s3')
+
+    if user.pic:
+        image = user.pic
+    else:
+        image = 'jojo_default.JPG'
+
+
+
+    url = s3.generate_presigned_url('get_object',
+                                Params={
+                                    'Bucket': os.environ.get('S3_BUCKET'),
+                                    'Key': image,
+                                },
+                                ExpiresIn=3600)
+
     return render_template("other_user.html",
                            user=user,
-                           users_doses=users_doses)
+                           users_doses=users_doses,
+                           url=url)
 
 @app.route('/signup')
 def signup():
@@ -269,7 +300,7 @@ def signup_post():
                     fname=fname,
                     lname=lname,
                     username=username,
-                    password=generate_password_hash(password, method="pbkdf2:sha256", salt_length=8),
+                    password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8),
                     user_role=user_role)
 
     db.session.add(new_user)
@@ -303,7 +334,7 @@ def save_dose(drug_id):
                            drug=drug,
                            info=info)
 
-@app.route('/drug/add-preferred-dose/<drug_id>', methods=["POST"])
+@app.route('/drug/add-preferred-dose/<drug_id>', methods=['POST'])
 @login_required()
 def save_dose_post(drug_id):
 
@@ -360,7 +391,7 @@ def text_client(instructions):
 def add_pic():
     return render_template("add_pic.html")
 
-@app.route('/add-pic', methods=["POST"])
+@app.route('/add-pic', methods=['POST'])
 def upload_pic():
 
     s3 = boto3.resource('s3')
@@ -410,7 +441,7 @@ def fork_dose(dose_id):
 
     return redirect('/profile')
 
-@app.route('/follow/<user_id>', methods=["POST"])
+@app.route('/follow/<user_id>', methods=['POST'])
 @login_required()
 def follow(user_id):
     user = User.query.filter_by(id=user_id).first()
@@ -429,7 +460,7 @@ def follow(user_id):
 
     return redirect(f"/profile/{user_id}")
 
-@app.route('/unfollow/<user_id>', methods=["POST"])
+@app.route('/unfollow/<user_id>', methods=['POST'])
 @login_required()
 def unfollow(user_id):
 

@@ -1,8 +1,4 @@
 
-//import Weight, {KgOrLbs} from './weight'
-//import LiqOrTabs from './drug_form'
-//import Concentration from './drug_concentration'
-//import Divisions from './tablet_divisions'
 
 function Route(props) {
   return (
@@ -19,16 +15,6 @@ function Route(props) {
   )
 }
 
-
-function DosePicker(props){
-  return (
-    <div>
-      <label>
-        What dose do you want to use? (in mg/kg) <input type="number" name="dose" step="0.01" readOnly />
-      </label>
-    </div>
-  )
-}
 
 function Frequency(props){
   return(

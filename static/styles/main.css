@@ -9,3 +9,29 @@ h1 {
 .show {
   display : block;
 }
+
+
+.root {
+    width: 300,
+}
+
+.slider {
+    padding: '22px 0px',
+}
+
+.box {
+  height: 5%;
+  width : 100%;
+  background-color: blue;
+}
+
+.box-container {
+  transform: rotate(180deg);
+  height: 100px;
+  width: 40px;
+}
+
+.tablet-image-container{
+  height : 20%;
+  width : 20%;
+}

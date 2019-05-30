@@ -2,10 +2,39 @@
 <html>
 <head>
   <title>{% block title %}{% endblock %}</title>
+    <script src="https://unpkg.com/react/umd/react.production.js" crossorigin />
+
+<script
+  src="https://unpkg.com/react-dom/umd/react-dom.production.js"
+  crossorigin
+/>
+
+<script
+  src="https://unpkg.com/react-bootstrap@next/dist/react-bootstrap.min.js"
+  crossorigin
+/>
+
+<script>var Alert = ReactBootstrap.Alert;</script>
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
 
 </head>
+
+<nav>
+    {% if current_user.is_anonymous %}
+    <a href="/signup">Signup</a>
+    <a href="/login">Login</a>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    <a href="/logout">Logout</a>
+    <a href="/profile">My profile</a>
+    <a href="/pick-dose">Quick calculate</a>
+    <a href="/">Search drugs</a>
+    <a href="other-users">Search users</a>
+    <a href="conversations">Messages</a>
+    {% endif %}
+
+</nav>
 
 <body>
  {% with messages = get_flashed_messages() %}

@@ -38,13 +38,17 @@
 
 {% block javascript %}
 
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-    <script src="http://unpkg.com/babel-standalone"></script>
-    <script type="text/jsx" src={{ url_for('static', filename='js/weight.js') }} ></script>
-    <script type="text/jsx" src={{ url_for('static', filename='js/drug_form.js') }} ></script>
-    <script type="text/jsx" src={{ url_for('static', filename='js/drug_concentration.js') }} ></script>
-    <script type="text/jsx" src={{ url_for('static', filename='js/tablet_divisions.js') }} ></script>
-    <script type="text/jsx" src={{ url_for('static', filename='js/calculator_form.js') }} ></script>
+    <script>
+    const server = 'http://localhost:5000'
+    const jinja = {
+            lowerDose : {{ dose.dose_lower or "undefined" }},
+            upperDose : {{ dose.dose_upper or "undefined" }},
+            recommended : {{ dose.recommended_dose or "undefined" }},
+            frequency : {{ dose.frequency_hrs or "undefined" }},
+            duration : {{ dose.duration_days or "undefined" }}
+        }
+    </script>
+    <link rel="stylesheet" href="https://unpkg.com/react-rangeslider/umd/rangeslider.min.css" />
+    <script src={{ url_for('static', filename='js/dose_form.js') }} ></script>
 
 {% endblock %}

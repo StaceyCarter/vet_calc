@@ -115,6 +115,14 @@ def total_amount_needed(amount, duration, frequency):
     # Number of times per day * days of treatment * amount per each dose
     return 24 / frequency * duration * amount
 
+def get_amount_ml_per_dose(dose, concentration, weight):
+    """Gets the amount in ml required per dose"""
+
+    amount_in_mg = get_amount_in_mg(weight, dose)
+
+    return get_amount_in_ml(amount_in_mg, concentration)
+
+
 def get_instructions(weight, dose, concentration, duration, frequency, form, divide=1):
     """Take in arguments obtained from the input form and output a dictionary with points of interest.
 
