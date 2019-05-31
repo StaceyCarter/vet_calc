@@ -35,3 +35,15 @@ h1 {
   height : 20%;
   width : 20%;
 }
+
+.message {
+    color : red;
+}
+
+.other-user-sender {
+    background-color : green;
+}
+
+.current-user-sender {
+    background-color : purple;
+}

@@ -73,7 +73,7 @@ const trie = new Trie();
 search.addEventListener('keyup', () => {
 
     // Returns an array of words.
-    const nodes = trie.findWords(search.value);
+    const nodes = trie.findWords(search.value.toLowerCase());
 
     if (!nodes.length) return;
 

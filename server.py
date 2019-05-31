@@ -31,6 +31,8 @@ from werkzeug.utils import secure_filename
 
 from flask_socketio import SocketIO, Namespace, join_room, leave_room, send, emit, rooms
 
+from PIL import Image
+
 
 # Creates an instance of a Flask object
 app = Flask(__name__)
@@ -414,18 +416,9 @@ def upload_pic():
     user.pic = file.filename
     db.session.commit()
 
+
     s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=file.filename, Body=file)
-    # if "profile_pic" not in request.files:
-    #     return "Can't find file"
-    #
-    # file = request.files['profile_pic']
-    #
-    # if file.filename == "":
-    #     return "please select a file"
-    # else:
-    #     file.filename = secure_filename(file.filename)
-    #     output = upload_file_to_s3(file)
-    #     return str(output)
+
     return redirect('/profile')
 
 
@@ -582,10 +575,9 @@ def send_message(data):
 
     room = data['room']
 
-    print("\n\n\n\n\n\n ROOOMS: ", rooms())
-
     # Sets the username to be the person who is logged in.
     data['username'] = current_user.username
+    data['sender'] = current_user.id
     emit('my_response', data, room=room)
 
 @socketio.on('leave')
