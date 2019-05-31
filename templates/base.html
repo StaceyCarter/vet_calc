@@ -8,12 +8,14 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
 
     <!-- Font awesome -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
     
 </head>
 
     <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
-      <a class="navbar-brand" href="/profile">VetCalc</a>
+
+      <a class="navbar-brand" href="/profile"><i class="fas fa-stethoscope"></i> VetCalc </a>
+
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -21,10 +23,10 @@
         <div class="navbar-nav">
             {% if current_user.is_authenticated %}
           <a class="nav-item nav-link" href="/"><i class="fas fa-pills"></i> Drugs <span class="sr-only">(current)</span></a>
-          <a class="nav-item nav-link" href="/pick-dose">Calculate</a>
+          <a class="nav-item nav-link" href="/pick-dose"><i class="fas fa-calculator"></i>Calculate</a>
           <a class="nav-item nav-link" href="/other-users">Users</a>
-          <a class="nav-item nav-link" href="/conversations">Messages</a>
-          <a class="nav-item nav-link mr-auto" href="/profile">Profile</a>
+          <a class="nav-item nav-link" href="/conversations"><i class="fas fa-comment-medical"></i>Messages</a>
+          <a class="nav-item nav-link mr-auto" href="/profile"><i class="fas fa-user-md"></i>Profile</a>
           <a class="nav-item nav-link mr-auto" href="/logout">Logout</a>
           {% endif %}
           {% if current_user.is_anonymous %}

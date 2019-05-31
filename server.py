@@ -578,6 +578,7 @@ def send_message(data):
     # Sets the username to be the person who is logged in.
     data['username'] = current_user.username
     data['sender'] = current_user.id
+
     emit('my_response', data, room=room)
 
 @socketio.on('leave')

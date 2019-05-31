@@ -41,9 +41,16 @@ h1 {
 }
 
 .other-user-sender {
-    background-color : green;
+    background-color : rgb(0,166,153, 0.3);
 }
 
 .current-user-sender {
-    background-color : purple;
+    background-color : rgb(118,118,118, 0.3);
 }
+
+.sent-message {
+    padding : 1%;
+    margin : 2%;
+    border-radius : 6px
+}
+
