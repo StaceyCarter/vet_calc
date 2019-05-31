@@ -94,14 +94,14 @@ search.addEventListener('keyup', () => {
 fetch('/get-drug-names')
     .then((res) => {
         return res.json();
-        console.log(typeof res)
+        
     })
     .then((data) => {
         // adds all the drug names to the trie
         for(let drug of Object.keys(data)){
             drug = drug.toLowerCase()
             trie.add(drug)
-            console.log("ADDED THIS DRUG: ", drug)
+           
         }
         for (let drug of Object.keys(data)){
             l = document.createElement('li')

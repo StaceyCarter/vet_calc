@@ -48,7 +48,7 @@
             duration : {{ dose.duration_days or "undefined" }}
         }
     </script>
-    <link rel="stylesheet" href="https://unpkg.com/react-rangeslider/umd/rangeslider.min.css" />
-    <script src={{ url_for('static', filename='js/dose_form.js') }} ></script>
+    <link rel="stylesheet" src={{ url_for('static', filename='dist/dose_form.js') }} />
+    <script src={{ url_for('static', filename='dist/dose_form.js') }} ></script>
 
 {% endblock %}

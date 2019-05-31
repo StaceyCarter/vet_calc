@@ -65,12 +65,15 @@ def login_required(role="user"):
     return wrapper
 
 
-
+@app.route('/<path:path>')
+def send_image(path):
+    return send_from_directory('static', path)
 
 
 @app.route('/')
 def index():
     """Renders the homepage"""
+
     return render_template("homepage.html")
 
 @app.route('/get-drug-names')
@@ -591,6 +594,8 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
     send(username + ' has left the room.', room=room)
+
+
 
 
 
