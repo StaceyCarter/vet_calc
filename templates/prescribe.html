@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block title %} Calculate a dose {% endblock %}
+
+{% block customcss %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/rangeslider.css') }}">
+
+{% endblock %}
+
 {% block content %}
 
 <h1>Prescribe</h1>

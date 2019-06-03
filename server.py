@@ -385,10 +385,14 @@ def delete_dose(dose_id):
     flash("dose has been deleted")
     return redirect(f'/drug/{drug_id}')
 
-@app.route('/text-client/<instructions>')
-def text_client(instructions):
+@app.route('/text-client', methods=['POST'])
+def text_client():
 
-    send_message(instructions)
+    data = request.get_json()
+
+    print(data)
+
+    # send_message(instructions)
 
     return redirect("/")
 
