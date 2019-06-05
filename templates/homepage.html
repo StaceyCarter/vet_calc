@@ -2,6 +2,11 @@
 {% block title %} VetCalc {% endblock %}
 {% block content %}
 
+{% block customcss %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+{% endblock %}
 
 
 <h1>Search drugs</h1>

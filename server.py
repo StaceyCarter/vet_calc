@@ -1,3 +1,5 @@
+#organize by who wrote these
+
 from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, redirect, session, flash, request, send_from_directory, jsonify
@@ -32,6 +34,8 @@ from werkzeug.utils import secure_filename
 from flask_socketio import SocketIO, Namespace, join_room, leave_room, send, emit, rooms
 
 from PIL import Image
+
+# from pprint import pprint as print
 
 
 # Creates an instance of a Flask object
@@ -84,7 +88,7 @@ def get_drug_names():
 
     drug_dict = get_list_of_drugs()
 
-    drugs = json.dumps(drug_dict)
+    drugs = json.dumps(drug_dict) #change to jsonify
 
     return drugs
 
@@ -397,7 +401,7 @@ def text_client():
 
     send_text_func(instructions, phone)
 
-    return redirect("/")
+    return redirect("/") #FIX
 
 @app.route('/add-pic')
 def add_pic():
@@ -525,7 +529,6 @@ def check_or_create_conversation(user_id):
 
     return redirect(f'/chat/messages/{conversation.id}')
 
-    ## This function needs to pass to another, unique chat window tied to this specific conversation.
 
 @app.route('/chat/messages/<conversation_id>')
 def chat(conversation_id):
@@ -534,8 +537,9 @@ def chat(conversation_id):
     lname = current_user.lname
 
     # Collects all previous messages with this conversation id and orders them by timestamp
-    previous_messages = Message.query.order_by('timestamp').filter(Message.conversation_id == conversation_id).all()
+    previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(Message.conversation_id == conversation_id).paginate(1, 10, False)
 
+    # Sets all unseen messages to seen on page load.
     unseen_messages = Message.query.filter((Message.conversation_id == conversation_id) & (Message.seen == False)).all()
 
     for message in unseen_messages:
@@ -545,9 +549,47 @@ def chat(conversation_id):
 
     return render_template('chat.html',
                            name = f'{fname} {lname}',
-                           previous_messages= previous_messages)
+                           previous_messages= reversed(previous_messages.items))
 
-@app.route('/conversations')
+@app.route('/chat/messages/<conversation_id>/<page>.json')
+def load_more_messages(conversation_id, page):
+    """Infinite scroll function """
+
+
+    print("\n\n\n\n PAGE: ", page)
+
+    print("\n\n\n\n CHAT ID: ", conversation_id)
+    pageInt = int(page)
+
+    previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(
+        Message.conversation_id == conversation_id).paginate(pageInt, (pageInt + 10), False)
+
+    print("\n\n\n PREVIOUS: ", previous_messages.items) # gives a list of message objects
+
+    print("\n\n\n CURRENT USER ID: ", current_user.id)
+    print("\n\n\n CURRENT USERNAME: ", current_user.username)
+
+
+    message_json = {
+        'currentUser' : str(current_user.id),
+        'username' : str(current_user.username)
+    }
+
+    # message_json['currentUser'] = current_user.id
+    # message_json['username'] = current_user.username
+
+    i = 0
+    for message in reversed(previous_messages.items):
+        key = str(i)
+        username = message.sender_user.username
+        message_json[key] = [message.sender, username, message.message_body]
+        i += 1
+
+    print("\n\n\n\n JSONIFY: ", (message_json))
+
+    return jsonify(message_json)
+
+@app.route('/conversations/chat/messages/<conversation_id>/<page>')
 def list_conversations():
 
     conversations = Conversation.query.filter((Conversation.messager_1 == current_user.id) | (Conversation.messager_2 == current_user.id)).all()

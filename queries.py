@@ -42,7 +42,7 @@ def get_user_doses_for_drug(id, drug_id):
     for dose in doses:
         dose_info = extract_dose_info(dose)
 
-        info.append(dose_info)
+        info.append(dose_info) #list comp
 
     return info
 

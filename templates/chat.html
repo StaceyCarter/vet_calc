@@ -8,10 +8,6 @@
 
 {% endblock %}
 
-
-
-
-
 {% block content %}
 
 
@@ -26,19 +22,21 @@
 {% endfor %}
 
 
-
+    </div>
     <form action="" method="POST">
       <input type="text" class="message" placeholder="Messages"/>
       <input type="submit"/>
     </form>
-    </div>
+    
     </div>
 
 {% endblock %}
 
 {% block javascript %}
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script> const currentUser = {{current_user.id}} </script>
     <script src={{ url_for('static', filename='js/chat.js') }}></script>
