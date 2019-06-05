@@ -537,7 +537,7 @@ def chat(conversation_id):
     lname = current_user.lname
 
     # Collects all previous messages with this conversation id and orders them by timestamp
-    previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(Message.conversation_id == conversation_id).paginate(1, 10, False)
+    previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(Message.conversation_id == conversation_id).paginate(page=1, per_page=10, error_out=False)
 
     # Sets all unseen messages to seen on page load.
     unseen_messages = Message.query.filter((Message.conversation_id == conversation_id) & (Message.seen == False)).all()
@@ -559,10 +559,11 @@ def load_more_messages(conversation_id, page):
     print("\n\n\n\n PAGE: ", page)
 
     print("\n\n\n\n CHAT ID: ", conversation_id)
+
     pageInt = int(page)
 
     previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(
-        Message.conversation_id == conversation_id).paginate(pageInt, (pageInt + 10), False)
+        Message.conversation_id == conversation_id).paginate(page=pageInt, per_page=10, error_out=False)
 
     print("\n\n\n PREVIOUS: ", previous_messages.items) # gives a list of message objects
 
@@ -579,7 +580,7 @@ def load_more_messages(conversation_id, page):
     # message_json['username'] = current_user.username
 
     i = 0
-    for message in reversed(previous_messages.items):
+    for message in previous_messages.items:
         key = str(i)
         username = message.sender_user.username
         message_json[key] = [message.sender, username, message.message_body]
