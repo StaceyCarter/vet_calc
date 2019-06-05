@@ -7,7 +7,8 @@ auth_token = os.environ.get('TWILIO_TOKEN')
 
 client = Client(account_sid, auth_token)
 
-def send_message(instructions, phone='+14153413561'):
+def send_text_func(instructions, phone="+4153413561"):
+    print("CALLING SEND MESSAGE")
     message = client.messages \
                     .create(
                          body=instructions,

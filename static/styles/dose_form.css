@@ -1,0 +1,155 @@
+.box {
+  height: 5%;
+  width : 100%;
+  background-color: rgb(252, 100, 45, 0.7);
+  position : absolute;
+  bottom : 0;
+}
+
+
+.box-container {
+  position: absolute;
+  bottom: 0;
+  height: 250px;
+  width: 250px;
+  z-index: -1;
+  -webkit-clip-path: polygon(64% 10%, 90% 33%, 78% 50%, 61% 67%, 42% 81%, 18% 60%, 36% 39%);
+  clip-path: polygon(64% 10%, 90% 33%, 78% 50%, 61% 67%, 42% 81%, 18% 60%, 36% 39%);
+}
+
+.syringe {
+  display: block;
+  height: 250px;
+  width: 250px;
+}
+
+.syringe-fill-container {
+   position: relative;
+}
+
+.hide {
+  display : none;
+}
+
+.tablet-image-container{
+  height : 30%;
+  width : 30%;
+  margin: auto;
+}
+
+.tablet-amount-container{
+  height : 20%;
+  width : 80%;
+}
+
+.tablet-amount {
+  height : 20%;
+  width : 20%;
+  display : inline-block;
+}
+
+.amount-container{
+  display : inline;
+}
+
+.label {
+  padding: 5%;
+  margin: 5% 15%;
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px grey;
+  border: 1px solid grey;
+}
+
+label {
+  padding : 1%;
+  font-family: 'Raleway', sans-serif;
+}
+
+.text-edit-buttons {
+  margin: 5px;
+}
+
+#amount-text{
+  font-size: 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  font-weight: bold;
+}
+
+.drugform-icon {
+  font-size : 5rem;
+}
+
+.liquid, .tablet {
+  display: inline-block;
+  text-align: center;
+}
+
+.liquid:hover, .tablet:hover, .dose-mgkg:hover {
+  cursor: pointer;
+}
+
+.label-instructions-header{
+  font-size : 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.active{
+  color : rgb(0, 166, 153, 0.7);
+}
+
+.inactive{
+  color: #767676;
+}
+
+.dose-mgkg{
+  font-size: 2rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  width: 20%;
+  display: block;
+  margin: auto;
+}
+
+.kg-lb-button {
+  border-radius: 0px;
+}
+
+.concentration-unit {
+  padding : 1%;
+  font-family: 'Raleway', sans-serif;
+}
+
+.popup-content {
+  height: 50%;
+}
+
+.popup-input {
+  display: block;
+  margin: 4% 0%;
+}
+
+.q-freq {
+  font-size : 1.5rem;
+  margin: 1.5%;
+}
+
+.q-freq-hrs {
+  display: inline-block;
+}
+
+.duration-block, .frequency-block {
+  margin-bottom: 3%;
+}
+
+.freq-label, .dur-label {
+  padding: 3% 0%;
+}
+
+.label-text {
+  font-family: 'PT Mono', monospace;
+}
+
+#frequency-hours {
+  width: 100px;
+}

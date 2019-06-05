@@ -11,7 +11,7 @@ from dose_recommender import filter_dose_using_species
 
 from queries import get_list_of_drugs, get_user_doses_for_drug, get_user_personal_doses, get_user_forked_doses
 
-from send_text import send_message
+from send_text import send_text_func
 
 from helpers import upload_file_to_s3
 
@@ -385,14 +385,17 @@ def delete_dose(dose_id):
     flash("dose has been deleted")
     return redirect(f'/drug/{drug_id}')
 
-@app.route('/text-client', methods=['POST'])
+@app.route('/text-client.json', methods=['POST'])
 def text_client():
 
     data = request.get_json()
 
-    print(data)
+    phone = '+1' + data['phone']
+    instructions = data['instructions']
 
-    # send_message(instructions)
+    print("\n\n\n PHONE: ", phone)
+
+    send_text_func(instructions, phone)
 
     return redirect("/")
 

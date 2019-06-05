@@ -4,6 +4,15 @@
 {% block customcss %}
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/rangeslider.css') }}">
+<link rel="stylesheet" type="text/css" href={{ url_for('static', filename='styles/dose_form.css') }} />
+
+ <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="main.css">
 
 {% endblock %}
 
@@ -11,35 +20,10 @@
 
 <h1>Prescribe</h1>
 
-<form action="/calculate-dose">
 
-    Patient's weight in kg? <input type="number" name="weight" step="0.01" required> <br>
-
-    lower dose (in mg/kg) <input type="number" name="lower" step="0.01" value="{{ dose.dose_lower }}"> <br>
-    upper dose (in mg/kg) <input type="number" name="upper" step="0.01" value="{{ dose.dose_upper }}"> <br>
-    recommended dose (in mg/kg) <input type="number" name="rec" step="0.01" value="{{ dose.recommended_dose }}"> <br>
-
-    What dose do you want to use? (in mg/kg) <input type="number" name="dose" step="0.01" required> <br>
-
-    Are you using liquid or tablets/chews/capsules?<br>
-
-    <input type="radio" name="form" value="liq"> Liquid <br>
-    <input type="radio" name="form" value="tab"> Tablet <br>
-
-    If you're using a liquid, what concentration or strenght of tablet are you using? <input type="number" name="concentration" step="0.01"> mg/ml or mg <br>
-
-    If you're using tablets, into how many pieces do you want to divide them? <input type="number" name="divide"> pieces <br>
-
-    How often would you like to give it? q <input type="number" name="frequency" value="{{ dose.frequency_hrs }}" required>hrs <br>
-
-    How long do you want to give it for? <input type="number" name="duration" value="{{ dose.duration_days }}"required> days <br>
-
-    <input type="submit">
-
-</form>
-
-<h1>React test: </h1>
-<div id="root"></div>
+<div class="col-md-8 offset-md-2">
+    <div id="root"></div>
+</div>
 
 {% endblock %}
 
@@ -48,14 +32,16 @@
     <script>
     const server = 'http://localhost:5000'
     const jinja = {
+            drug : '{{ dose.drug.generic_name or "undefined" }}',
             lowerDose : {{ dose.dose_lower or "undefined" }},
             upperDose : {{ dose.dose_upper or "undefined" }},
             recommended : {{ dose.recommended_dose or "undefined" }},
             frequency : {{ dose.frequency_hrs or "undefined" }},
-            duration : {{ dose.duration_days or "undefined" }}
+            duration : {{ dose.duration_days or "undefined" }},
         }
     </script>
-    <link rel="stylesheet" src={{ url_for('static', filename='dist/dose_form.js') }} />
+
+
     <script src={{ url_for('static', filename='dist/dose_form.js') }} ></script>
 
 {% endblock %}
