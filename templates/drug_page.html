@@ -38,9 +38,9 @@
         {% if 'recommended' in dose %}
             <li> Recommended: {{ dose['recommended'] }}mg/kg </li>
         {% endif %}
-            <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
+            
         {% if 'lower' in dose and 'upper' in dose %}
-
+            <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
         {% endif %}
 
         <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>

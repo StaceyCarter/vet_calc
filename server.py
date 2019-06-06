@@ -103,6 +103,8 @@ def get_drug_page(drug_id):
 
     saved_doses = get_user_doses_for_drug(user, drug_id)
 
+    print("\n\n\n\n saved_doses: ", saved_doses)
+
     drug = Drug.query.get(drug_id)
 
     return render_template("drug_page.html",
