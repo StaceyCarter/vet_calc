@@ -11,7 +11,7 @@ from calculator import get_instructions, generate_instructions, get_amount_ml_pe
 
 from dose_recommender import filter_dose_using_species
 
-from queries import get_list_of_drugs, get_user_doses_for_drug, get_user_personal_doses, get_user_forked_doses
+from queries import get_list_of_drugs, get_user_doses_for_drug, get_user_personal_doses, get_user_forked_doses, get_vet_grad_and_specialty
 
 from send_text import send_text_func
 
@@ -223,6 +223,15 @@ def profile():
     fname = current_user.fname
     lname = current_user.lname
 
+    user = current_user
+    following = len(user.followed.all())
+    followers = len(user.followers.all())
+
+    grad_spec = get_vet_grad_and_specialty(user)
+
+    if user.user_role == "vet":
+        specialty = current_user
+
     users_doses = get_user_personal_doses(current_user.id)
     forked_doses = get_user_forked_doses(current_user.id)
 
@@ -242,13 +251,24 @@ def profile():
                                 },
                                 ExpiresIn=3600)
 
+    drugs = [drug.lower() for drug in users_doses]
+
+    for drug in forked_doses:
+        drugs.append(drug.lower())
+
+    drugs = list(set(drugs))
 
     return render_template('profile.html',
                            fname=fname,
                            lname=lname,
                            users_doses = users_doses,
                            forked_doses = forked_doses,
-                           url = url)
+                           url = url,
+                           user = user,
+                           grad_spec = grad_spec,
+                           following = following,
+                           followers = followers,
+                           drugs = drugs)
 
 @app.route('/other-users')
 def other_users():
@@ -497,7 +517,7 @@ def unfollow(user_id):
     return redirect(f"/profile/{user_id}")
 
 @app.route('/profile/following/<user_id>')
-def see_followers(user_id):
+def see_following(user_id):
 
     user = User.query.get(user_id)
 
@@ -508,7 +528,7 @@ def see_followers(user_id):
                            user = user)
 
 @app.route('/profile/followers/<user_id>')
-def see_following(user_id):
+def see_followers(user_id):
 
     user = User.query.get(user_id)
 

@@ -114,6 +114,28 @@ def get_user_forked_doses(user_id):
 
     return forked_drug_info
 
+def get_vet_grad_and_specialty(user):
+    """Takes in a user object and tries to access the grad year"""
+
+    vet_obj = user.vet
+
+    try:
+        grad_year = vet_obj.grad_year
+    except AttributeError:
+
+        grad_year = None
+
+    try:
+        specialty = vet_obj.specialty
+    except AttributeError:
+        specialty = None
+
+    return {
+        'grad_year' : grad_year,
+        'specialty' : specialty
+    }
+
+
 
 if __name__ == "__main__" :
     from server import app
