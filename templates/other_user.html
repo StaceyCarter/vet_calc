@@ -38,19 +38,34 @@
               </p>
       
               <p>If vet: .. specialty and special interest with option to add. </p>
-              
-              <form action="/follow/{{ user.id }}" id="follow" method="POST">
+
+             
+              {% if is_following %}
+
+              <form action="/follow/{{ user.id }}" id="follow" class="hide" method="POST">
                 <input type="submit" value="follow"></form>
                 <form action="/unfollow/{{ user.id }}" id="unfollow" method="POST">
                 <input type="submit" value="unfollow"></form>
+                
+                {% else %}
 
-                    <p>{{ is_following }}</p>
+                <form action="/follow/{{ user.id }}" id="follow" method="POST">
+                    <input type="submit" value="follow"></form>
+                    <form action="/unfollow/{{ user.id }}" id="unfollow" class="hide" method="POST">
+                    <input type="submit" value="unfollow"></form>
+
+                {% endif %}
+
+                <div id="follow-div">
               <form action="following/{{ user.id }}">
                   <button type="submit" id="following"> Following ({{ following }})</button>
               </form>
+              
               <form action="followers/{{ user.id }}">
                   <button type="submit" id="followers"> Followers ({{ followers }})</button>
               </form>
+
+            </div>
 
               <a href="chat/{{ user.id }}">Message {{ user.fname.title() }}</a>
           </div>
@@ -106,13 +121,26 @@
 
     follow.addEventListener('submit', (evt) => {
         evt.preventDefault()
-        console.log("submitted")
+        
+        $.post('/follow/{{ user.id }}', () => {
+            // console.log(message)
+            $('#follow-div').load(document.URL + ' #follow-div')
+            $('#follow').addClass("hide")
+            $('#unfollow').removeClass("hide")
+        })
     })
 
     unfollow.addEventListener('submit', (evt) => {
         evt.preventDefault()
-        console.log("submitted")
+
+        $.post('/unfollow/{{ user.id }}', () => {
+            // console.log(message)
+            $('#follow-div').load(document.URL + ' #follow-div')})
+            $('#follow').removeClass("hide")
+            $('#unfollow').addClass("hide")
     })
+
+
 
     let drugs = {{ drugs|safe }}
 </script>

@@ -498,16 +498,16 @@ def follow(user_id):
     user = User.query.filter_by(id=user_id).first()
 
     if user == None:
-        flash('User not found')
-        return redirect("/")
+        return jsonify("User not found")
     if user == current_user:
-        flash("You can't follow yourself")
-        return redirect('/profile')
+        return jsonify("You can't follow yourself")
 
     current_user.follow(user)
     db.session.commit()
 
-    return redirect(f"/profile/{user_id}")
+    return jsonify("You have followed")
+
+
 
 @app.route('/unfollow/<user_id>', methods=['POST'])
 @login_required()
@@ -516,15 +516,12 @@ def unfollow(user_id):
     user = User.query.filter_by(id=user_id).first()
 
     if user == None:
-        flash('User not found')
-        return redirect("/")
+        return jsonify("user not found")
 
     current_user.unfollow(user)
     db.session.commit()
 
-    flash(f"You unfollowed {user.fname}")
-
-    return redirect(f"/profile/{user_id}")
+    return jsonify("You have unfollowed")
 
 @app.route('/profile/following/<user_id>')
 def see_following(user_id):
