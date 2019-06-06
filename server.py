@@ -35,6 +35,8 @@ from flask_socketio import SocketIO, Namespace, join_room, leave_room, send, emi
 
 from PIL import Image
 
+import io
+
 # from pprint import pprint as print
 
 
@@ -412,7 +414,17 @@ def upload_pic():
 
     s3 = boto3.resource('s3')
 
-    file = request.files['profile_pic']
+    pic_from_user = request.files['profile_pic']
+
+
+    image = Image.open(pic_from_user)
+    image.thumbnail([200, 200])
+
+    in_mem_file = io.BytesIO()
+
+    image.save(in_mem_file, format='JPEG', quality=95)
+
+    file = in_mem_file.getvalue()
 
     # Rename file for unique storage
     user = User.query.get(current_user.id)
@@ -420,15 +432,15 @@ def upload_pic():
     if user.pic:
         link = user.pic.split('_')
         num = int(link[-1])
-        file.filename = f'{current_user.email}_profilepic_{num + 1}'
+        filename = f'{current_user.email}_profilepic_{num + 1}'
     else:
-        file.filename = f'{current_user.email}_profilepic_1'
+        filename = f'{current_user.email}_profilepic_1'
 
-    user.pic = file.filename
+    user.pic = filename
     db.session.commit()
 
 
-    s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=file.filename, Body=file)
+    s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=filename, Body=file)
 
     return redirect('/profile')
 
@@ -590,7 +602,7 @@ def load_more_messages(conversation_id, page):
 
     return jsonify(message_json)
 
-@app.route('/conversations/chat/messages/<conversation_id>/<page>')
+@app.route('/conversations')
 def list_conversations():
 
     conversations = Conversation.query.filter((Conversation.messager_1 == current_user.id) | (Conversation.messager_2 == current_user.id)).all()
