@@ -39,12 +39,12 @@
       
               <p>If vet: .. specialty and special interest with option to add. </p>
               
-              <form action="/follow/{{ user.id }}" method="POST">
+              <form action="/follow/{{ user.id }}" id="follow" method="POST">
                 <input type="submit" value="follow"></form>
-                <form action="/unfollow/{{ user.id }}" method="POST">
+                <form action="/unfollow/{{ user.id }}" id="unfollow" method="POST">
                 <input type="submit" value="unfollow"></form>
 
-
+                    <p>{{ is_following }}</p>
               <form action="following/{{ user.id }}">
                   <button type="submit" id="following"> Following ({{ following }})</button>
               </form>
@@ -100,8 +100,21 @@
 {% block javascript %}
 
 <script>
-    let drugs = {{ drugs|safe }}
 
+    follow = document.getElementById('follow')
+    unfollow = document.getElementById('unfollow')
+
+    follow.addEventListener('submit', (evt) => {
+        evt.preventDefault()
+        console.log("submitted")
+    })
+
+    unfollow.addEventListener('submit', (evt) => {
+        evt.preventDefault()
+        console.log("submitted")
+    })
+
+    let drugs = {{ drugs|safe }}
 </script>
 
 <script src={{ url_for('static', filename='js/profile.js') }}></script>

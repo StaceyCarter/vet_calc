@@ -287,6 +287,8 @@ def view_other_profile(user_id):
     following = len(user.followed.all())
     followers = len(user.followers.all())
 
+    is_following = current_user.is_following(user)
+
     users_doses = get_user_personal_doses(user.id)
     print(users_doses)
 
@@ -315,7 +317,8 @@ def view_other_profile(user_id):
                            url=url,
                            following=following,
                            followers=followers,
-                           drugs=drugs)
+                           drugs=drugs,
+                           is_following=is_following)
 
 @app.route('/signup')
 def signup():
@@ -503,8 +506,6 @@ def follow(user_id):
 
     current_user.follow(user)
     db.session.commit()
-
-    flash(f"You're now following {user.fname}")
 
     return redirect(f"/profile/{user_id}")
 
