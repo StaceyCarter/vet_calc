@@ -1,19 +1,49 @@
 {% extends 'base.html' %}
 {% block title %} Other users {% endblock %}
+
+{% block customcss%}
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+<script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+{% endblock %}
+
 {% block content %}
 
 <h1>Other users</h1>
 
+Search drugs:
+<input type="text" placeholder="search..." id="search">
+<div id="results">
+<div id="results">
 <ul>
 
 {% for user in users %}
 
     {% if user.id != current %}
-    <a href="/profile/{{ user.id }}"><li>{{ user.fname }} {{ user.lname }} </li></a>
+    <a href="/profile/{{ user.id }}"><li id="{{ user.username }}" data-fname="{{ user.fname }}" data-lname="{{ user.lname }}" class="show hide user-name">{{ user.fname }} {{ user.lname }} </li></a>
     {% endif %}
 
 {% endfor %}
 
 </ul>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<script> const users = {{ users_info |safe }} </script>
+<script src={{ url_for('static', filename='js/other_users.js') }}></script>
 
 {% endblock %}

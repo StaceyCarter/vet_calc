@@ -277,9 +277,12 @@ def other_users():
 
     users = User.query.all()
 
+    users_info = [[user.username, user.fname, user.lname] for user in users]
+
     return render_template("other_users.html",
                            users=users,
-                           current=current_user.id)
+                           current=current_user.id,
+                           users_info=users_info)
 
 @app.route('/profile/<user_id>')
 def view_other_profile(user_id):
