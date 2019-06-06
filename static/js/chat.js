@@ -16,21 +16,37 @@ function loadMessages(){
     console.log("calling load messages")
     // Sent request to server to retrieve the next 10 messages
     // prepend the next 10 messages to the message_holder.
-    $.get(`/chat/messages/${chatID}/${page}.json`, (data) => {
-        console.log(data)
+
+    if (!($('.loader').length)){
+        console.log("running no load")
+        $('div.message_holder').prepend(
+        '<div class="loader fa-3x"> <i class="fas fa-spinner fa-spin"></i> </div>')
+    }
+
+    setTimeout(ajaxForMessages, 1000)
+
+}
+
+function ajaxForMessages(){
+    $.get(`/chat/messages/${chatID}/${page}.json`, (data) => {appendPrevMessages(data)})
 
     page = page + 1
+}
 
-    console.log(page)
+function appendPrevMessages(data){
+
+    if (Object.keys(data).length === 2 && !($(".no-messages").length)){
+        $('div.message_holder').prepend('<p class="no-messages"> No more messages </p>')
+    }
 
         // loops through the number keys in the json object and prepends them to the page.
         for (let item of Object.keys(data)){
             if (!isNaN(parseInt(item))){
-
                 $('div.message_holder').prepend( `<div class="sent-message ${ data['currentUser'] == data[item][0] ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b style="color: #000">` + data[item][1] + '</b>: ' + data[item][2] + '</div>')
             }
         }
-    })
+
+    $(".loader").remove()
 }
 
 socket.on('connect', () => {
