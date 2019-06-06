@@ -284,6 +284,9 @@ def view_other_profile(user_id):
 
     user = User.query.get(user_id)
 
+    following = len(user.followed.all())
+    followers = len(user.followers.all())
+
     users_doses = get_user_personal_doses(user.id)
     print(users_doses)
 
@@ -303,10 +306,16 @@ def view_other_profile(user_id):
                                 },
                                 ExpiresIn=3600)
 
+    drugs = [drug.lower() for drug in users_doses]
+
+
     return render_template("other_user.html",
                            user=user,
                            users_doses=users_doses,
-                           url=url)
+                           url=url,
+                           following=following,
+                           followers=followers,
+                           drugs=drugs)
 
 @app.route('/signup')
 def signup():

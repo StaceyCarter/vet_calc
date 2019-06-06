@@ -76,8 +76,7 @@ search.addEventListener('keyup', () => {
     // Returns an array of possible words.
     const nodes = trie.findWords(search.value.toLowerCase());
 
-    console.log(nodes)
-
+    //if any matching words were found in the trie:
     if (!nodes.length) return;
 
     all = document.querySelectorAll('.drug-name')

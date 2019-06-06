@@ -97,7 +97,7 @@ messages = get_flashed_messages() %} {% if messages %}
 
     <ul>
       {% for drug in forked_doses %}
-
+      <div id="{{ drug.lower() }}" class="hide show drug-name">
       <li>
         <h3>{{ drug }}</h3>
       </li>
@@ -116,7 +116,9 @@ messages = get_flashed_messages() %} {% if messages %}
 
         <li>Forked from {{ dose["creator"] }}</li>
       </ul>
-      {% endfor %} {% endfor %}
+      {% endfor %} 
+    </div>
+      {% endfor %}
     </ul>
   </div>
 </div>

@@ -1,54 +1,109 @@
 {% extends 'base.html' %}
 {% block title %} {{ user.fname }} {{ user.lname }} {% endblock %}
+
+{% block customcss%}
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+<script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+
+{% endblock %}
+
 {% block content %}
 
-<h1> {{ user.fname }} {{ user.lname }} </h1>
+<div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <img src="{{ url }}" alt="Profile picture" />
+          </div>
+          <div class="col-sm-6">
+              <h1>{{ user.fname.title() }} {{ user.lname.title() }}</h1>
+              <p> @{{ user.username }} </p>
+              <p> {{ "DVM" if user.user_role == 'vet' else "Vet nurse" }}
+              {% if user.user_role == 'vet' %}
+                  <i class="fas fa-user-md"></i>
+              {% else %}
+              <i class="fas fa-user-nurse"></i>
+              {% endif %}
+              </p>
+      
+              <p>If vet: .. specialty and special interest with option to add. </p>
+              
+              <form action="/follow/{{ user.id }}" method="POST">
+                <input type="submit" value="follow"></form>
+                <form action="/unfollow/{{ user.id }}" method="POST">
+                <input type="submit" value="unfollow"></form>
 
-<img src="{{ url }}" alt="Profile pic" height="20%" width="20%">
 
-<form action="/follow/{{ user.id }}" method="POST">
-<input type="submit" value="follow"></form>
-<form action="/unfollow/{{ user.id }}" method="POST">
-<input type="submit" value="unfollow"></form>
+              <form action="following/{{ user.id }}">
+                  <button type="submit" id="following"> Following ({{ following }})</button>
+              </form>
+              <form action="followers/{{ user.id }}">
+                  <button type="submit" id="followers"> Followers ({{ followers }})</button>
+              </form>
 
-<a href="followers/{{ user.id }}">Followers</a>
-<a href="following/{{ user.id }}">Following</a>
+              <a href="chat/{{ user.id }}">Message {{ user.fname.title() }}</a>
+          </div>
+      
+        </div>
 
-<a href="chat/{{ user.id }}">Message {{ user.fname }}</a>
+        Search drugs:
+<input type="text" placeholder="search..." id="search">
+<div id="results">
 
-<h3>Saved doses: </h3>
+        <div class="row">
+                <h2>{{ user.fname.title() }}'s preferred doses</h2>
+              </div>
+              <div class="row">
+                  {% for drug in users_doses %}
+                <div id="{{ drug.lower() }}" class="hide show drug-name">
+                    <h3>{{ drug }}</h3>
+                  {% for dose in users_doses[drug] %}
+                <ul>
+                  <li>Species: {{ dose["species"] }}</li>
+                  <ul>
+                    {% if 'condition' in dose %}
+                    <li>Condition: {{ dose["condition"] }}</li>
+                    {% endif %} {% if 'recommended' in dose %}
+                    <li>Recommended: {{ dose["recommended"] }}mg/kg</li>
+                    {% endif %} {% if 'lower' in dose and 'upper' in dose %}
+                    <li>Range: {{ dose["lower"] }}-{{ dose["upper"] }}mg/kg</li>
+                    {% endif %}
+            
+                    <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>
+                    <a href="/fork/{{ dose['dose_id'] }}">Save this to your doses</a>
+                    
+                  </ul>
+                  </ul>
+                  {% endfor %} 
+                </div>
+                  {% endfor %}
+                
+              </div> 
 
-<h2>Preferred doses</h2>
 
-<ul>
-{% for drug in users_doses %}
+</div>
+</div>
 
-    <li><h3>{{ drug }}</h3></li>
+{% endblock %}
 
+{% block javascript %}
 
-    {% for dose in users_doses[drug] %}
+<script>
+    let drugs = {{ drugs|safe }}
 
-    <li> Species: {{ dose['species'] }} </li>
-    <ul>
-        {% if 'condition' in dose %}
-        <li> Condition: {{ dose['condition'] }}</li>
-        {% endif %}
+</script>
 
-        {% if 'recommended' in dose %}
-            <li>Recommended: {{ dose['recommended'] }}mg/kg </li>
-        {% endif %}
-
-        {% if 'lower' in dose and 'upper' in dose %}
-            <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
-        {% endif %}
-
-    <a href="/fork/{{ dose['dose_id'] }}">Save this to your doses</a>
-
-    </ul>
-    {% endfor %}
-{% endfor %}
-
-</ul>
-
+<script src={{ url_for('static', filename='js/profile.js') }}></script>
 
 {% endblock %}
