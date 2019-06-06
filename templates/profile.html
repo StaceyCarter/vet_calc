@@ -19,6 +19,10 @@ messages = get_flashed_messages() %} {% if messages %}
 <script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+
 {% endblock %}
 
 {% block content %}
@@ -54,14 +58,14 @@ messages = get_flashed_messages() %} {% if messages %}
 
     Search drugs:
 <input type="text" placeholder="search..." id="search">
-<div id="results"></div>
+<div id="results">
 
   <div class="row">
     <h2>My preferred doses</h2>
-
-    
+  </div>
+  <div class="row">
       {% for drug in users_doses %}
-    <div id="{{drug}}">
+    <div id="{{ drug.lower() }}" class="hide show drug-name">
         <h3>{{ drug }}</h3>
       {% for dose in users_doses[drug] %}
     <ul>
@@ -82,9 +86,14 @@ messages = get_flashed_messages() %} {% if messages %}
       {% endfor %} 
     </div>
       {% endfor %}
-   
+    
+  </div>
+  <div class="row">
 
     <h2>Doses saved from others</h2>
+
+    </div>
+    <div class="row">
 
     <ul>
       {% for drug in forked_doses %}
@@ -110,6 +119,7 @@ messages = get_flashed_messages() %} {% if messages %}
       {% endfor %} {% endfor %}
     </ul>
   </div>
+</div>
 </div>
 
 {% endblock %}
