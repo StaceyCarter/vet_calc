@@ -274,7 +274,7 @@ def profile():
     if current_user.pic:
         image = current_user.pic
     else:
-        image = 'jojo_default.JPG' #### REPLACE THIS WITH A DEFAULT PICTURE
+        image = 'vetcalc_profilepic.jpg' #### REPLACE THIS WITH A DEFAULT PICTURE
 
 
 
@@ -334,7 +334,7 @@ def view_other_profile(user_id):
     if user.pic:
         image = user.pic
     else:
-        image = 'jojo_default.JPG'
+        image = 'vetcalc_profilepic.jpg'
 
 
 
@@ -487,7 +487,7 @@ def upload_pic():
 
 
     image = Image.open(pic_from_user)
-    image.thumbnail([200, 200])
+    image.thumbnail([400, 400])
 
     in_mem_file = io.BytesIO()
 
