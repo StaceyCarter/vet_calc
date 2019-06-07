@@ -42,9 +42,7 @@ messages = get_flashed_messages() %} {% if messages %}
         <i class="fas fa-user-nurse"></i>
         {% endif %}
         </p>
-
-        <p>If vet: .. specialty and special interest with option to add. </p>
-
+        
         <form action="/profile/following/{{ user.id }}">
             <button type="submit" id="following"> Following ({{ following }})</button>
         </form>

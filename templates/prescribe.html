@@ -28,7 +28,6 @@
 {% block javascript %}
 
     <script>
-    const server = 'http://localhost:5000'
     const jinja = {
             drug : '{{ dose.drug.generic_name or "undefined" }}',
             lowerDose : {{ dose.dose_lower or "undefined" }},

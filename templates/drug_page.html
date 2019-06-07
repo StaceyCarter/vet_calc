@@ -13,14 +13,36 @@
 {% endwith %}
 
 
-<h1> hello this is a drug page for {{ drug.generic_name }} </h1>
+<h1> {{ drug.generic_name }} </h1>
 
-<p>Links: add a preferred dose, prescribe, add to your favourites </p>
+<h2>Textbook doses: </h2>
+<ul>
+    <li>Recommended dose: {{ textbook.recommended }}</li>
+    <li>Dose range: {{ textbook.low }}-{{ textbook.high }}mg/kg</li>
+    <li>Frequency: q{{ textbook.frequency }} hours</li>
+    <li>Duration: {{ textbook.duration }}</li>
+    <li>Contraindications: 
+        <ul>
+        {% for i in textbook.contraindications %}
+            <li>{{ i }}</li>
+        {% endfor %}
+        </ul>
+    </li>
+    <li>Interactions: </li>
+        <ul>
+            {% for i in textbook.interactions %}
+                <li>{{ i }}</li>
+            {% endfor %}
+        </ul>
+</ul>
+<a href="/prescribe-fake-data/{{ textbook.recommended }}/{{ textbook.low }}/{{ textbook.high }}/{{ textbook.frequency }}/{{ textbook.duration }}/{{ drug.generic_name }}">
+    Prescribe this dose</a>
+
+
+<p class="warning"> *** Please note these doses & information are randomly generated for proof of concept only. Do NOT use this in practice. *** </p>
 
 <!--NEED TO PASS THE CURRENT DRUG IN AS AN ARGUMENT TO THIS ROUTE-->
 <a href="add-preferred-dose/{{ drug.drug_id }}">Add a preferred dose for {{drug.generic_name}}</a>
-
-<h2>Textbook doses: </h2>
 
 <h2>Your preferred doses for {{ drug.generic_name }}: </h2>
 

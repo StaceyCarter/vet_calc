@@ -76,14 +76,10 @@ search.addEventListener('keyup', () => {
     // Returns an array of possible words.
     const nodes = trie.findWords(search.value.toLowerCase());
 
-    console.log("NODES: ", nodes)
-
     //if no matching words were found in the trie:
     if (!nodes.length) return;
 
     all = document.querySelectorAll('.user-name')
-
-    console.log("ALL: ", all)
 
     for (let elem of all){
         elem.classList.remove('show')
@@ -94,28 +90,14 @@ search.addEventListener('keyup', () => {
     for (let node of nodes) {
         // loop through each of the names in the allNames list.
         for (let name of all){
-          console.log("TRIE NODE: ", node.value)
-          console.log("NAME ID (username): ", name.id)
-          console.log("FNAME: ", name.dataset.fname)
-          console.log("LNAME: ", name.dataset.fname)
           if (
           node.value === name.id ||
           node.value === name.dataset.fname ||
           node.value === name.dataset.lname){
-            console.log("Adding show class")
+           
             name.classList.add('show')
           }
         }
-        // results.innerHTML += `<li>${node.value}</li>`
-        // let e = document.getElementById(`${node.value}`)
-        // let fname = document.dataset.fname
-        // let lname = document.dataset.lname
-        // e.classList.add('show')
-        // fname.classList.add('show')
-        // lname.classList.add('show')
-
-
-
     }
 })
 

@@ -37,6 +37,8 @@ from PIL import Image
 
 import io
 
+import random
+
 # from pprint import pprint as print
 
 
@@ -99,17 +101,31 @@ def get_drug_names():
 def get_drug_page(drug_id):
     """View an individual drug page"""
 
+    low = random.randint(1,10)
+    high = random.randint(15, 25)
+
+    fake_textbook_data = {
+        'low' : low,
+        'high' : high,
+        'recommended' : random.randint(low, high),
+        'contraindications' : random.sample(
+            ['Gestating', 'Boxers', 'Hypovolaemia', 'Hypotension', 'Dehydration', 'Renal disease'], random.randint(1, 6)),
+        'interactions' : random.sample(
+            ['NSAIDs', 'Corticosteroids', 'Aminoglycosides', 'Selective serotonin reuptake inhibitors'], random.randint(1, 3)),
+        'duration' : random.choice([3, 5, 7, 14, 20, 30]),
+        'frequency' : random.choice([12, 24, 8, 48])
+    }
+
     user = current_user.id
 
     saved_doses = get_user_doses_for_drug(user, drug_id)
-
-    print("\n\n\n\n saved_doses: ", saved_doses)
 
     drug = Drug.query.get(drug_id)
 
     return render_template("drug_page.html",
                            drug=drug,
-                           saved_doses=saved_doses)
+                           saved_doses=saved_doses,
+                           textbook = fake_textbook_data)
 
 
 @app.route('/register')
@@ -177,6 +193,22 @@ def prescribe(dose_id):
 
     dose = PersonalDose.query.get(dose_id)
     print(dose)
+
+    return render_template('prescribe.html',
+                           dose=dose)
+
+@app.route('/prescribe-fake-data/<recommended>/<low>/<high>/<frequency>/<duration>/<generic_name>')
+def prescribe_from_fake_data(recommended, low, high, frequency, duration, generic_name):
+    """ Generates the normal prescribe.html, but from randomly generated fake textbook data"""
+
+    dose = {
+        'drug' : {'generic_name' : generic_name},
+        'recommended_dose' : recommended,
+        'dose_lower' : low,
+        'dose_upper' : high,
+        'frequency_hrs' : frequency,
+        'duration_days' : duration
+    }
 
     return render_template('prescribe.html',
                            dose=dose)

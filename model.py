@@ -389,6 +389,92 @@ class PersonalDose(db.Model):
         return f"<PersonalDose drug_id: {self.drug.generic_name}, creator: {self.creator.fname}, species: {self.individual_species.species_name}, group: {self.species_group.species_group} >"
 
 
+#FOR FUTURE WHEN TEXTBOOK DATA IS AVAILABLE:
+# class TextbookDose(db.Model):
+    # """Sets up table to store textbook doses"""
+    #
+    #
+    # __tablename__ = "textbook_doses"
+    #
+    # id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    # drug_id = db.Column(db.Integer,
+    #                     db.ForeignKey("drugs.drug_id"),
+    #                     nullable=False)
+    # dose_lower = db.Column(db.Float, nullable=True)
+    # dose_upper = db.Column(db.Float, nullable=True)
+    # recommended_dose = db.Column(db.Float, nullable=True)
+    #
+    # species_group_id = db.Column(db.Integer,
+    #                             db.ForeignKey("species_groups.species_group_id"), nullable=True)
+    # individual_species_id = db.Column(db.Integer,
+    #                                   db.ForeignKey("species_individuals.species_individual_id"), nullable=True)
+    #
+    # # condition_id = db.Column(db.Integer,
+    # #                          db.ForeignKey("conditions.condition_id"), nullable=True)
+    #
+    # condition = db.Column(db.String(200), nullable=True)
+    #
+    # duration_days = db.Column(db.Integer, nullable=True)
+    #
+    # frequency_hrs = db.Column(db.String(10), nullable=True)
+    #
+    # contraindications = db.Column(db.String(500), nullable=True)
+    #
+    # interactions = db.Column(db.String(500), nullable=True)
+    #
+    # formulations = db.Column(db.String(500), nullable=True)
+    #
+    # textbook_reference = db.Column(db.String(200), nullable=True)
+    #
+    # #Relationships:
+    #
+    # drug = db.relationship('Drug',
+    #                        backref=db.backref('textbook_doses'))
+    #
+    # species_group = db.relationship('SpeciesGroup',
+    #                                 backref=db.backref('textbook_doses'))
+    #
+    # individual_species = db.relationship('SpeciesIndividual',
+    #                                     backref=db.backref('textbook_doses'))
+    #
+    # condition = db.relationship('Condition',
+    #                                 backref=db.backref('textbook_doses'))
+    #
+    # def __repr__(self):
+    #
+    #     return f"<TextbookDose {self.drug.generic_name} for {self.species_group}>"
+
+class PrescribeHx(db.Model):
+    """Stores the number of times each vet has prescribed each drug."""
+
+    __tablename__ = "prescribing_hx"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    drug_id = db.Column(db.Integer,
+                        db.ForeignKey("drugs.drug_id"),
+                        nullable=False)
+    user_id = db.Column(db.Integer,
+                           db.ForeignKey("users.id"))
+    times_prescribed = db.Column(db.Integer, default=0)
+
+    #relationships:
+
+    drug = db.relationship('Drug',
+                           backref=db.backref('prescribing_hx'))
+    user = db.relationship('User',
+                                    backref=db.backref('prescribing_hx'))
+
+
+    def __repr__(self):
+
+        return f"<PrescribeHx User: {self.user.fname} {self.user.lname} Drug: {self.drug.generic_name}>"
+
+
+
+
+
+
+
 #############################
 # Helper functions
 
