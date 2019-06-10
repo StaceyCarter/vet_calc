@@ -2,15 +2,23 @@
 {% block title %} My conversations {% endblock %}
 {% block content %}
 
-<h1> My conversations </h1>
+{% block customcss %}
 
-<ul>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+{% endblock %}
 
 
-{% for convo, tally in convo_with_seen %}
-    <li> <a href="/profile/chat/{{ convo.user_2.id if current == convo.user_1.id else convo.user_1.id }}">You and {{ convo.user_2.username if current == convo.user_1.id else convo.user_1.username }} ({{ tally }} unseen)</a></li>
-{% endfor %}
+<div class="container">
+    <div class="col-8 offset-2">
+        <h1> My conversations </h1>
+        <ul>
+            {% for convo, tally in convo_with_seen %}
+                <li> <a href="/profile/chat/{{ convo.user_2.id if current == convo.user_1.id else convo.user_1.id }}">You and {{ convo.user_2.username if current == convo.user_1.id else convo.user_1.username }} ({{ tally }} unseen)</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
-</ul>
 
 {% endblock %}

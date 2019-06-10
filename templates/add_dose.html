@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block title %} Add dose {% endblock %}
 
+{% block customcss %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+{% endblock %}
+
 {% block content %}
 
 <form action="/drug/add-preferred-dose/{{ drug.drug_id }}", method="POST">

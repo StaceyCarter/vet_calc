@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block title %} Followers {% endblock %}
+
+{% block customcss %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+{% endblock %}
+
 {% block content %}
 
 <h1>Followers of {{ user.fname }} {{ user.lname }} </h1>

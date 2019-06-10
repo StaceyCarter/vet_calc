@@ -158,3 +158,13 @@ label {
 #frequency-hours {
   width: 100px;
 }
+
+.btn-primary {
+  background-color: rgb(0, 166, 153); 
+  border-color: rgb(0, 166, 153); 
+}
+
+.btn-primary:hover {
+  background-color: rgb(3, 136, 125); 
+  border-color: rgb(3, 136, 125);
+}

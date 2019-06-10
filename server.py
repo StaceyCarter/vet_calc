@@ -55,6 +55,8 @@ app.jinja_env.undefined = StrictUndefined
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+s3 = boto3.client('s3')
+
 @login_manager.user_loader
 def load_user(user_id):
     # Associates the user id stored in the cookie with the right user object.
@@ -282,12 +284,10 @@ def profile():
     users_doses = get_user_personal_doses(current_user.id)
     forked_doses = get_user_forked_doses(current_user.id)
 
-    s3 = boto3.client('s3')
-
     if current_user.pic:
         image = current_user.pic
     else:
-        image = 'vetcalc_profilepic.jpg' #### REPLACE THIS WITH A DEFAULT PICTURE
+        image = 'vetcalc_profilepic.jpg'
 
 
     url = s3.generate_presigned_url('get_object',
@@ -343,13 +343,10 @@ def view_other_profile(user_id):
     users_doses = get_user_personal_doses(user.id)
     print(users_doses)
 
-    s3 = boto3.client('s3')
-
     if user.pic:
         image = user.pic
     else:
         image = 'vetcalc_profilepic.jpg'
-
 
 
     url = s3.generate_presigned_url('get_object',

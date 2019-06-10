@@ -93,7 +93,8 @@ search.addEventListener('keyup', () => {
           if (
           node.value === name.id ||
           node.value === name.dataset.fname ||
-          node.value === name.dataset.lname){
+          node.value === name.dataset.lname ||
+          node.value === name.dataset.fname + ' ' + name.dataset.lname ){
            
             name.classList.add('show')
           }
@@ -105,8 +106,10 @@ search.addEventListener('keyup', () => {
 function make_trie(users){
   for (let [username, fname, lname] of users){
     trie.add(username)
-    trie.add(fname)
-    trie.add(lname)
+    trie.add(fname.toLowerCase())
+    trie.add(lname.toLowerCase())
+    trie.add(`${fname.toLowerCase()} ${lname.toLowerCase()}`)
+
   } 
 }
 

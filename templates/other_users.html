@@ -20,10 +20,13 @@
 
 {% block content %}
 
+
+<div class="container">
+    <div class="col-8 offset-2">
+    
 <h1>Other users</h1>
 
-Search drugs:
-<input type="text" placeholder="search..." id="search">
+<input type="text" placeholder="search..." id="search" class="form-control">
 <div id="results">
 <div id="results">
 <ul>
@@ -31,19 +34,20 @@ Search drugs:
 {% for user in users %}
 
     {% if user.id != current %}
-    <a href="/profile/{{ user.id }}"><li id="{{ user.username }}" data-fname="{{ user.fname }}" data-lname="{{ user.lname }}" class="show hide user-name">{{ user.fname.title() }} {{ user.lname.title() }} </li></a>
+    <a href="/profile/{{ user.id }}"><li id="{{ user.username }}" data-fname="{{ user.fname.lower() }}" data-lname="{{ user.lname.lower() }}" class="show hide user-name">{{ user.fname.title() }} {{ user.lname.title() }} </li></a>
     {% endif %}
 
 {% endfor %}
 
 </ul>
 </div>
-
+</div>
+</div>
 {% endblock %}
 
 {% block javascript %}
 
-<script> const users = {{ users_info |safe }} </script>
+<script> const users = {{ users_info | safe }} </script>
 <script src={{ url_for('static', filename='js/other_users.js') }}></script>
 
 {% endblock %}

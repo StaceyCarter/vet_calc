@@ -21,6 +21,7 @@ messages = get_flashed_messages() %} {% if messages %}
 <link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/profile.css') }}">
 
 
 {% endblock %}
@@ -28,14 +29,17 @@ messages = get_flashed_messages() %} {% if messages %}
 {% block content %}
 
 <div class="container">
+    <div class="col-10 offset-1">
   <div class="row">
-    <div class="col-sm-6">
-      <img src="{{ url }}" alt="Profile picture" />
+    <div class="col-md-6">
+      <div class="profile-pic">
+        <img src="{{ url }}" alt="Profile picture" />
+      </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-md-6">
         <h1>{{ fname.title() }} {{ lname.title() }}</h1>
-        <p> @{{ user.username }} </p>
-        <p> {{ "DVM" if user.user_role == 'vet' else "Vet nurse" }}
+        <p> @{{ user.username }}
+        - {{ "DVM" if user.user_role == 'vet' else "Vet nurse" }}
         {% if user.user_role == 'vet' %}
             <i class="fas fa-user-md"></i>
         {% else %}
@@ -43,22 +47,23 @@ messages = get_flashed_messages() %} {% if messages %}
         {% endif %}
         </p>
         
+        <div class="row">
         <form action="/profile/following/{{ user.id }}">
-            <button type="submit" id="following"> Following ({{ following }})</button>
+            <button class="btn btn-secondary follow-buttons" type="submit" id="following"> Following ({{ following }})</button>
         </form>
         <form action="/profile/followers/{{ user.id }}">
-            <button type="submit" id="followers"> Followers ({{ followers }})</button>
+            <button class="btn btn-secondary follow-buttons" type="submit" id="followers"> Followers ({{ followers }})</button>
         </form>
+        <button type="button" class="btn btn-primary follow-buttons" data-toggle="modal" data-target="#addPic">
+            <i class="fas fa-image"></i> Upload Image
+          </button>
+        </div>
+       
     </div>
 
   </div>
-
-  <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPic">
-    <i class="fas fa-image"></i> Upload Image
-  </button>
   
-  <!-- Modal -->
+  <!-- Modal for image upload -->
   <div class="modal fade" id="addPic" tabindex="-1" role="dialog" aria-labelledby="addPicLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -89,16 +94,18 @@ messages = get_flashed_messages() %} {% if messages %}
 
 
 
-    Search drugs:
-<input type="text" placeholder="search..." id="search">
+   
+<input type="text" placeholder="Search drugs..." id="search" class="form-control">
 <div id="results">
 
   <div class="row">
     <h2>My preferred doses</h2>
   </div>
+  
   <div class="row">
+      
       {% for drug in users_doses %}
-    <div id="{{ drug.lower() }}" class="hide show drug-name">
+    <div id="{{ drug.lower() }}" class="hide show drug-name col-md-6">
         <h3>{{ drug }}</h3>
       {% for dose in users_doses[drug] %}
     <ul>
@@ -112,8 +119,8 @@ messages = get_flashed_messages() %} {% if messages %}
         <li>Range: {{ dose["lower"] }}-{{ dose["upper"] }}mg/kg</li>
         {% endif %}
 
-        <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>
-        <a href="/delete/{{ dose['dose_id'] }}">Delete saved dose</a>
+        <a href="/prescribe/{{ dose['dose_id'] }}" class="prescribe"><i class="fas fa-prescription-bottle-alt"></i> Prescribe </a>
+        <a href="/delete/{{ dose['dose_id'] }}" class="prescribe"><i class="fas fa-trash-alt"></i> Delete</a>
       </ul>
       </ul>
       {% endfor %} 
@@ -121,6 +128,7 @@ messages = get_flashed_messages() %} {% if messages %}
       {% endfor %}
     
   </div>
+
   <div class="row">
 
     <h2>Doses saved from others</h2>
@@ -130,7 +138,7 @@ messages = get_flashed_messages() %} {% if messages %}
 
     <ul>
       {% for drug in forked_doses %}
-      <div id="{{ drug.lower() }}" class="hide show drug-name">
+      <div id="{{ drug.lower() }}" class="hide show drug-name col-md-6">
       <li>
         <h3>{{ drug }}</h3>
       </li>
@@ -154,6 +162,7 @@ messages = get_flashed_messages() %} {% if messages %}
       {% endfor %}
     </ul>
   </div>
+</div>
 </div>
 </div>
 
