@@ -12,7 +12,20 @@
 
     <!-- Font awesome -->
     <script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
+
+<!--  jquery bootstrap: -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<!-- Google fonts -->
+<script src="https://kit.fontawesome.com/1900ec13f5.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=PT+Mono&display=swap" rel="stylesheet">
     
+
+
+
 </head>
 
     <nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light">
@@ -24,17 +37,28 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
+
             {% if current_user.is_authenticated %}
           <a class="nav-item nav-link" href="/"><i class="fas fa-pills"></i> Drugs <span class="sr-only">(current)</span></a>
 <!--  Quick calcuate - a feature for future versions:        <a class="nav-item nav-link" href="/pick-dose"><i class="fas fa-calculator"></i>Calculate</a>-->
           <a class="nav-item nav-link" href="/other-users">Users</a>
           <a class="nav-item nav-link" href="/conversations"><i class="fas fa-comment-medical"></i>Messages</a>
+          {% set new_messages = current_user.new_messages() %}
+          {% if new_messages %}
+            <span class="badge">{{ new_messages }}</span>
+          {% endif %}
           <a class="nav-item nav-link mr-auto" href="/profile"><i class="fas fa-user-md"></i>Profile</a>
           <a class="nav-item nav-link mr-auto" href="/logout">Logout</a>
           {% endif %}
           {% if current_user.is_anonymous %}
           <a class="nav-item nav-link" href="/signup">Signup</a>
           <a class="nav-item nav-link" href="/login">Login</a>
+          <button type="button" class="nav-item nav-link" data-toggle="modal" data-target="#login">
+              Login
+            </button>
+            <button type="button" class="nav-item nav-link" data-toggle="modal" data-target="#signup">
+                Signup
+              </button>
           {% endif %}
         </div>
       </div>
@@ -52,7 +76,9 @@
   {% endif %}
 {% endwith %}
 
-  {% block content %} {% endblock %}
+  {% block content %} 
+  
+  {% endblock %}
 
 {% block javascript %}
   {% endblock %}

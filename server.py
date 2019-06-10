@@ -81,10 +81,16 @@ def send_image(path):
 
 
 @app.route('/')
+
 def index():
     """Renders the homepage"""
 
-    return render_template("homepage.html")
+    if current_user.is_authenticated:
+        return render_template("homepage.html")
+
+    if current_user.is_anonymous:
+        return render_template("join_vetcalc.html")
+
 
 @app.route('/get-drug-names')
 def get_drug_names():
@@ -98,6 +104,7 @@ def get_drug_names():
 
 
 @app.route('/drug/<drug_id>')
+@login_required()
 def get_drug_page(drug_id):
     """View an individual drug page"""
 
@@ -135,6 +142,7 @@ def register_user():
     return render_template("add_user.html")
 
 @app.route('/pick-dose')
+@login_required()
 def pick_dose():
     """Displays info from data base to help user decide on a dose"""
 
@@ -148,6 +156,7 @@ def pick_dose():
                            info=info)
 
 @app.route('/dosing-info')
+@login_required()
 def get_dose_info():
     """Returns a form for the user to input the doses they want"""
 
@@ -167,6 +176,7 @@ def get_dose_info():
                            doses=doses)
 
 @app.route('/calculate-dose')
+@login_required()
 def calculate_dose():
     """Gets information input by user and calls the dose calculator function"""
 
@@ -188,6 +198,7 @@ def calculate_dose():
                            instructions=instructions)
 
 @app.route('/prescribe/<dose_id>')
+@login_required()
 def prescribe(dose_id):
     """Presents the dose calculator, with fields regarding the dose prefilled."""
 
@@ -198,6 +209,7 @@ def prescribe(dose_id):
                            dose=dose)
 
 @app.route('/prescribe-fake-data/<recommended>/<low>/<high>/<frequency>/<duration>/<generic_name>')
+@login_required()
 def prescribe_from_fake_data(recommended, low, high, frequency, duration, generic_name):
     """ Generates the normal prescribe.html, but from randomly generated fake textbook data"""
 
@@ -214,6 +226,7 @@ def prescribe_from_fake_data(recommended, low, high, frequency, duration, generi
                            dose=dose)
 
 @app.route('/get-amount-ml.json/<concentration>/<dose>/<weight>')
+@login_required()
 def get_amount_ml(concentration, dose, weight):
 
     doseF = float(dose)
@@ -277,7 +290,6 @@ def profile():
         image = 'vetcalc_profilepic.jpg' #### REPLACE THIS WITH A DEFAULT PICTURE
 
 
-
     url = s3.generate_presigned_url('get_object',
                                 Params={
                                     'Bucket': os.environ.get('S3_BUCKET'),
@@ -305,6 +317,7 @@ def profile():
                            drugs = drugs)
 
 @app.route('/other-users')
+@login_required()
 def other_users():
 
     users = User.query.all()
@@ -317,6 +330,7 @@ def other_users():
                            users_info=users_info)
 
 @app.route('/profile/<user_id>')
+@login_required()
 def view_other_profile(user_id):
 
     user = User.query.get(user_id)
@@ -449,6 +463,7 @@ def save_dose_post(drug_id):
 
 #### SHOUDL BE A POST METHOD!!!!!
 @app.route('/delete/<dose_id>')
+@login_required()
 def delete_dose(dose_id):
 
     dose = PersonalDose.query.get(dose_id)
@@ -461,6 +476,7 @@ def delete_dose(dose_id):
     return redirect(f'/drug/{drug_id}')
 
 @app.route('/text-client.json', methods=['POST'])
+@login_required()
 def text_client():
 
     data = request.get_json()
@@ -468,17 +484,17 @@ def text_client():
     phone = '+1' + data['phone']
     instructions = data['instructions']
 
-    print("\n\n\n PHONE: ", phone)
-
     send_text_func(instructions, phone)
 
     return redirect("/") #FIX
 
 @app.route('/add-pic')
+@login_required()
 def add_pic():
     return render_template("add_pic.html")
 
 @app.route('/add-pic', methods=['POST'])
+@login_required()
 def upload_pic():
 
     s3 = boto3.resource('s3')
@@ -487,13 +503,20 @@ def upload_pic():
 
 
     image = Image.open(pic_from_user)
-    image.thumbnail([400, 400])
+    imageThumb = image.copy()
+
+    image.thumbnail([200, 200])
+    imageThumb.thumbnail([50, 50])
 
     in_mem_file = io.BytesIO()
 
     image.save(in_mem_file, format='JPEG', quality=95)
 
     file = in_mem_file.getvalue()
+
+    imageThumb.save(in_mem_file, format='JPEG', quality=95)
+
+    fileThumb = in_mem_file.getvalue()
 
     # Rename file for unique storage
     user = User.query.get(current_user.id)
@@ -510,12 +533,14 @@ def upload_pic():
 
 
     s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=filename, Body=file)
+    s3.Bucket(os.environ.get('S3_BUCKET')).put_object(Key=filename + 'thumbnail', Body=fileThumb)
 
     return redirect('/profile')
 
 
 #### SHOULD BE A POST METHOD!!!
 @app.route('/fork/<dose_id>')
+@login_required()
 def fork_dose(dose_id):
 
     dose = PersonalDose.query.get(dose_id)
@@ -561,6 +586,7 @@ def unfollow(user_id):
     return jsonify("You have unfollowed")
 
 @app.route('/profile/following/<user_id>')
+@login_required()
 def see_following(user_id):
 
     user = User.query.get(user_id)
@@ -572,6 +598,7 @@ def see_following(user_id):
                            user = user)
 
 @app.route('/profile/followers/<user_id>')
+@login_required()
 def see_followers(user_id):
 
     user = User.query.get(user_id)
@@ -583,6 +610,7 @@ def see_followers(user_id):
                            user = user)
 
 @app.route('/profile/chat/<user_id>')
+@login_required()
 def check_or_create_conversation(user_id):
     """Checks if there is a chat history between the current user and the other user_id. If there is, it loads the history,
     if there isn't it creates a row in the table. Users are assigned to messager1 or 2 depending on whose user is is larger.
@@ -607,6 +635,7 @@ def check_or_create_conversation(user_id):
 
 
 @app.route('/chat/messages/<conversation_id>')
+@login_required()
 def chat(conversation_id):
 
     fname = current_user.fname
@@ -628,32 +657,20 @@ def chat(conversation_id):
                            previous_messages= reversed(previous_messages.items))
 
 @app.route('/chat/messages/<conversation_id>/<page>.json')
+@login_required()
 def load_more_messages(conversation_id, page):
     """Infinite scroll function """
-
-
-    print("\n\n\n\n PAGE: ", page)
-
-    print("\n\n\n\n CHAT ID: ", conversation_id)
 
     pageInt = int(page)
 
     previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(
         Message.conversation_id == conversation_id).paginate(page=pageInt, per_page=10, error_out=False)
 
-    print("\n\n\n PREVIOUS: ", previous_messages.items) # gives a list of message objects
-
-    print("\n\n\n CURRENT USER ID: ", current_user.id)
-    print("\n\n\n CURRENT USERNAME: ", current_user.username)
-
 
     message_json = {
         'currentUser' : str(current_user.id),
         'username' : str(current_user.username)
     }
-
-    # message_json['currentUser'] = current_user.id
-    # message_json['username'] = current_user.username
 
     i = 0
     for message in previous_messages.items:
@@ -662,18 +679,29 @@ def load_more_messages(conversation_id, page):
         message_json[key] = [message.sender, username, message.message_body]
         i += 1
 
-    print("\n\n\n\n JSONIFY: ", (message_json))
-
     return jsonify(message_json)
 
 @app.route('/conversations')
+@login_required()
 def list_conversations():
 
     conversations = Conversation.query.filter((Conversation.messager_1 == current_user.id) | (Conversation.messager_2 == current_user.id)).all()
 
+    # For each of the conversations the user is involved in, check the messages to see if there are any unseen in the database where the
+    # current user is not the sender.
+
+    convo_with_seen = []
+
+    for conversation in conversations:
+        tally = 0
+        messages = conversation.messages
+        for message in messages:
+            if message.seen == False and message.sender != current_user.id:
+                tally += 1
+        convo_with_seen.append((conversation, tally))
 
     return render_template('conversations.html',
-                           conversations=conversations,
+                           convo_with_seen=convo_with_seen,
                            current=current_user.id)
 
 
@@ -691,6 +719,8 @@ def send_message(data):
     message to the rest of the chat room with the username set to whoever is logged in.
 
     """
+
+
     new_message = Message(
         conversation_id = data['room'],
         message_body = data['message'],
@@ -699,11 +729,14 @@ def send_message(data):
     db.session.add(new_message)
     db.session.commit()
 
+    message_id = db.session.query(db.func.max(Message.id)).first()
+
     room = data['room']
 
     # Sets the username to be the person who is logged in.
     data['username'] = current_user.username
     data['sender'] = current_user.id
+    data['messageID'] = message_id
 
     emit('my_response', data, room=room)
 
@@ -714,6 +747,26 @@ def on_leave(data):
     leave_room(room)
     send(username + ' has left the room.', room=room)
 
+@app.route('/chat/messages/markread.json', methods=['POST'])
+def mark_as_read():
+    """Marks messages as read when a user is logged into chat"""
+    data = request.get_json()
+
+    try:
+        message = data['messageID'][0]
+    except KeyError:
+        message = None
+
+    print("\n\n\n\n\n I HAVE RECIEVED THIS JSON: ", message)
+
+    if message:
+
+        m = Message.query.get(int(message))
+        m.seen = True
+
+        db.session.commit()
+
+    return "success"
 
 
 

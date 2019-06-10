@@ -31,7 +31,7 @@ Search drugs:
 {% for user in users %}
 
     {% if user.id != current %}
-    <a href="/profile/{{ user.id }}"><li id="{{ user.username }}" data-fname="{{ user.fname }}" data-lname="{{ user.lname }}" class="show hide user-name">{{ user.fname }} {{ user.lname }} </li></a>
+    <a href="/profile/{{ user.id }}"><li id="{{ user.username }}" data-fname="{{ user.fname }}" data-lname="{{ user.lname }}" class="show hide user-name">{{ user.fname.title() }} {{ user.lname.title() }} </li></a>
     {% endif %}
 
 {% endfor %}

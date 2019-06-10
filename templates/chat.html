@@ -5,6 +5,7 @@
 {% block customcss %}
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/chat.css') }}">
 
 {% endblock %}
 
@@ -23,10 +24,12 @@
 
 
     </div>
+    <div class="col-md-8 offset-md-2">
     <form action="" method="POST">
-      <input type="text" class="message" placeholder="Messages"/>
-      <input type="submit"/>
+      <input type="text" class="message form-control" placeholder="Type a message..."></input>
+      <button type="submit" class="btn btn-primary float-right"><i class="fas fa-paper-plane"></i> Send</button>
     </form>
+    </div>
     
     </div>
 

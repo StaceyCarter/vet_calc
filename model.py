@@ -70,6 +70,18 @@ class User(db.Model, UserMixin):
     def is_following(self, user):
         return self.followed.filter(followers.c.followed_id == user.id).count() > 0
 
+    def new_messages(self):
+        conversations = Conversation.query.filter(
+            (Conversation.messager_1 == self.id) | (Conversation.messager_2 == self.id)).all()
+        tally = 0
+        for conversation in conversations:
+            messages = conversation.messages
+            for message in messages:
+                if message.seen == False and message.sender != self.id:
+                    tally += 1
+        return tally
+
+
 
     def __repr__(self):
         """Represents a user object"""

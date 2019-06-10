@@ -57,7 +57,7 @@ socket.on('connect', () => {
 socket.on('disconnect', () => {
 console.log('DISCONNECTED')})
 
-
+// Every time a user sends a message:
 let form = $('form').on('submit', (e) => {
   e.preventDefault()
   let user_input = $('input.message').val()
@@ -70,11 +70,28 @@ let form = $('form').on('submit', (e) => {
 
 
   socket.on('my_response', (msg) => {
-    console.log(msg)
 
     if ( typeof msg.username !== 'undefined'){
-      $('h3').remove()
       $('div.message_holder').append( `<div class="sent-message ${ currentUser === msg.sender ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b style="color: #000">` + msg.username + '</b>: ' + msg.message + '</div>')
     }
+    if (currentUser !== msg.sender){
+
+        fetch('/chat/messages/markread.json', {
+            method : 'POST',
+            mode: 'cors', // no-cors, cors, *same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body : JSON.stringify({
+              messageID : msg.messageID
+              })
+            })
+            
+        
+    }
   })
+
+
 

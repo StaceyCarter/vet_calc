@@ -6,10 +6,9 @@
 
 <ul>
 
-{% for convo in conversations %}
 
-    <li><a href="/profile/chat/{{ convo.user_2.id if current == convo.user_1.id else convo.user_1.id }}"> You and {{ convo.user_2.username if current == convo.user_1.id else convo.user_1.username }} </a></li>
-
+{% for convo, tally in convo_with_seen %}
+    <li> <a href="/profile/chat/{{ convo.user_2.id if current == convo.user_1.id else convo.user_1.id }}">You and {{ convo.user_2.username if current == convo.user_1.id else convo.user_1.username }} ({{ tally }} unseen)</a></li>
 {% endfor %}
 
 </ul>

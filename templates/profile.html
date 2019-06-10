@@ -52,7 +52,42 @@ messages = get_flashed_messages() %} {% if messages %}
     </div>
 
   </div>
-  <a href="/add-pic">Upload a profile pic</a>
+
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPic">
+    <i class="fas fa-image"></i> Upload Image
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addPic" tabindex="-1" role="dialog" aria-labelledby="addPicLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Upload a profile picture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body form-group">
+            
+              <form action="/add-pic" method="POST" enctype="multipart/form-data">
+
+                <input type="file" name="profile_pic" accept="image/jpeg">
+            
+        
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+      
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+
 
     Search drugs:
 <input type="text" placeholder="search..." id="search">

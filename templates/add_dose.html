@@ -12,7 +12,7 @@
     What species is this for?
     <select name="species">
     {% for species in info['species_groups'] %}
-        <option value="{{ species.species_individual_id }}">{{ species.species_name }}</option>
+        <option value="{{ species.species_individual_id }}">{{ 'No species' if species.species_name == 'no_species' else species.species_name }}</option>
     {%  endfor %}
     </select>
 
@@ -25,12 +25,12 @@
 
     <br>
 
-<!--    Is it for any particular condition?-->
-<!--    <select name="condition">-->
-<!--    {% for condition in info['conditions'] %}-->
-<!--        <option value="{{ condition.condition_id }}">{{ condition.condition }}</option>-->
-<!--    {%  endfor %}-->
-<!--    </select>-->
+    Is it for any particular condition?
+    <select name="condition">
+    {% for condition in info['conditions'] %}
+        <option value="{{ condition.condition_id }}">{{ condition.condition }}</option>
+    {%  endfor %}
+    </select>
 
     <br>
 
