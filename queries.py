@@ -94,7 +94,9 @@ def get_forked_dose_for_drug(id, drug_id):
        dose = forked_dose.dose
        dose_info = extract_dose_info(dose)
        creator = f"{dose.creator.fname} {dose.creator.lname}"
+       creator_id = dose.creator_id
        dose_info['creator'] = creator
+       dose_info['creator_id'] = creator_id
 
        info.append(dose_info)
 

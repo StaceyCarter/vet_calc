@@ -1,11 +1,4 @@
-{% extends 'base.html' %} {% block title %} Signup {% endblock %} {% with
-messages = get_flashed_messages() %} {% if messages %}
-<ul class="flashes">
-  {% for message in messages %}
-  <p>{{ message }}</p>
-  {% endfor %}
-</ul>
-{% endif %} {% endwith %} 
+{% extends 'base.html' %} {% block title %} Signup {% endblock %} 
 
 {% block customcss%}
 
@@ -91,7 +84,7 @@ messages = get_flashed_messages() %} {% if messages %}
     </div>
   </div>
 
-
+<!-- End modal -->
 
 
    
@@ -99,7 +92,7 @@ messages = get_flashed_messages() %} {% if messages %}
 <div id="results">
 
   <div class="row">
-    <h2>My preferred doses</h2>
+    <h2 class="drug-heading">My preferred doses</h2>
   </div>
   
   <div class="row">
@@ -131,18 +124,18 @@ messages = get_flashed_messages() %} {% if messages %}
 
   <div class="row">
 
-    <h2>Doses saved from others</h2>
+    <h2 class="drug-heading">Doses saved from others</h2>
 
     </div>
     <div class="row">
 
-    <ul>
+    
       {% for drug in forked_doses %}
       <div id="{{ drug.lower() }}" class="hide show drug-name col-md-6">
-      <li>
+      
         <h3>{{ drug }}</h3>
-      </li>
-
+      
+      <ul>
       {% for dose in forked_doses[drug] %}
 
       <li>Species: {{ dose["species"] }}</li>
@@ -155,7 +148,7 @@ messages = get_flashed_messages() %} {% if messages %}
         <li>Range: {{ dose["lower"] }}-{{ dose["upper"] }}mg/kg</li>
         {% endif %}
 
-        <li>Forked from {{ dose["creator"] }}</li>
+        <li>Saved from <a href="/profile/{{ dose["creator_id"] }}">{{ (dose["creator"]).title() }}</a></li>
       </ul>
       {% endfor %} 
     </div>
