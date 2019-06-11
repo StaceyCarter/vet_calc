@@ -72,7 +72,7 @@ let form = $('form').on('submit', (e) => {
   socket.on('my_response', (msg) => {
 
     if ( typeof msg.username !== 'undefined'){
-      $('div.message_holder').append( `<div class="sent-message ${ currentUser === msg.sender ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b style="color: #000">` + msg.username + '</b>: ' + msg.message + '</div>')
+      $('div.message_holder').append( `<div class="row ${currentUser === msg.sender ? '' : 'd-flex flex-row-reverse'}"><div class="sent-message ${ currentUser === msg.sender ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + msg.username + '</b>: ' + msg.message + '</div></div>')
     }
     if (currentUser !== msg.sender){
 
@@ -87,9 +87,7 @@ let form = $('form').on('submit', (e) => {
             body : JSON.stringify({
               messageID : msg.messageID
               })
-            })
-            
-        
+            })   
     }
   })
 

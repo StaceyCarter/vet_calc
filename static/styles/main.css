@@ -90,12 +90,16 @@ h1, h2, h3 {
 }
 
 .drug-heading {
-  text-decoration: underline;
+  font-weight: bold;
   padding: 3%;
 }
 
 #search {
   margin: 2%;
+}
+
+.nav-item{
+  text-align: right;
 }
 
 
