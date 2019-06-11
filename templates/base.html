@@ -51,7 +51,7 @@
         <a class="nav-item nav-link" href="/conversations"><i class="fas fa-comment-medical"></i>Messages</a>
         {% set new_messages = current_user.new_messages() %}
         {% if new_messages %}
-          <span class="badge">{{ new_messages }}</span>
+          <span id="message-count" class="badge">{{ new_messages }}</span>
         {% endif %}
 
         
