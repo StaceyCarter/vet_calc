@@ -112,7 +112,7 @@
                         {%  endfor %}
                         </select><br><br>
                     
-                        Or make it for a group of species:
+                        Which species group is it for?
                         <select name="group" class="form-control">
                         {% for group in info['groups'] %}
                             <option value="{{ group.species_group_id }}">{{ group.species_group }}</option>
@@ -125,8 +125,7 @@
                         Duration: <input type="number" name="duration" class="form-control"> days <br><br>
                         Frequency: q<input type="number" name="frequency" class="form-control">hrs <br>
                     
-                    
-                    
+                
                    
             </div>
             <div class="modal-footer">

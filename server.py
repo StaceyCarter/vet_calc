@@ -549,6 +549,8 @@ def fork_dose(dose_id):
 
     dose = PersonalDose.query.get(dose_id)
 
+
+
     fork = ForkedDose(drug_id=dose.drug_id,
                       user_id=current_user.id,
                       dose_id=dose_id)
@@ -556,7 +558,9 @@ def fork_dose(dose_id):
     db.session.add(fork)
     db.session.commit()
 
-    return redirect('/profile')
+    flash("Saved to your doses")
+
+    return redirect(f'/profile/{dose.creator.id}')
 
 @app.route('/follow/<user_id>', methods=['POST'])
 @login_required()

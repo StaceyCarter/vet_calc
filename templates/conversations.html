@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="col-8 offset-2">
-        <h1> My conversations </h1>
+        <h1> Messages </h1>
         <ul>
             {% for convo, tally in convo_with_seen %}
                 <li> <a href="/profile/chat/{{ convo.user_2.id if current == convo.user_1.id else convo.user_1.id }}">You and {{ convo.user_2.username if current == convo.user_1.id else convo.user_1.username }} ({{ tally }} unseen)</a></li>
