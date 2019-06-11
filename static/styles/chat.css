@@ -1,6 +1,4 @@
-.message {
-  color : red;
-}
+
 
 .other-user-sender {
   background-color : rgb(0,166,153, 0.3);
@@ -18,4 +16,19 @@
 
 .container {
   padding-bottom: 7%;
+}
+
+#send {
+  margin: 5px;
+}
+
+.loader {
+  margin-left: 50%;
+  color: #FF5A5F;
+}
+
+.no-messages {
+  color: #FF5A5F;
+  text-align: center;
+
 }
