@@ -42,7 +42,7 @@ function appendPrevMessages(data){
         // loops through the number keys in the json object and prepends them to the page.
         for (let item of Object.keys(data)){
             if (!isNaN(parseInt(item))){
-                $('div.message_holder').prepend( `<div class="sent-message ${ data['currentUser'] == data[item][0] ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b style="color: #000">` + data[item][1] + '</b>: ' + data[item][2] + '</div>')
+                $('div.message_holder').prepend( `<div class="row ${ data['currentUser'] == data[item][0] ? '' : 'd-flex flex-row-reverse'}"><div class="sent-message ${ data['currentUser'] == data[item][0] ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + data[item][1] + '</b>: ' + data[item][2] + '</div></div>')
             }
         }
 
