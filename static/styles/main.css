@@ -89,6 +89,10 @@ h1, h2, h3 {
   margin: auto;
 }
 
+.drug-heading {
+  text-decoration: underline;
+}
+
 
 
 

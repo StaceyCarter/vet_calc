@@ -8,14 +8,23 @@
 
 {% endblock %}
 
-<h1> {{ drug.generic_name }} </h1>
+<div class="container">
+        <div class="col-8 offset-2">
 
-<h2>Textbook doses: </h2>
+            <div class="row">
+                <div class="col-sm-8">
+<h1 class="drug-heading"> {{ drug.generic_name }} </h1>
+</div>
+
+</div>
+
+
+<h2>Textbook dose: </h2>
 <ul>
-    <li>Recommended dose: {{ textbook.recommended }}</li>
-    <li>Dose range: {{ textbook.low }}-{{ textbook.high }}mg/kg</li>
+    <li>Recommended dose: {{ textbook.recommended }} mg/kg</li>
+    <li>Dose range: {{ textbook.low }}-{{ textbook.high }} mg/kg</li>
     <li>Frequency: q{{ textbook.frequency }} hours</li>
-    <li>Duration: {{ textbook.duration }}</li>
+    <li>Duration: {{ textbook.duration }} days</li>
     <li>Contraindications: 
         <ul>
         {% for i in textbook.contraindications %}
@@ -30,18 +39,16 @@
             {% endfor %}
         </ul>
 </ul>
-<a href="/prescribe-fake-data/{{ textbook.recommended }}/{{ textbook.low }}/{{ textbook.high }}/{{ textbook.frequency }}/{{ textbook.duration }}/{{ drug.generic_name }}">
-    Prescribe this dose</a>
+<a href="/prescribe-fake-data/{{ textbook.recommended }}/{{ textbook.low }}/{{ textbook.high }}/{{ textbook.frequency }}/{{ textbook.duration }}/{{ drug.generic_name }}" class="prescribe">
+    <i class="fas fa-prescription-bottle-alt"></i> Prescribe the textbook dose</a>
 
 
-<p class="warning"> *** Please note these doses & information are randomly generated for proof of concept only. Do NOT use this in practice. *** </p>
+<p class="warning"> *** Please note these doses & information are randomly generated for proof of concept only. They are INACCURATE *** </p>
 
-<!--NEED TO PASS THE CURRENT DRUG IN AS AN ARGUMENT TO THIS ROUTE-->
-<a href="add-preferred-dose/{{ drug.drug_id }}">Add a preferred dose for {{drug.generic_name}}</a>
+
+
 
 <h2>Your preferred doses for {{ drug.generic_name }}: </h2>
-
-<p> Each of these need an edit/del button.</p>
 
 <ul>
 {% for dose in saved_doses %}
@@ -60,14 +67,76 @@
             <li>Range: {{ dose['lower'] }}-{{ dose['upper'] }}mg/kg  </li>
         {% endif %}
 
-        <a href="/prescribe/{{ dose['dose_id'] }}">Prescribe this dose</a>
+        <a href="/prescribe/{{ dose['dose_id'] }}" class="prescribe" ><i class="fas fa-prescription-bottle-alt"></i> Prescribe this dose</a>
 
-        <a href="/delete/{{ dose['dose_id'] }}">Delete saved dose</a>
+        <a href="/delete/{{ dose['dose_id'] }}" class="prescribe" ><i class="fas fa-trash-alt"></i> Delete</a>
 
     </ul>
 
 {% endfor %}
+    
 
 </ul>
+
+<div class="col-sm-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPreferredDose">
+            <i class="fas fa-edit"></i> Add a Preferred Dose
+        </button>
+        </div>
+
+</div>
+</div>
+
+<!-- Modal for adding a new preferred dose -->
+
+<div class="modal fade" id="addPreferredDose" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add a Preferred Dose</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body form-group">
+                    <form action="/drug/add-preferred-dose/{{ drug.drug_id }}", method="POST">
+
+                        Lower end: <input type="number" name="lower" step="0.01" class="form-control">mg/kg <br><br>
+                        Upper end: <input type="number" name="upper" step="0.01" class="form-control">mg/kg <br><br>
+                        Preferred? <input type="number" name="recommended" step="0.01" class="form-control">mg/kg <br><br>
+                    
+                        What species is this for?
+                        <select name="species" class="form-control">
+                        {% for species in info['species_groups'] %}
+                            <option value="{{ species.species_individual_id }}">{{ 'No species' if species.species_name == 'no_species' else species.species_name }}</option>
+                        {%  endfor %}
+                        </select><br><br>
+                    
+                        Or make it for a group of species:
+                        <select name="group" class="form-control">
+                        {% for group in info['groups'] %}
+                            <option value="{{ group.species_group_id }}">{{ group.species_group }}</option>
+                        {%  endfor %}
+                        </select>
+                    
+                        <br>
+             
+                    
+                        Duration: <input type="number" name="duration" class="form-control"> days <br><br>
+                        Frequency: q<input type="number" name="frequency" class="form-control">hrs <br>
+                    
+                    
+                    
+                   
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save Dose</button>
+            </form>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
 
 {% endblock %}

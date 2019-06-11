@@ -131,10 +131,17 @@ def get_drug_page(drug_id):
 
     drug = Drug.query.get(drug_id)
 
+    info = {
+        'species_groups': SpeciesIndividual.query.all(),
+        'conditions': Condition.query.all(),
+        'groups': SpeciesGroup.query.all()
+    }
+
     return render_template("drug_page.html",
                            drug=drug,
                            saved_doses=saved_doses,
-                           textbook = fake_textbook_data)
+                           textbook = fake_textbook_data,
+                           info = info)
 
 
 @app.route('/register')
@@ -429,14 +436,14 @@ def save_dose(drug_id):
 @login_required()
 def save_dose_post(drug_id):
 
-    lower=request.form.get('lower')
-    upper = request.form.get('upper')
-    recommended = request.form.get('recommended')
-    species = request.form.get('species')
-    species_group = request.form.get('group')
+    lower=request.form.get('lower') or None
+    upper = request.form.get('upper') or None
+    recommended = request.form.get('recommended') or None
+    species = request.form.get('species') or None
+    species_group = request.form.get('group') or None
     condition = request.form.get('condition')
-    duration = request.form.get('duration')
-    frequency = request.form.get('frequency')
+    duration = request.form.get('duration') or None
+    frequency = request.form.get('frequency') or None
 
     new_dose = PersonalDose(
         drug_id=drug_id,
@@ -445,7 +452,7 @@ def save_dose_post(drug_id):
         recommended_dose = recommended,
         species_group_id = species_group,
         individual_species_id = species,
-        condition_id = condition,
+        condition_id = 1,
         creator_id = current_user.id,
         duration_days = duration,
         frequency_hrs = frequency
