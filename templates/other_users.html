@@ -34,7 +34,15 @@
 {% for user in users %}
 
     {% if user.id != current %}
-    <a href="/profile/{{ user.id }}"><li id="{{ user.username }}" data-fname="{{ user.fname.lower() }}" data-lname="{{ user.lname.lower() }}" class="show hide user-name">{{ user.fname.title() }} {{ user.lname.title() }} </li></a>
+    <div id="{{ user.username }}" data-fname="{{ user.fname.lower() }}" data-lname="{{ user.lname.lower() }}" class="show hide user-name">
+    <a href="/profile/{{ user.id }}">{{ user.fname.title() }} {{ user.lname.title() }}</a>
+    <p>@{{ user.username }} - {{'Vet' if user.user_role == 'vet' else 'Nurse'}}
+    {% if user.user_role == 'vet' %}
+    <i class="fas fa-user-md"></i>
+    {% else %}
+    <i class="fas fa-user-nurse"></i>
+    {% endif %}</p>
+    </div>
     {% endif %}
 
 {% endfor %}

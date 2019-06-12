@@ -6,7 +6,7 @@
 #navbar-profile-pic{
   height: 45px;
   width: 45px;
-  background-image: url("/static/vetcalc_profilepic_thumbnail.jpg");
+  background-color: rgb(118, 118, 118, 0.5);
 
   background-position: center;
   background-size: cover;
