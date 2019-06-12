@@ -16,6 +16,11 @@
         <div class="message_holder col-md-8 offset-md-2">
 {% for message in previous_messages %}
         <div class="row {{ '' if message.sender_user.id == current_user.id else 'd-flex flex-row-reverse' }}">
+        {% if message.sender_user.id == current_user.id %}
+            <div class="chat-current-user-pic"></div>
+        {% else %}
+            <div class="chat-other-user-pic"></div>
+        {% endif %}
         <div class="sent-message {{ 'current-user-sender' if message.sender_user.id == current_user.id else 'other-user-sender' }}">
    <p><b>{{ message.sender_user.username }}</b>: {{ message.message_body }}</p>
             </div>
@@ -41,7 +46,11 @@
       integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
       crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
-    <script> const currentUser = {{current_user.id}} </script>
+    <script> 
+        const currentUser = {{current_user.id}} 
+        const otherUser = {{ other_user }}
+    
+    </script>
     <script src={{ url_for('static', filename='js/chat.js') }}></script>
 
 {% endblock %}

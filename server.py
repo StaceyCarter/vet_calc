@@ -331,7 +331,7 @@ def get_profile_pic_thumbnail():
     if current_user.pic:
         image = current_user.pic + 'thumbnail'
     else:
-        image = 'vetcalc_profilepic.jpg'
+        image = 'vetcalc_profilepicthumbnail.jpg'
 
 
     url = s3.generate_presigned_url('get_object',
@@ -342,6 +342,11 @@ def get_profile_pic_thumbnail():
                                 ExpiresIn=3600)
 
     return jsonify(url)
+
+@app.route('/get-profile-pic-thumb-other/<user_id>')
+def get_profile_pic_thumbnail_other_user(user_id):
+    """Gets thumbnail of a user's profile pic given a user id"""
+    pass
 
 
 @app.route('/other-users')
@@ -670,6 +675,13 @@ def chat(conversation_id):
     fname = current_user.fname
     lname = current_user.lname
 
+    convo = Conversation.query.get(conversation_id)
+
+    if convo.messager_1 != current_user.id:
+        other_user = convo.messager_1
+    else:
+        other_user = convo.messager_2
+
     # Collects all previous messages with this conversation id and orders them by timestamp
     previous_messages = Message.query.order_by(Message.timestamp.desc()).filter(Message.conversation_id == conversation_id).paginate(page=1, per_page=10, error_out=False)
 
@@ -683,7 +695,8 @@ def chat(conversation_id):
 
     return render_template('chat.html',
                            name = f'{fname} {lname}',
-                           previous_messages= reversed(previous_messages.items))
+                           previous_messages= reversed(previous_messages.items),
+                           other_user = other_user)
 
 @app.route('/chat/messages/<conversation_id>/<page>.json')
 @login_required()

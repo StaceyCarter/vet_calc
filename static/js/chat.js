@@ -91,5 +91,21 @@ let form = $('form').on('submit', (e) => {
     }
   })
 
+  // Add profile pictures 
+
+  fetch('/get-profile-pic-thumb.json')
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    console.log(JSON.stringify(myJson))
+
+    const images = document.querySelectorAll(".chat-current-user-pic")
+
+    for (let image of images){
+        image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+    }
+  });
+
 
 

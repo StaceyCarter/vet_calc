@@ -30,3 +30,25 @@
   text-align: center;
 
 }
+
+.chat-current-user-pic{
+  height: 50px;
+  width: 50px;
+  background-color: #FF5A5F;
+  padding: 1%;
+  margin-top: 2%;
+  border-radius: 25px;
+  background-position: center;
+  background-size: cover;
+}
+
+.chat-other-user-pic{
+  height: 50px;
+  width: 50px;
+  background-color: #FF5A5F;
+  padding: 1%;
+  margin-top: 2%;
+  border-radius: 25px;
+  background-position: center;
+  background-size: cover;
+}
