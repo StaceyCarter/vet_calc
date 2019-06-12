@@ -359,7 +359,7 @@ def get_profile_pic_thumbnail_other_user(user_id):
                                     'Bucket': os.environ.get('S3_BUCKET'),
                                     'Key': image,
                                 },
-                                ExpiresIn=3600)
+                                ExpiresIn=604800)
 
     return jsonify(url)
 

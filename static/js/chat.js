@@ -42,9 +42,10 @@ function appendPrevMessages(data){
         // loops through the number keys in the json object and prepends them to the page.
         for (let item of Object.keys(data)){
             if (!isNaN(parseInt(item))){
-                $('div.message_holder').prepend( `<div class="row ${ data['currentUser'] == data[item][0] ? '' : 'd-flex flex-row-reverse'}"><div class="sent-message ${ data['currentUser'] == data[item][0] ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + data[item][1] + '</b>: ' + data[item][2] + '</div></div>')
+                $('div.message_holder').prepend( `<div class="row ${ data['currentUser'] == data[item][0] ? '' : 'd-flex flex-row-reverse'}"> ${data['currentUser'] == data[item][0] ? '<div class="chat-current-user-pic"></div>' : '<div class="chat-other-user-pic"></div>'}  <div class="sent-message ${ data['currentUser'] == data[item][0] ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + data[item][1] + '</b>: ' + data[item][2] + '</div></div>')
             }
         }
+    getProfileImages()
 
     $(".loader").remove()
 }
@@ -72,7 +73,9 @@ let form = $('form').on('submit', (e) => {
   socket.on('my_response', (msg) => {
 
     if ( typeof msg.username !== 'undefined'){
-      $('div.message_holder').append( `<div class="row ${currentUser === msg.sender ? '' : 'd-flex flex-row-reverse'}"><div class="sent-message ${ currentUser === msg.sender ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + msg.username + '</b>: ' + msg.message + '</div></div>')
+      $('div.message_holder').append( `<div class="row ${currentUser === msg.sender ? '' : 'd-flex flex-row-reverse'}"> 
+                                        ${currentUser === msg.sender ? '<div class="chat-current-user-pic"></div>' : '<div class="chat-other-user-pic"></div>'}
+                                        <div class="sent-message ${ currentUser === msg.sender ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + msg.username + '</b>: ' + msg.message + '</div></div>')
     }
     if (currentUser !== msg.sender){
 
@@ -89,37 +92,43 @@ let form = $('form').on('submit', (e) => {
               })
             })   
     }
+    getProfileImages()
   })
 
   // Add profile pictures 
 
-  fetch('/get-profile-pic-thumb.json')
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    console.log(JSON.stringify(myJson))
+  function getProfileImages(){
+    fetch('/get-profile-pic-thumb.json')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      console.log(JSON.stringify(myJson))
+  
+      const images = document.querySelectorAll(".chat-current-user-pic")
+  
+      for (let image of images){
+          image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+      }
+    });
+  
+    fetch(`/get-profile-pic-thumb-other/${otherUser}`)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      console.log(JSON.stringify(myJson))
+  
+      const images = document.querySelectorAll(".chat-other-user-pic")
+  
+      for (let image of images){
+          image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+      }
+    });
+  }
 
-    const images = document.querySelectorAll(".chat-current-user-pic")
+  getProfileImages()
 
-    for (let image of images){
-        image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
-    }
-  });
-
-  fetch(`/get-profile-pic-thumb-other/${otherUser}`)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(myJson) {
-    console.log(JSON.stringify(myJson))
-
-    const images = document.querySelectorAll(".chat-other-user-pic")
-
-    for (let image of images){
-        image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
-    }
-  });
 
 
 
