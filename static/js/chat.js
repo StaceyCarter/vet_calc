@@ -9,8 +9,9 @@ window.scrollTo(scrollTop, document.body.scrollHeight)
 
 let page = 2;
 
-console.log(" scrolltop: ", scrollTop)
 document.addEventListener("scroll", () => window.scrollY === 0 ? loadMessages() : "")
+
+sessionStorage.removeItem('otherUserProfilePicture')
 
 function loadMessages(){
     console.log("calling load messages")
@@ -97,34 +98,62 @@ let form = $('form').on('submit', (e) => {
 
   // Add profile pictures 
 
-  function getProfileImages(){
-    fetch('/get-profile-pic-thumb.json')
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      console.log(JSON.stringify(myJson))
-  
-      const images = document.querySelectorAll(".chat-current-user-pic")
-  
-      for (let image of images){
-          image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
-      }
-    });
-  
-    fetch(`/get-profile-pic-thumb-other/${otherUser}`)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(myJson) {
-      console.log(JSON.stringify(myJson))
-  
-      const images = document.querySelectorAll(".chat-other-user-pic")
-  
-      for (let image of images){
-          image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
-      }
-    });
+function getProfileImages(){
+
+    if (sessionStorage.getItem('profilePicture')) {
+        // Get the profile picture url if it is there.
+        profilePicture = sessionStorage.getItem('profilePicture');
+      
+        const images = document.querySelectorAll(".chat-current-user-pic")
+      
+
+        for (let image of images){
+            image.style.backgroundImage = `url(${profilePicture})`
+        }   
+      
+    } else {
+        fetch('/get-profile-pic-thumb.json')
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
+      
+          const images = document.querySelectorAll(".chat-current-user-pic")
+      
+          for (let image of images){
+              image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+          }
+
+          sessionStorage.setItem('profilePicture', JSON.stringify(myJson))
+        });
+    }
+
+    if (sessionStorage.getItem('otherUserProfilePicture')) {
+        // Get the profile picture url if it is there.
+        otherProfilePicture = sessionStorage.getItem('otherUserProfilePicture');
+      
+        const images = document.querySelectorAll(".chat-other-user-pic")
+
+        for (let image of images){
+            image.style.backgroundImage = `url(${otherProfilePicture})`
+        }
+    } else {
+        fetch(`/get-profile-pic-thumb-other/${otherUser}`)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(myJson) {
+           
+      
+          const images = document.querySelectorAll(".chat-other-user-pic")
+      
+          for (let image of images){
+              image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+          }
+
+          sessionStorage.setItem('otherUserProfilePicture', JSON.stringify(myJson))
+        });
+    }
   }
 
   getProfileImages()
