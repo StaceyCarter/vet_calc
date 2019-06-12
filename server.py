@@ -323,6 +323,27 @@ def profile():
                            followers = followers,
                            drugs = drugs)
 
+
+@app.route('/get-profile-pic-thumb.json')
+def get_profile_pic_thumbnail():
+    """Generates presigned url for the current user's profile picture"""
+
+    if current_user.pic:
+        image = current_user.pic + 'thumbnail'
+    else:
+        image = 'vetcalc_profilepic.jpg'
+
+
+    url = s3.generate_presigned_url('get_object',
+                                Params={
+                                    'Bucket': os.environ.get('S3_BUCKET'),
+                                    'Key': image,
+                                },
+                                ExpiresIn=3600)
+
+    return jsonify(url)
+
+
 @app.route('/other-users')
 @login_required()
 def other_users():

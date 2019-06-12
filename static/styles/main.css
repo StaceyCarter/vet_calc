@@ -3,6 +3,16 @@
   border-color: rgb(0, 166, 153); 
 }
 
+#navbar-profile-pic{
+  height: 45px;
+  width: 45px;
+  background-image: url("/static/vetcalc_profilepic_thumbnail.jpg");
+
+  background-position: center;
+  background-size: cover;
+  border-radius: 30px;
+}
+
 .btn-primary:hover {
   background-color: rgb(3, 136, 125); 
   border-color: rgb(3, 136, 125);

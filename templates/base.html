@@ -55,9 +55,10 @@
 
       </div>
       <div class="navbar-nav">
-     
-        <a class="nav-item nav-link" href="/profile"><i class="fas fa-user-md"></i>Profile</a>
-        <a class="nav-item nav-link" href="/logout">Logout</a>
+        
+        <a href="/profile"><div id="navbar-profile-pic"> </div></a>
+        <a class="nav-item nav-link" href="/profile"> Profile</a>
+        <a class="nav-item nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
       
       </div>
         {% endif %}
@@ -66,7 +67,7 @@
         {% if current_user.is_anonymous %}
 
         <div class="navbar-nav"></div>
-        <div class="navbar-nav">
+        
           <a href="#" class="nav-item nav-link" data-toggle="modal" data-target="#login">
               Login
           </a>
@@ -98,6 +99,21 @@
 
 {% block javascript %}
   {% endblock %}
+
+  <script>
+  
+  fetch('/get-profile-pic-thumb.json')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(myJson) {
+      const image = document.getElementById("navbar-profile-pic")
+      
+      image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+
+    });
+  
+  </script>
 
 </body>
 </html>
