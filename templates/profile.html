@@ -47,7 +47,7 @@
         <form action="/profile/followers/{{ user.id }}">
             <button class="btn btn-secondary follow-buttons" type="submit" id="followers"> Followers ({{ followers }})</button>
         </form>
-        <button type="button" class="btn btn-primary follow-buttons" data-toggle="modal" data-target="#addPic">
+        <button id="uploadImage" type="button" class="btn btn-primary follow-buttons" data-toggle="modal" data-target="#addPic">
             <i class="fas fa-image"></i> Upload Image
           </button>
         </div>
@@ -87,8 +87,9 @@
 <!-- End modal -->
 
 
-   
-<input type="text" placeholder="Search drugs..." id="search" class="form-control">
+ 
+<input type="text" placeholder="Search your saved drugs..." id="search" class="form-control">
+
 <div id="results">
 
   <div class="row">
@@ -169,6 +170,11 @@
 <script>
     let drugs = {{ drugs|safe }}
 
+    uploadImage = document.getElementById("uploadImage")
+
+    uploadImage.addEventListener('click', () => sessionStorage.removeItem('profilePicture'))
+
+  
 </script>
 
 <script src={{ url_for('static', filename='js/profile.js') }}></script>
