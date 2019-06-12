@@ -35,12 +35,11 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
       
-      <div class="navbar-nav">
-        
 
         {% if current_user.is_authenticated %}
+        <div class="navbar-nav">
       
 
         <a class="nav-item nav-link" href="/"><i class="fas fa-pills"></i> Drugs <span class="sr-only">(current)</span></a>
@@ -54,27 +53,31 @@
           <span id="message-count" class="badge">{{ new_messages }}</span>
         {% endif %}
 
-        
+      </div>
+      <div class="navbar-nav">
      
         <a class="nav-item nav-link" href="/profile"><i class="fas fa-user-md"></i>Profile</a>
         <a class="nav-item nav-link" href="/logout">Logout</a>
-        
+      
+      </div>
         {% endif %}
 
 
         {% if current_user.is_anonymous %}
-        <a class="nav-item nav-link" href="/signup">Signup</a>
-        <a class="nav-item nav-link" href="/login">Login</a>
-        <button type="button" class="nav-item nav-link" data-toggle="modal" data-target="#login">
-            Login
-          </button>
-          <button type="button" class="nav-item nav-link" data-toggle="modal" data-target="#signup">
+
+        <div class="navbar-nav"></div>
+        <div class="navbar-nav">
+          <a href="#" class="nav-item nav-link" data-toggle="modal" data-target="#login">
+              Login
+          </a>
+          <a href="#" class="nav-item nav-link" data-toggle="modal" data-target="#signup">
               Signup
-            </button>
+          </a>
+        </div>
         {% endif %}
 
 
-      </div>
+      
     </div>
   </nav>
 
