@@ -346,7 +346,22 @@ def get_profile_pic_thumbnail():
 @app.route('/get-profile-pic-thumb-other/<user_id>')
 def get_profile_pic_thumbnail_other_user(user_id):
     """Gets thumbnail of a user's profile pic given a user id"""
-    pass
+    user = User.query.get(user_id)
+
+    if user.pic:
+        image = current_user.pic + 'thumbnail'
+    else:
+        image = 'vetcalc_profilepicthumbnail.jpg'
+
+
+    url = s3.generate_presigned_url('get_object',
+                                Params={
+                                    'Bucket': os.environ.get('S3_BUCKET'),
+                                    'Key': image,
+                                },
+                                ExpiresIn=3600)
+
+    return jsonify(url)
 
 
 @app.route('/other-users')

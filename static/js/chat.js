@@ -107,5 +107,19 @@ let form = $('form').on('submit', (e) => {
     }
   });
 
+  fetch(`/get-profile-pic-thumb-other/${otherUser}`)
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(myJson) {
+    console.log(JSON.stringify(myJson))
+
+    const images = document.querySelectorAll(".chat-other-user-pic")
+
+    for (let image of images){
+        image.style.backgroundImage = `url(${JSON.stringify(myJson)})`
+    }
+  });
+
 
 
