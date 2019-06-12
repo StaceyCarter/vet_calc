@@ -9,13 +9,25 @@
 
 {% block content %}
 
-<h1>{{ user.fname }} {{ user.lname }} is following:</h1>
+<div class="container">
+    <div class="col-8 offset-2">
+        <h1>{{ user.fname.title() }} {{ user.lname.title() }} is following</h1>
 
-<ul>
-    {% for followee in following %}
-        <li> {{ followee.fname }} {{ followee.lname }}  </li>
-    {% endfor %}
-</ul>
+        
+            {% for followee in following %}
+                <div class="followee">
+                    <a href="/profile/{{ followee.id }}">{{ followee.fname.title() }} {{ followee.lname.title() }} </a>
+                    <p>@{{ followee.username }} - {{'Vet' if followee.user_role == 'vet' else 'Nurse'}}
+                            {% if followee.user_role == 'vet' %}
+                            <i class="fas fa-user-md"></i>
+                            {% else %}
+                            <i class="fas fa-user-nurse"></i>
+                            {% endif %}</p>
+                </div>
+            {% endfor %}
+        
+    </div>
+</div>
 
 
 {% endblock %}

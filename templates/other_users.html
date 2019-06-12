@@ -31,17 +31,23 @@
 <div id="results">
 <ul>
 
-{% for user in users %}
+{% for user in users_info %}
+<!--    Checks if the user id is current-->
+    {% if user[4] != current %}
+    <div id="{{ user[0] }}" data-fname="{{ user[1].lower() }}" data-lname="{{ user[2].lower() }}" class="show hide user-name other-users-list">
+        <div class="profile-image-other-users-list" style="background-image:url({{ user[3] }})">
+            <!-- <img src="{{ user[3] }}" /> -->
+        </div>
+        <div class="user-info-other-users-list">
+            <a href="/profile/{{ user[4] }}">{{ user[1].title() }} {{ user[2].title() }}</a>
+            <p>@{{ user[0] }} - {{'Vet' if user[5] == 'vet' else 'Nurse'}}
+            {% if user[5] == 'vet' %}
+            <i class="fas fa-user-md"></i>
+            {% else %}
+            <i class="fas fa-user-nurse"></i>
+            {% endif %}</p>
+         </div>
 
-    {% if user.id != current %}
-    <div id="{{ user.username }}" data-fname="{{ user.fname.lower() }}" data-lname="{{ user.lname.lower() }}" class="show hide user-name">
-    <a href="/profile/{{ user.id }}">{{ user.fname.title() }} {{ user.lname.title() }}</a>
-    <p>@{{ user.username }} - {{'Vet' if user.user_role == 'vet' else 'Nurse'}}
-    {% if user.user_role == 'vet' %}
-    <i class="fas fa-user-md"></i>
-    {% else %}
-    <i class="fas fa-user-nurse"></i>
-    {% endif %}</p>
     </div>
     {% endif %}
 

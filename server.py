@@ -302,7 +302,7 @@ def profile():
                                     'Bucket': os.environ.get('S3_BUCKET'),
                                     'Key': image,
                                 },
-                                ExpiresIn=3600)
+                                ExpiresIn=604800)
 
     drugs = [drug.lower() for drug in users_doses]
 
@@ -339,7 +339,7 @@ def get_profile_pic_thumbnail():
                                     'Bucket': os.environ.get('S3_BUCKET'),
                                     'Key': image,
                                 },
-                                ExpiresIn=3600)
+                                ExpiresIn=604800)
 
     return jsonify(url)
 
@@ -359,7 +359,7 @@ def get_profile_pic_thumbnail_other_user(user_id):
                                     'Bucket': os.environ.get('S3_BUCKET'),
                                     'Key': image,
                                 },
-                                ExpiresIn=3600)
+                                ExpiresIn=604800)
 
     return jsonify(url)
 
@@ -370,12 +370,30 @@ def other_users():
 
     users = User.query.all()
 
-    users_info = [[user.username, user.fname, user.lname] for user in users]
+    users_info = [[user.username, user.fname, user.lname, get_user_image(user.id), user.id, user.user_role] for user in users]
 
     return render_template("other_users.html",
                            users=users,
                            current=current_user.id,
                            users_info=users_info)
+
+def get_user_image(user_id):
+    user = User.query.get(int(user_id))
+
+    if user.pic:
+        image = user.pic + 'thumbnail'
+    else:
+        image = 'vetcalc_profilepicthumbnail.jpg'
+
+
+    url = s3.generate_presigned_url('get_object',
+                                Params={
+                                    'Bucket': os.environ.get('S3_BUCKET'),
+                                    'Key': image,
+                                },
+                                ExpiresIn=604800)
+    return url
+
 
 @app.route('/profile/<user_id>')
 @login_required()
@@ -402,7 +420,7 @@ def view_other_profile(user_id):
                                     'Bucket': os.environ.get('S3_BUCKET'),
                                     'Key': image,
                                 },
-                                ExpiresIn=3600)
+                                ExpiresIn=604800)
 
     drugs = [drug.lower() for drug in users_doses]
 
