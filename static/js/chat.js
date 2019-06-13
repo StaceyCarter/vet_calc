@@ -24,7 +24,7 @@ function loadMessages(){
         '<div class="loader fa-3x"> <i class="fas fa-spinner fa-spin"></i> </div>')
     }
 
-    setTimeout(ajaxForMessages, 1000)
+    setTimeout(ajaxForMessages, 1)
 
 }
 
