@@ -15,7 +15,7 @@ def load_users():
     username|fname|lname|email|password|user_type
     """
 
-    print("users")
+   
 
     User.query.delete()
 

@@ -14,12 +14,12 @@ document.addEventListener("scroll", () => window.scrollY === 0 ? loadMessages() 
 sessionStorage.removeItem('otherUserProfilePicture')
 
 function loadMessages(){
-    console.log("calling load messages")
+    
     // Sent request to server to retrieve the next 10 messages
     // prepend the next 10 messages to the message_holder.
 
     if (!($('.loader').length)){
-        console.log("running no load")
+        
         $('div.message_holder').prepend(
         '<div class="loader fa-3x"> <i class="fas fa-spinner fa-spin"></i> </div>')
     }
@@ -52,7 +52,7 @@ function appendPrevMessages(data){
 }
 
 socket.on('connect', () => {
-    console.log('WEB SOCKET CONNECTED')
+    
     socket.emit('join', { room: chatID })
     })
 

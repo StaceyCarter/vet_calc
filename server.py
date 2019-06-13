@@ -39,7 +39,6 @@ import io
 
 import random
 
-# from pprint import pprint as print
 
 
 # Creates an instance of a Flask object
@@ -223,7 +222,7 @@ def prescribe(dose_id):
     """Presents the dose calculator, with fields regarding the dose prefilled."""
 
     dose = PersonalDose.query.get(dose_id)
-    print(dose)
+    
 
     return render_template('prescribe.html',
                            dose=dose)
@@ -418,7 +417,7 @@ def view_other_profile(user_id):
     is_following = current_user.is_following(user)
 
     users_doses = get_user_personal_doses(user.id)
-    print(users_doses)
+    
 
     if user.pic:
         image = user.pic
@@ -843,7 +842,7 @@ def mark_as_read():
     except KeyError:
         message = None
 
-    print("\n\n\n\n\n I HAVE RECIEVED THIS JSON: ", message)
+
 
     if message:
 
