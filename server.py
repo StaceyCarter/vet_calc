@@ -96,6 +96,14 @@ def index():
         return render_template("join_vetcalc.html",
                                rand_background=rand_background)
 
+@app.route('/home')
+def display_logged_in_homepage():
+
+    rand_background = random.choice(range(1, 15))
+
+    return render_template("logged_in_homepage.html",
+                           rand_background=rand_background)
+
 
 @app.route('/get-drug-names')
 def get_drug_names():

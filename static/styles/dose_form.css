@@ -176,3 +176,15 @@ label {
   background-color: rgb(3, 136, 125); 
   border-color: rgb(3, 136, 125);
 }
+
+.footer-copyright{
+  background-color: rgb(118, 118, 118, 0.2);
+}
+
+a{
+  color: #00A699;
+}
+
+a:hover {
+  color: #00A699;
+}

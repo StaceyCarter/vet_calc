@@ -21,6 +21,7 @@
 .container{
   margin-top: 5%;
   margin-bottom: 5%;
+  min-height: 100vh;
 }
 
 body {
@@ -144,6 +145,11 @@ a:hover {
 .other-users-list{
   border-bottom: solid 1px #767676;
   padding: 2%;
+}
+
+.footer-copyright{
+  background-color: rgb(118, 118, 118, 0.2);
+  background-image: linear-gradient(rgb(118, 118, 118, 0), rgb(118, 118, 118, 0.1));
 }
 
 
