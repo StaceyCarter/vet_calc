@@ -1,9 +1,3 @@
-html, body, .container {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-}
-
 .background-image-front-page {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/background11.jpg');
   background-position: center;
@@ -36,4 +30,8 @@ span {
 .signup-button{
   margin: 0 50%;
   padding: 2.5%;
+}
+
+.signup-big-button{
+  margin-bottom: 10%;
 }
