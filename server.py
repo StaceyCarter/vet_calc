@@ -15,8 +15,6 @@ from queries import get_list_of_drugs, get_user_doses_for_drug, get_user_persona
 
 from send_text import send_text_func
 
-from helpers import upload_file_to_s3
-
 from functools import wraps
 
 import json
