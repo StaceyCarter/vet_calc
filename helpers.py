@@ -1,31 +1,31 @@
-import boto3
-from botocore.exceptions import ClientError
-import os
-import logging
-
-S3_BUCKET = os.environ.get('S3_BUCKET')
-S3_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
-S3_SECRET = os.environ.get('AWS_SECRET_KEY')
-S3_LOCATION = f'http://{S3_BUCKET}.s3.amazonaws.com/'
-
-s3 = boto3.client(
-    "s3",
-    aws_access_key_id=S3_KEY,
-    aws_secret_access_key=S3_SECRET
-)
-
-def upload_file_to_s3(file_name, bucket=S3_BUCKET, object_name=None):
-    if object_name == None:
-        object_name = file_name
-
-    s3_client =boto3.client('s3')
-    try:
-        with open(file_name, "rb") as f:
-            response = s3_client.upload_fileobj(f, bucket, object_name)
-    except ClientError as e:
-        logging.error(e)
-        return False
-    return True
+# import boto3
+# from botocore.exceptions import ClientError
+# import os
+# import logging
+#
+# S3_BUCKET = os.environ.get('S3_BUCKET')
+# S3_KEY = os.environ.get('AWS_ACCESS_KEY_ID')
+# S3_SECRET = os.environ.get('AWS_SECRET_KEY')
+# S3_LOCATION = f'http://{S3_BUCKET}.s3.amazonaws.com/'
+#
+# s3 = boto3.client(
+#     "s3",
+#     aws_access_key_id=S3_KEY,
+#     aws_secret_access_key=S3_SECRET
+# )
+#
+# def upload_file_to_s3(file_name, bucket=S3_BUCKET, object_name=None):
+#     if object_name == None:
+#         object_name = file_name
+#
+#     s3_client =boto3.client('s3')
+#     try:
+#         with open(file_name, "rb") as f:
+#             response = s3_client.upload_fileobj(f, bucket, object_name)
+#     except ClientError as e:
+#         logging.error(e)
+#         return False
+#     return True
 
 
 
