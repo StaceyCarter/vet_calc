@@ -10,28 +10,38 @@
 
 {% endblock %}
 
+<div class="background-image-front-page" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/background{{rand_background}}.jpg');">
+</div>
+
 <div class="container">
 
-
-
-  <!-- <div class="row">
-    <div class="col-12">
-      <div class="background-image-front-page">
-    </div>
-  </div> -->
 <div class="row">
-  <div class="join-vetcalc">
+   <div class="join-vetcalc">
       <img class="logo" src="/static/images/logo_transparent.png">
     </div>
+</div>
+
   <div class="row">
-    <div class="join-vetcalc">
-      <button>Signup</button>
-      <button>Signin</button>
+    <div class="col-8 offset-2">
+      <h1>Join VetCalc today...</h1>
+    
+
+      <p><span><i class="fas fa-file-prescription"></i></span> Quickly prescribe with the help of a visual calculator and label generator</p> 
+        <p> <span><i class="fas fa-mobile-alt"></i></span>  Text drug labels directly to your clients. No more fading and smudging!</li>
+        <p> <span><i class="far fa-save"></i></span>  Save your preferred drug doses</p>
+        <p> <span><i class="fas fa-search"></i></span>  Quickly search for textbook drug doses</p>
+        <p> <span><i class="fas fa-users"></i></span>  Connect with other veterinarians and nurses</p>
+        <p> <span><i class="fas fa-user-md"></i></span>  Save other vet's preferred doses for quick future reference</p>
+        <p> <span><i class="fas fa-comment-medical"></i></span>  Message other vets and nurses</p>
+      
+      <div>
+        <button data-toggle="modal" data-target="#signup" class="btn btn-primary signup-button">Signup</button>
+      </div>
     </div>
   </div>
 
       
-  </div>
+  
   
 </div>
 

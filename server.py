@@ -87,11 +87,14 @@ def send_image(path):
 def index():
     """Renders the homepage"""
 
+    rand_background = random.choice(range(1,15))
+
     if current_user.is_authenticated:
         return render_template("homepage.html")
 
     if current_user.is_anonymous:
-        return render_template("join_vetcalc.html")
+        return render_template("join_vetcalc.html",
+                               rand_background=rand_background)
 
 
 @app.route('/get-drug-names')
