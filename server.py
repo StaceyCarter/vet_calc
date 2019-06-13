@@ -862,7 +862,7 @@ def mark_as_read():
 
 
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = False
 
     # So templates are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
