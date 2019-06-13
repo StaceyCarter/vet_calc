@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} My conversations {% endblock %}
+{% block content %}
+
+{% block customcss %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/join_vetcalc.css') }}">
+
+{% endblock %}
+
+<div class="background-image-front-page" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/background{{rand_background}}.jpg');">
+</div>
+
+<div class="container">
+
+<div class="row">
+   <div class="join-vetcalc">
+      <img class="logo" src="/static/images/logo_transparent.png">
+    </div>
+</div>
+</div>
+
+{% endblock %}

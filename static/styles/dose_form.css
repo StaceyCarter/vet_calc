@@ -188,3 +188,10 @@ a{
 a:hover {
   color: #00A699;
 }
+
+footer {
+  background-color: rgb(118, 118, 118, 0.2);
+  background-image: linear-gradient(rgb(118, 118, 118, 0), rgb(118, 118, 118, 0.1));
+  font-family: 'Raleway', sans-serif;
+  color: #767676;
+}

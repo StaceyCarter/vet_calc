@@ -147,7 +147,7 @@ a:hover {
   padding: 2%;
 }
 
-.footer-copyright{
+footer {
   background-color: rgb(118, 118, 118, 0.2);
   background-image: linear-gradient(rgb(118, 118, 118, 0), rgb(118, 118, 118, 0.1));
 }
