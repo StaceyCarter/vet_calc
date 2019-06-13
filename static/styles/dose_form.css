@@ -3,6 +3,14 @@
     padding-bottom: 20%;
 }
 
+.badge {
+  padding: 0.1rem 0.3rem;
+  border-radius: 10rem;
+  background-color: #FF5a5f;
+  height: 1rem;
+  color: white;
+}
+
 .box {
   height: 5%;
   width : 100%;
