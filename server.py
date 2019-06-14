@@ -43,8 +43,8 @@ import random
 app = Flask(__name__)
 socketio = SocketIO(app)
 
-# For Flask session - CHANGE THIS LATER!!!
-app.config['SECRET_KEY'] = 'key'
+
+app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY")
 
 # Throws an error if an undefined variable is used in Jinja
 app.jinja_env.undefined = StrictUndefined
@@ -333,6 +333,7 @@ def profile():
 
 
 @app.route('/get-profile-pic-thumb.json')
+@login_required()
 def get_profile_pic_thumbnail():
     """Generates presigned url for the current user's profile picture"""
 
@@ -352,9 +353,11 @@ def get_profile_pic_thumbnail():
     return jsonify(url)
 
 @app.route('/get-profile-pic-thumb-other/<user_id>')
+@login_required()
 def get_profile_pic_thumbnail_other_user(user_id):
     """Gets thumbnail of a user's profile pic given a user id"""
     user = User.query.get(int(user_id))
+
 
     if user.pic:
         image = user.pic + 'thumbnail'
@@ -477,7 +480,6 @@ def signup_post():
 
 
 @app.route('/logout')
-@login_required()
 def logout():
     logout_user()
     return redirect('/')
