@@ -873,4 +873,4 @@ if __name__ == "__main__":
     DebugToolbarExtension(app)
 
     # app.run()
-    socketio.run(app)
+    socketio.run(app, host='127.0.0.1', port=5000)
