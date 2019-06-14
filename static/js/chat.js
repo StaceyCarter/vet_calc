@@ -1,6 +1,6 @@
-protocol = window.location.protocol;
+//protocol = window.location.protocol; <- For determining what protocol is being used.
 
-let socket = io.connect(protocol + '//' + document.domain + ':' + location.port);
+let socket = io.connect('https://' + document.domain + ':' + location.port);
 
 const url = window.location.href.split('/')
 const chatID = url.pop()
