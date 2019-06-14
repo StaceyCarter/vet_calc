@@ -52,7 +52,8 @@ function appendPrevMessages(data){
 }
 
 socket.on('connect', () => {
-    
+    console.log("joined websocket")
+
     socket.emit('join', { room: chatID })
     })
 
