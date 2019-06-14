@@ -1,4 +1,6 @@
-let socket = io.connect('http://' + document.domain + ':' + location.port);
+protocol = window.location.protocol;
+
+let socket = io.connect(protocol + '//' + document.domain + ':' + location.port);
 
 const url = window.location.href.split('/')
 const chatID = url.pop()
