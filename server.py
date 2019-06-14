@@ -44,7 +44,7 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 
-app.config['SECRET_KEY'] = "notsecret"
+app.config['SECRET_KEY'] = os.environ.get("FLASK_SECRET_KEY")
 
 # Throws an error if an undefined variable is used in Jinja
 app.jinja_env.undefined = StrictUndefined
