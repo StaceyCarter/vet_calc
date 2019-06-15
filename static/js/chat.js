@@ -1,6 +1,6 @@
 protocol = window.location.protocol;
 
-let socket = io.connect(('wss://' + document.domain + ':' + location.port), {transports: ['websocket']});
+let socket = io.connect(('https://' + document.domain + ':' + location.port), {transports: ['websocket']});
 
 const url = window.location.href.split('/')
 const chatID = url.pop()
