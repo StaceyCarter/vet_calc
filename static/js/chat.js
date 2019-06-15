@@ -26,7 +26,7 @@ function loadMessages(){
         '<div class="loader fa-3x"> <i class="fas fa-spinner fa-spin"></i> </div>')
     }
 
-    setTimeout(ajaxForMessages, 1)
+    setTimeout(ajaxForMessages, 500)
 
 }
 
@@ -80,6 +80,7 @@ let form = $('form').on('submit', (e) => {
       $('div.message_holder').append( `<div class="row ${currentUser === msg.sender ? '' : 'd-flex flex-row-reverse'}"> 
                                         ${currentUser === msg.sender ? '<div class="chat-current-user-pic"></div>' : '<div class="chat-other-user-pic"></div>'}
                                         <div class="sent-message ${ currentUser === msg.sender ? 'current-user-sender col-md-5' : 'other-user-sender col-md-offset-5 col-md-7 '}"><b>` + msg.username + '</b>: ' + msg.message + '</div></div>')
+
     }
     if (currentUser !== msg.sender){
 
