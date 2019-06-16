@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} {{ user.fname }} {{ user.lname }} {% endblock %}
+{% block title %} {{ user.fname.title() }} {{ user.lname.title() }} {% endblock %}
 
 {% block customcss%}
 
