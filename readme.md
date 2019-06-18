@@ -45,17 +45,17 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 
 ## Features
 
-# Complex database model
+### Complex database model
 
-# Autocomplete searching using a trie
+### Autocomplete searching using a trie
 
-# Private messaging with Socketio
+### Private messaging with Socketio
 
-# User uploaded images with Pillow and Amazon S3 bucket
+### User uploaded images with Pillow and Amazon S3 bucket
 
-# Visual calculator with React, Anime.js, Lodash and CSS clip paths
+### Visual calculator with React, Anime.js, Lodash and CSS clip paths
 
-# Following
+### Following
 
 
 ## Contributing
