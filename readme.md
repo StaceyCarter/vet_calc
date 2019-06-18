@@ -16,19 +16,47 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 
 ## Tech/framework used
 
-* Python ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png)
-* Flask
-* Javascript
-* React
-* Socketio
-* HTML 
-* CSS
+<ul>
+
+  <li>Python </li>
+  <li> Flask
+    
+  </li>
+  <li> Javascript
+  
+  </li>
+  <li> React
+  
+  </li>
+  <li> Socketio
+  
+  </li>
+  <li> HTML
+  
+  </li>
+  <li> CSS
+  
+  </li>
+
+
+ </ul>
 
 ## How to use
 
-
-
 ## Features
+
+# Complex database model
+
+# Autocomplete searching using a trie
+
+# Private messaging with Socketio
+
+# User uploaded images with Pillow and Amazon S3 bucket
+
+# Visual calculator with React, Anime.js, Lodash and CSS clip paths
+
+# Following
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -36,15 +64,21 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ```python
-import foobar
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
 ```
 
 ## Credits
 
 
+
+Blog posts and tutorials: 
+
+Image credits:
+* Syringe SVG
+* Stethoscope logo
+* Landing page photos
+
+
+
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](https://choosealicense.com/licenses/mit/) Stacey Carter 2019
