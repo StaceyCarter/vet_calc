@@ -108,7 +108,7 @@ Labels are subject to degradation. They fade, become smudged and owners throw ou
 
 ### Save preferred drug doses
 
-[![Image from Gyazo](https://i.gyazo.com/161233d9ef80ee8d7a67ff2333f8fdd0.gif)](https://gyazo.com/161233d9ef80ee8d7a67ff2333f8fdd0)
+[![Preferred drug gif](/static/save_dose.gif)]
 
 ### Save other vet's preferred drug doses
 
