@@ -50,10 +50,19 @@ There is a lot that goes into deciding on a drug dose and I really wanted my dat
 I spent a long time thinking about and working through an ideal datamodel. In the time I had for the scoped version of this project, there wasn't enough time to implement every table and feature I wanted, but I plan to continue working towards the more complex version after Hackbright.
 
 The ideal datamodel:
--- image of datmodel --
+<p align="center">
+  <img src="/static/future_user_database.png"/>
+</p>
+
+<p align="center">
+  <img src="/static/future_drug_database.png"/>
+</p>
+
 
 The current implementation of the datamodel:
--- image --
+<p align="center">
+  <img src="/static/datamodel_current.png"/>
+</p>
 
 ### Autocomplete searching using a trie
 Since drug names can be difficult to spell, I wanted to implement an autocomplete search. I researched and implemented a data structure called a trie. Which is a tree data stucture that allows for quick searching. 
@@ -61,7 +70,7 @@ Since drug names can be difficult to spell, I wanted to implement an autocomplet
 [![Image from Gyazo](https://i.gyazo.com/85243a7670ed5ffe9f4442c0af98c542.gif)](https://gyazo.com/85243a7670ed5ffe9f4442c0af98c542)
 
 ### Private messaging with Socketio
-Private messaging is implemented with socketio and javascript in the frontend and flask-socketio in the backend.
+Private messaging is implemented with socketio and javascript in the frontend and flask-socketio in the backend. 
 
 [![Image from Gyazo](https://i.gyazo.com/8ae0080b9db817bb262f00d4cdc5c2e7.gif)](https://gyazo.com/8ae0080b9db817bb262f00d4cdc5c2e7)
 
@@ -91,9 +100,6 @@ As you use the calculator page, the label instructions at the bottom update acco
 [![Image from Gyazo](https://i.gyazo.com/4aea8292d8057de35798ea89f449709f.gif)](https://gyazo.com/4aea8292d8057de35798ea89f449709f)
 
 
-### User permissions
-Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses. 
-
 ### Text label instructions to client
 Labels are subject to degradation. They fade, become smudged and owners throw out the packaging. When label instructions are unclear or non-existent, an owner's reliance on memory drastically increases the risk of medical mistakes.  
 
@@ -112,6 +118,9 @@ Labels are subject to degradation. They fade, become smudged and owners throw ou
 ### Save other vet's preferred drug doses
 
 [![Image from Gyazo](https://i.gyazo.com/53b01d98daf4a21202b6795a4c9aeedd.gif)](https://gyazo.com/53b01d98daf4a21202b6795a4c9aeedd)
+
+### User permissions
+Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses. 
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
