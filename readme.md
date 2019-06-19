@@ -46,16 +46,47 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 ## Features
 
 ### Complex database model
+There is a lot that goes into deciding on a drug dose and I really wanted my database to support this.
+I spent a long time thinking about and working through an ideal datamodel. In the time I had for the scoped version of this project, there wasn't enough time to implement every table and feature I wanted, but I plan to continue working towards the more complex version after Hackbright.
+
+The ideal datamodel:
+-- image of datmodel --
+
+The current implementation of the datamodel:
+-- image --
 
 ### Autocomplete searching using a trie
+Since drug names can be difficult to spell, I wanted to implement an autocomplete search. I researched and implemented a data structure called a trie. Which is a tree data stucture that allows for quick searching. 
 
 ### Private messaging with Socketio
+Private messaging is implemented with socketio and javascript in the frontend and flask-socketio in the backend.
+
+### Infinite scroll
+I implemented the infinite scroll by adding an event listener that detects when the user scrolls to the top of the page. When this happens an AJAX request is sent to the server which uses a paginated database query to get the next 10 messages. When no messages are left to be returned, a "No more messages" notification appears at the top.  
+[![Image from Gyazo](https://i.gyazo.com/0b975a41b142467162c36870c1711432.gif)](https://gyazo.com/0b975a41b142467162c36870c1711432)
+
+### Message notifications
+When a user 
+
 
 ### User uploaded images with Pillow and Amazon S3 bucket
 
 ### Visual calculator with React, Anime.js, Lodash and CSS clip paths
 
+### Editable instruction label
+
+### User permissions
+Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses. 
+
+### Text label instructions to client
+Labels are subject to degradation. They fade, become smudged and owners throw out the packaging. When label instructions are unclear or non-existent, an owner's reliance on memory drastically increases the risk of medical mistakes.  
+
 ### Following
+
+
+### Save preferred drug doses 
+
+### Save other vet's preferred drug doses
 
 
 ## Contributing
@@ -72,11 +103,13 @@ Please make sure to update tests as appropriate.
 
 
 Blog posts and tutorials: 
+* Socket related:
+https://secdevops.ai/weekend-project-part-2-turning-flask-into-a-real-time-websocket-server-using-flask-socketio-ab6b45f1d896
 
 Image credits:
-* Syringe SVG
-* Stethoscope logo
-* Landing page photos
+* Syringe image on calculator page - Icon made by Freepik from www.flaticon.com
+* Stethoscope logo - https://cutthatdesign.com/2018/04/nurse-stethoscope-heartbeat-design-set/
+* Landing page photos - All photos from unsplash.com
 
 
 
