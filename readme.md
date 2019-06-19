@@ -14,7 +14,7 @@ As a practicing veterinarian, I was frustrated with the amount of time I spent l
 Deciding on a drug dose isn't as simple as just consulting a textbook. Usually the textbook ranges are quite large and it can be difficult to decide where to go within the range. Deciding on a dose often involves consulting multiple texbooks (since they can all have different ranges) and consulting with colleagues or specialists from other hospitals on what their preferred dose is.
 Both vets and nurses are responsible for calculating the actual amount of drug required for a given dose, which can lead to another subset of complications regarding miscalculations. For example, overdosing or underdosing or not sending the correct total amount of drug home with the patient. Mistakes made here can have severe consequences.  
 
-## Tech/framework used
+## Tech Stack
 
 <ul>
 
@@ -38,6 +38,20 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
   
   </li>
 
+   <li>Amazon S3
+  </li>
+
+  <li>Pillow
+  </li>
+
+  <li>Anime.js
+  </li>
+
+  <li>Lodash
+  </li>
+
+  <li>React Rangeslider - https://github.com/whoisandy/react-rangeslider
+  </li>
 
  </ul>
 
@@ -46,45 +60,45 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 ## Features
 
 ### Complex database model
-There is a lot that goes into deciding on a drug dose and I really wanted my database to support this.
+There is a lot that goes into deciding on a drug dose and I really wanted my database to reflect this.
 I spent a long time thinking about and working through an ideal datamodel. In the time I had for the scoped version of this project, there wasn't enough time to implement every table and feature I wanted, but I plan to continue working towards the more complex version after Hackbright.
 
-The ideal datamodel:
+####The current implementation of the datamodel:
+<p align="center">
+  <img src="/static/current_datamodel.png"/>
+</p>
+
+####The ideal datamodel:
+I will be working towards having a datamodel more like this in the future. 
+
+These tables relate to users:
 <p align="center">
   <img src="/static/future_user_database.png"/>
 </p>
 
+These tables store information related to drug doses:
 <p align="center">
   <img src="/static/future_drug_database.png"/>
 </p>
 
-
-The current implementation of the datamodel:
-<p align="center">
-  <img src="/static/datamodel_current.png"/>
-</p>
-
 ### Autocomplete searching using a trie
-Since drug names can be difficult to spell, I wanted to implement an autocomplete search. I researched and implemented a data structure called a trie. Which is a tree data stucture that allows for quick searching. 
+Since drug names can be difficult to spell, I wanted to implement an autocomplete search. I researched and implemented a data structure called a trie. <a href="https://hackerfall.com/story/autocomplete-using-tries">This tutorial</a> was a really helpful guide in making some practice tries before adding them to my real site. After I added the first one to the main drug search page, I thought it was so much fun that I had to add it to the other pages too. I added extra nodes to the user search page to allow searching by first name, last name or username.   
 
 [![Image from Gyazo](https://i.gyazo.com/85243a7670ed5ffe9f4442c0af98c542.gif)](https://gyazo.com/85243a7670ed5ffe9f4442c0af98c542)
 
 ### Private messaging with Socketio
-Private messaging is implemented with socketio and javascript in the frontend and flask-socketio in the backend. 
+Private messaging is implemented with socketio and javascript in the frontend and flask-socketio in the backend. This was quite difficult to deploy, as the sockets communicate with http, but the site is deployed with https. The sockets also kept defaulting to long polling, which made for an extremely unpleasant messaging experience! 
 
 [![Image from Gyazo](https://i.gyazo.com/8ae0080b9db817bb262f00d4cdc5c2e7.gif)](https://gyazo.com/8ae0080b9db817bb262f00d4cdc5c2e7)
 
 ### Infinite scroll
-I implemented the infinite scroll by adding an event listener that detects when the user scrolls to the top of the page. When this happens an AJAX request is sent to the server which uses a paginated database query to get the next 10 messages. When no messages are left to be returned, a "No more messages" notification appears at the top.  
+To trigger the AJAX request for the infinite scroll, I added an event listener that detects when the user scrolls to the top of the page. When the request is sent to the server a paginated database query retrieves next 10 messages. When no messages are left to be returned, a "No more messages" notification appears at the top.  
 [![Image from Gyazo](https://i.gyazo.com/0b975a41b142467162c36870c1711432.gif)](https://gyazo.com/0b975a41b142467162c36870c1711432)
 
 ### Message notifications
-When a user 
+When a message is emitted to a chat room, users that are connected to the socket emit a confirmation back to the server. If a confirmation is sent by the message recipient, then the seen status is updated in the database to true. If the message recipient isn't connected to the socket, a confirmation is not sent and the seen status remains false in the database. The next time the user refreshes or reloads another page, a notification icon will show in their navbar. When a user loads a conversation, all the messages are set to seen. 
 
 [![Image from Gyazo](https://i.gyazo.com/f6ce276e68a19a92be0b768c77cc364e.gif)](https://gyazo.com/f6ce276e68a19a92be0b768c77cc364e)
-
-
-### User uploaded images with Pillow and Amazon S3 bucket
 
 ### Visual calculator with React, Anime.js, Lodash and CSS clip paths
 
@@ -112,34 +126,29 @@ Labels are subject to degradation. They fade, become smudged and owners throw ou
 
 
 ### Save preferred drug doses
+Users can add their own preferred drug doses, which get stored in the personal_doses data table and displayed on their profile page.
 
 [![Preferred drug gif](/static/save_dose.gif)]
 
 ### Save other vet's preferred drug doses
 
+Users can save other user's doses to their own profile page for future reference. For example, 
+
 [![Image from Gyazo](https://i.gyazo.com/53b01d98daf4a21202b6795a4c9aeedd.gif)](https://gyazo.com/53b01d98daf4a21202b6795a4c9aeedd)
 
+### User uploaded images with Pillow and Amazon S3 bucket
+Users can upload their own profile pictures. The pictures are resized using the python library, Pillow into both thumbnail and a larger profile page size. They're then added to an Amazon S3 bucket.
+Since a presigned url was being sent to S3 to retrieve the images every time they were needed from the site, it resulted in a lot of flickering. Which was particularly noticable in the chat. I extended the expiry date on the URLs and implemented client side caching to resolve this. 
+
 ### User permissions
-Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses. 
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-```python
-
-
-
-```
+Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses.
 
 ## Credits
 
+A huge thank you to the authors of these blog posts and tutorials: 
+* <a href="https://secdevops.ai/weekend-project-part-2-turning-flask-into-a-real-time-websocket-server-using-flask-socketio-ab6b45f1d896"> A brilliant blog post on websockets </a>
+* <a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-viii-followers">Flask followers tutorial</a> - Miguel Grinberg's tutorials helped me so much during this project. Especially in the support he provides for flask-socketio. During deployment I spent quite a long time reading through the github issues on flask-socketio and found his answers incredibly useful.  
 
-
-Blog posts and tutorials: 
-* Socket related:
-https://secdevops.ai/weekend-project-part-2-turning-flask-into-a-real-time-websocket-server-using-flask-socketio-ab6b45f1d896
 
 Image credits:
 * Syringe image on calculator page - Icon made by Freepik from www.flaticon.com
