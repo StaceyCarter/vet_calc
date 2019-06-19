@@ -58,8 +58,12 @@ The current implementation of the datamodel:
 ### Autocomplete searching using a trie
 Since drug names can be difficult to spell, I wanted to implement an autocomplete search. I researched and implemented a data structure called a trie. Which is a tree data stucture that allows for quick searching. 
 
+[![Image from Gyazo](https://i.gyazo.com/85243a7670ed5ffe9f4442c0af98c542.gif)](https://gyazo.com/85243a7670ed5ffe9f4442c0af98c542)
+
 ### Private messaging with Socketio
 Private messaging is implemented with socketio and javascript in the frontend and flask-socketio in the backend.
+
+[![Image from Gyazo](https://i.gyazo.com/8ae0080b9db817bb262f00d4cdc5c2e7.gif)](https://gyazo.com/8ae0080b9db817bb262f00d4cdc5c2e7)
 
 ### Infinite scroll
 I implemented the infinite scroll by adding an event listener that detects when the user scrolls to the top of the page. When this happens an AJAX request is sent to the server which uses a paginated database query to get the next 10 messages. When no messages are left to be returned, a "No more messages" notification appears at the top.  
@@ -68,12 +72,24 @@ I implemented the infinite scroll by adding an event listener that detects when 
 ### Message notifications
 When a user 
 
+[![Image from Gyazo](https://i.gyazo.com/f6ce276e68a19a92be0b768c77cc364e.gif)](https://gyazo.com/f6ce276e68a19a92be0b768c77cc364e)
+
 
 ### User uploaded images with Pillow and Amazon S3 bucket
 
 ### Visual calculator with React, Anime.js, Lodash and CSS clip paths
 
+[![Image from Gyazo](https://i.gyazo.com/7990078b6b34ad95f248b6cbe1c8e2b9.gif)](https://gyazo.com/7990078b6b34ad95f248b6cbe1c8e2b9)
+
+Visualise the number of tablets required per dose. You can choose whether the tablets can be halved or quartered, or can only be taken whole.
+
+[![Image from Gyazo](https://i.gyazo.com/9556d7e681c5e7495493e096332a5241.gif)](https://gyazo.com/9556d7e681c5e7495493e096332a5241)
+
 ### Editable instruction label
+As you use the calculator page, the label instructions at the bottom update according to the state of the rest of the page. You can customize the label further before texting it to the client if there is extra information you want to include.
+
+[![Image from Gyazo](https://i.gyazo.com/4aea8292d8057de35798ea89f449709f.gif)](https://gyazo.com/4aea8292d8057de35798ea89f449709f)
+
 
 ### User permissions
 Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses. 
@@ -81,13 +97,20 @@ Vets and nurses have distinct accounts. Veterinarians can utilize all features o
 ### Text label instructions to client
 Labels are subject to degradation. They fade, become smudged and owners throw out the packaging. When label instructions are unclear or non-existent, an owner's reliance on memory drastically increases the risk of medical mistakes.  
 
+[![Image from Gyazo](https://i.gyazo.com/2df7a70b63238c439756c13ff3993e7b.gif)](https://gyazo.com/2df7a70b63238c439756c13ff3993e7b)
+
 ### Following
 
+[![Image from Gyazo](https://i.gyazo.com/d296e5b816f7f1da41a68b5e71ea8ca7.gif)](https://gyazo.com/d296e5b816f7f1da41a68b5e71ea8ca7)
 
-### Save preferred drug doses 
+
+### Save preferred drug doses
+
+[![Image from Gyazo](https://i.gyazo.com/161233d9ef80ee8d7a67ff2333f8fdd0.gif)](https://gyazo.com/161233d9ef80ee8d7a67ff2333f8fdd0)
 
 ### Save other vet's preferred drug doses
 
+[![Image from Gyazo](https://i.gyazo.com/53b01d98daf4a21202b6795a4c9aeedd.gif)](https://gyazo.com/53b01d98daf4a21202b6795a4c9aeedd)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
@@ -95,6 +118,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ```python
+
+
 
 ```
 
