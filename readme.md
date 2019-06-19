@@ -148,6 +148,7 @@ Vets and nurses have distinct accounts. Veterinarians can utilize all features o
 
 * Adding real drug doses. The drug names displayed on the drug search page were scraped using Beautiful Soup, but textbook they were retrieved from was not machine readable enough to make scraping a possibility. For this reason all textbook doses, contraindications and interactions are randomly generated to provide a proof of concept only. 
 * Account editing - currently there is no settings page. A user cannot update their email, name etc.
+* Optimize for mobile - Vets, especially large animal vets are constantly on the go.
 
 There are many more features I have in mind that I would like to build out, but these are 2 major ones holding the app back from being functional in practice. Although users can currently save an calculate their own preferred doses, having randomly generated "textbook doses" is risky.  
 
