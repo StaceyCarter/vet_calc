@@ -49,7 +49,7 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
   <li>Lodash
   </li>
 
-  <li>React Rangeslider - https://github.com/whoisandy/react-rangeslider
+  <li><a href="https://github.com/whoisandy/react-rangeslider"> React Rangeslider </a>
   </li>
 
  </ul>
