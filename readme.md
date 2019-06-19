@@ -19,6 +19,7 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 <ul>
 
   <li>Python </li>
+  
   <li> Flask
     
   </li>
@@ -60,15 +61,15 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 ## Features
 
 ### Complex database model
-There is a lot that goes into deciding on a drug dose and I really wanted my database to reflect this.
+There is a lot that goes into deciding on a drug dose and I wanted my database to reflect this.
 I spent a long time thinking about and working through an ideal datamodel. In the time I had for the scoped version of this project, there wasn't enough time to implement every table and feature I wanted, but I plan to continue working towards the more complex version after Hackbright.
 
-####The current implementation of the datamodel:
+#### The current implementation of the datamodel:
 <p align="center">
   <img src="/static/current_datamodel.png"/>
 </p>
 
-####The ideal datamodel:
+#### The ideal datamodel:
 I will be working towards having a datamodel more like this in the future. 
 
 These tables relate to users:
@@ -105,6 +106,7 @@ When a message is emitted to a chat room, users that are connected to the socket
 [![Image from Gyazo](https://i.gyazo.com/7990078b6b34ad95f248b6cbe1c8e2b9.gif)](https://gyazo.com/7990078b6b34ad95f248b6cbe1c8e2b9)
 
 Visualise the number of tablets required per dose. You can choose whether the tablets can be halved or quartered, or can only be taken whole.
+I created the illusion of a syringe being filled by adding a CSS clip path over a normal box animation. <a href="https://bennettfeely.com/clippy/">This tool</a> was extremely helpful in creating the path.
 
 [![Image from Gyazo](https://i.gyazo.com/9556d7e681c5e7495493e096332a5241.gif)](https://gyazo.com/9556d7e681c5e7495493e096332a5241)
 
@@ -117,18 +119,20 @@ As you use the calculator page, the label instructions at the bottom update acco
 ### Text label instructions to client
 Labels are subject to degradation. They fade, become smudged and owners throw out the packaging. When label instructions are unclear or non-existent, an owner's reliance on memory drastically increases the risk of medical mistakes.  
 
-[![Image from Gyazo](/static/text_client.gif)]
+![Image from Gyazo](/static/text_client.gif)
 
 
 ### Following
+Users can create a network of other veterinary professionals through following. Follower-followee relationships are stored in an association table in the database.
+In the future I want to build up the social media feature to have a special relationship between vets and nurses, where a nurse can indicate the vet they are working for in a particular shift and automatically are suggested that vet's preferred doses.  
 
 [![Image from Gyazo](https://i.gyazo.com/d296e5b816f7f1da41a68b5e71ea8ca7.gif)](https://gyazo.com/d296e5b816f7f1da41a68b5e71ea8ca7)
 
 
 ### Save preferred drug doses
-Users can add their own preferred drug doses, which get stored in the personal_doses data table and displayed on their profile page.
+Vets can add their own preferred drug doses, which get stored in the personal_doses data table and displayed on their profile page.
 
-[![Preferred drug gif](/static/save_dose.gif)]
+![Preferred drug gif](/static/save_dose.gif)
 
 ### Save other vet's preferred drug doses
 
@@ -142,6 +146,14 @@ Since a presigned url was being sent to S3 to retrieve the images every time the
 
 ### User permissions
 Vets and nurses have distinct accounts. Veterinarians can utilize all features of the app. While nurses arae unable to set their own preferred doses, they can save preferred doses from the vets they work with. In the future I plan to build out this feature into special, vet-nurse connections where nurses can set who they are working with on a shift, and automatically get shown that vet's preferred doses.
+
+
+## Vision for the future 
+
+* Adding real drug doses. The drug names displayed on the drug search page were scraped using Beautiful Soup, but textbook they were retrieved from was not machine readable enough to make scraping a possibility. For this reason all textbook doses, contraindications and interactions are randomly generated to provide a proof of concept only. 
+* Account editing - currently there is no settings page. A user cannot update their email, name etc.
+
+There are many more features I have in mind that I would like to build out, but these are 2 major ones holding the app back from being functional in practice. Although users can currently save an calculate their own preferred doses, having randomly generated "textbook doses" is risky.  
 
 ## Credits
 
