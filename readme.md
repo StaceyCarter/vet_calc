@@ -97,9 +97,8 @@ Vets and nurses have distinct accounts. Veterinarians can utilize all features o
 ### Text label instructions to client
 Labels are subject to degradation. They fade, become smudged and owners throw out the packaging. When label instructions are unclear or non-existent, an owner's reliance on memory drastically increases the risk of medical mistakes.  
 
-[![Image from Gyazo](https://i.gyazo.com/2df7a70b63238c439756c13ff3993e7b.gif)](https://gyazo.com/2df7a70b63238c439756c13ff3993e7b)
+[![Image from Gyazo](/static/text_client.gif)]
 
-<a href="https://gyazo.com/2df7a70b63238c439756c13ff3993e7b"><img src="https://i.gyazo.com/2df7a70b63238c439756c13ff3993e7b.gif" alt="Image from Gyazo" width="960"/></a>
 
 ### Following
 
