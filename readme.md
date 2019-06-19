@@ -99,6 +99,8 @@ Labels are subject to degradation. They fade, become smudged and owners throw ou
 
 [![Image from Gyazo](https://i.gyazo.com/2df7a70b63238c439756c13ff3993e7b.gif)](https://gyazo.com/2df7a70b63238c439756c13ff3993e7b)
 
+<a href="https://gyazo.com/2df7a70b63238c439756c13ff3993e7b"><img src="https://i.gyazo.com/2df7a70b63238c439756c13ff3993e7b.gif" alt="Image from Gyazo" width="960"/></a>
+
 ### Following
 
 [![Image from Gyazo](https://i.gyazo.com/d296e5b816f7f1da41a68b5e71ea8ca7.gif)](https://gyazo.com/d296e5b816f7f1da41a68b5e71ea8ca7)
