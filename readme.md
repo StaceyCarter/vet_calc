@@ -1,5 +1,3 @@
-# VetCalc
-
 <p align="center">
   <img src="/static/logos/pinkStethGreyText.jpg"/>
 </p>
