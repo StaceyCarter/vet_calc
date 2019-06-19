@@ -19,7 +19,7 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
 <ul>
 
   <li>Python </li>
-  
+
   <li> Flask
     
   </li>
@@ -55,8 +55,6 @@ Both vets and nurses are responsible for calculating the actual amount of drug r
   </li>
 
  </ul>
-
-## How to use
 
 ## Features
 
@@ -154,6 +152,14 @@ Vets and nurses have distinct accounts. Veterinarians can utilize all features o
 * Account editing - currently there is no settings page. A user cannot update their email, name etc.
 
 There are many more features I have in mind that I would like to build out, but these are 2 major ones holding the app back from being functional in practice. Although users can currently save an calculate their own preferred doses, having randomly generated "textbook doses" is risky.  
+
+I think these user flow diagrams I mapped out at the beginning of the project give a good idea of where I want to take the project in the future:
+
+Vet user journey:
+<img src="static/vet_userflow.png" />
+
+Nurse user journey:
+<img src="static/nurse_userflow.png" />
 
 ## Credits
 
