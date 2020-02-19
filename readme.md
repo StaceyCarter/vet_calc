@@ -2,6 +2,9 @@
   <img src="/static/logos/pinkStethGreyText.jpg"/>
 </p>
 
+***To get a general overview of VetCalc, my motivations behind it and my experience at Hackbright in general, please check out the interview I did with Course Report: https://www.coursereport.com/blog/stacey-s-final-project-at-hackbright-academy***
+
+
 VetCalc is a social network for the veterinary industry where users can save, share and calculate drug doses. The calculator provides a visualisation of the amount of tablets or liquid required per dose, allowing for more informed decisions when selecting drug concentration. A label is automatically generated and can be texted directly to the client, reducing communication errors.
 Users can save other vets' preferred doses to their own page for future reference. While nurses can prescribe according to a vet’s preferences, they cannot save their own doses. Interaction between users is enabled through private messaging and following.
 VetCalc saves vets approximately 5 hours a week and reduces medical mistakes.
